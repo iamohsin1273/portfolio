@@ -1,0 +1,79 @@
+CLAUDE CODE - ULTIMATE MASTER PROMPT
+
+DO NOT CREATE A PORTFOLIO WEBSITE. CREATE A PREMIUM CLOUD PLATFORM EXPERIENCE FOR MOHAMED MOHSIN.
+
+MANDATORY STEPS:
+1. Read all TXT, PDF, PNG, JPG and JPEG files in the project directory recursively.
+2. Analyze the resume and profile photograph.
+3. Treat master TXT files as the source of truth.
+4. Build a dynamic, production-ready implementation.
+
+PERSONAL INFORMATION
+- Mohamed Mohsin
+- Cloud & Platform Engineer
+- Chennai, India
+- iamohsin0033@gmail.com
+- https://github.com/iamohsin1273
+- https://linkedin.com/in/iam-mohsin
+
+SPECIALIZATIONS
+- AWS
+- Kubernetes
+- Terraform
+- Docker
+- Jenkins
+- Linux
+- Infrastructure Automation
+- Monitoring and Observability
+- Cloud Native Technologies
+
+PHOTO REQUIREMENTS
+- No resume download button.
+- Support profile.png, profile.jpg, profile.jpeg and common asset paths.
+- Floating 3D profile card with glassmorphism, mouse tracking, glow effects and parallax animations.
+
+HERO SECTION
+- Cloud Platform Status: ONLINE
+- Animated typing effects for AWS, Kubernetes and Terraform initialization messages.
+- GitHub, LinkedIn and Contact buttons.
+
+LIVE DASHBOARD
+- Animated counters generated from JavaScript objects.
+- AWS Healthy
+- Kubernetes Running
+- Terraform Provisioned
+- Jenkins Active
+- Prometheus Monitoring
+- Grafana Healthy
+
+EXPERIENCE
+Render dynamically from JavaScript data structures. Include Revolite experience and production support responsibilities.
+
+FEATURED PROJECTS
+1. AI Powered DevSecOps Pipeline (Flagship Project).
+GitHub -> Jenkins -> Build -> Unit Tests -> SonarQube -> Trivy -> Docker -> Harbor -> Kubernetes -> K8sGPT -> OpenAI -> Slack -> Production.
+
+2. AWS Cloud Infrastructure Automation.
+3. Production Kubernetes Monitoring.
+4. Cloud Native Deployments.
+
+INTERACTIVE TERMINAL
+Animate commands such as kubectl get pods, terraform apply, docker ps, helm install monitoring and aws s3 ls.
+
+ANIMATIONS
+Use GSAP, TypedJS, ThreeJS, VanillaTilt, ParticlesJS, Scroll Reveal, Intersection Observer, glassmorphism and premium cursor effects whenever possible.
+
+TECHNICAL REQUIREMENTS
+- Dynamic rendering using JavaScript objects.
+- Responsive design.
+- GitHub Pages ready.
+- Cloudflare ready.
+- SEO optimized.
+- Lighthouse optimized.
+- Production ready.
+
+DEPLOYMENT FLOW
+GitHub -> GitHub Actions -> Validation -> Performance Checks -> GitHub Pages -> Cloudflare -> Production.
+
+MOST IMPORTANT REQUIREMENT
+The final result must look like a premium cloud-native product built by a Cloud & Platform Engineer rather than a traditional portfolio website.
