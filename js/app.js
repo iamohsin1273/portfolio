@@ -43,23 +43,6 @@ const DATA = {
     { n: 99.9, suffix: '%', label: 'Uptime target', decimals: 1 }
   ],
 
-  // Live control-plane dashboard
-  dashboard: [
-    { name: 'AWS',        desc: 'EC2 · EKS · ECS · S3 · IAM',   icon: '☁', state: 'Healthy',      metric: 6,    unit: 'services', accent: '#ffb648', spark: [4,6,5,7,6,8,7] },
-    { name: 'Kubernetes', desc: 'Production EKS cluster',        icon: '⎈', state: 'Running',      metric: 24,   unit: 'pods',     accent: '#4d8dff', spark: [5,7,6,8,7,9,8] },
-    { name: 'Terraform',  desc: 'Infrastructure as Code',        icon: '🌍', state: 'Provisioned',  metric: 48,   unit: 'resources',accent: '#7b6bff', spark: [3,5,4,6,5,7,6] },
-    { name: 'Jenkins',    desc: 'CI/CD automation',              icon: '⚙', state: 'Active',       metric: 9,    unit: 'pipelines',accent: '#2fe08a', spark: [6,8,5,9,7,8,9] },
-    { name: 'Prometheus', desc: 'Metrics &amp; alerting',        icon: '🔥', state: 'Scraping',     metric: 1240, unit: 'series',   accent: '#ff5a72', spark: [7,6,8,7,9,8,9] },
-    { name: 'Grafana',    desc: 'Dashboards &amp; SLOs',         icon: '📊', state: 'Healthy',      metric: 14,   unit: 'boards',   accent: '#35e0e0', spark: [4,7,6,8,6,9,7] }
-  ],
-
-  metrics: [
-    { n: 99.9, suffix: '%', decimals: 1, label: 'Service uptime' },
-    { n: 24,   suffix: '/7', label: 'Monitoring' },
-    { n: 48,   suffix: '',  label: 'Managed resources' },
-    { n: 120,  suffix: 'ms',label: 'Avg p95 latency' }
-  ],
-
   experience: [
     {
       type: 'work',
@@ -87,34 +70,60 @@ const DATA = {
     }
   ],
 
-  skills: [
+  // Unified capability + toolchain map (merges old dashboard / skills / tech).
+  // tier: 'Core' (daily, production) · 'Working' (hands-on) · 'Familiar' (used, growing)
+  stack: [
     {
-      title: 'Containers & Orchestration', icon: '⎈',
-      items: [ { n: 'Kubernetes', v: 85 }, { n: 'Docker', v: 90 }, { n: 'Helm', v: 72 } ]
+      title: 'Containers & Orchestration',
+      accent: '#4d8dff',
+      blurb: 'Packaging services and running them at scale on production Kubernetes.',
+      tools: [
+        { n: 'Kubernetes', slug: 'kubernetes', tier: 'Core' },
+        { n: 'Docker',     slug: 'docker',     tier: 'Core' },
+        { n: 'Helm',       slug: 'helm',       tier: 'Working' }
+      ]
     },
     {
-      title: 'Cloud & IaC', icon: '☁',
-      items: [ { n: 'AWS (EC2/EKS/ECS)', v: 82 }, { n: 'Terraform', v: 80 }, { n: 'CloudFormation', v: 70 } ]
+      title: 'Cloud & Infrastructure as Code',
+      accent: '#ffb648',
+      blurb: 'Provisioning repeatable, drift-free AWS environments from code.',
+      tools: [
+        { n: 'AWS',            slug: 'aws',       tier: 'Core' },
+        { n: 'Terraform',      slug: 'terraform', tier: 'Core' },
+        { n: 'Linux',          slug: 'linux',     tier: 'Core' }
+      ]
     },
     {
-      title: 'CI/CD & Automation', icon: '⚙',
-      items: [ { n: 'Jenkins', v: 85 }, { n: 'GitHub Actions', v: 80 }, { n: 'Ansible', v: 75 } ]
+      title: 'CI/CD & Automation',
+      accent: '#2fe08a',
+      blurb: 'Wiring commits to production through automated, security-gated pipelines.',
+      tools: [
+        { n: 'Jenkins',        slug: 'jenkins',       tier: 'Core' },
+        { n: 'GitHub Actions', slug: 'githubactions', tier: 'Working' },
+        { n: 'Ansible',        slug: 'ansible',       tier: 'Working' },
+        { n: 'Git',            slug: 'git',           tier: 'Core' }
+      ]
     },
     {
-      title: 'Observability & Scripting', icon: '📊',
-      items: [ { n: 'Prometheus', v: 78 }, { n: 'Grafana', v: 80 }, { n: 'Python / Shell', v: 82 } ]
+      title: 'Observability & Security',
+      accent: '#ff5a72',
+      blurb: 'Watching what runs and catching problems before they ship.',
+      tools: [
+        { n: 'Prometheus', slug: 'prometheus', tier: 'Working' },
+        { n: 'Grafana',    slug: 'grafana',    tier: 'Working' },
+        { n: 'Trivy',      slug: 'trivy',      tier: 'Working' },
+        { n: 'SonarQube',  slug: 'sonarqube',  tier: 'Familiar' }
+      ]
+    },
+    {
+      title: 'Scripting',
+      accent: '#7b6bff',
+      blurb: 'Automating the operational glue that keeps platforms healthy.',
+      tools: [
+        { n: 'Python', slug: 'python', tier: 'Working' },
+        { n: 'Shell',  slug: 'shell',  tier: 'Core' }
+      ]
     }
-  ],
-
-  tech: [
-    { n: 'AWS', c: '#ff9900', s: 'A' }, { n: 'Kubernetes', c: '#326ce5', s: 'K8' },
-    { n: 'Docker', c: '#2496ed', s: 'D' }, { n: 'Terraform', c: '#7b42bc', s: 'TF' },
-    { n: 'Jenkins', c: '#d33833', s: 'J' }, { n: 'GitHub Actions', c: '#2088ff', s: 'GH' },
-    { n: 'Ansible', c: '#ee0000', s: 'AN' }, { n: 'Prometheus', c: '#e6522c', s: 'PR' },
-    { n: 'Grafana', c: '#f46800', s: 'GF' }, { n: 'Linux', c: '#f5b800', s: 'LX' },
-    { n: 'Python', c: '#3776ab', s: 'PY' }, { n: 'Shell', c: '#4eaa25', s: 'SH' },
-    { n: 'Git', c: '#f05032', s: 'GT' }, { n: 'Helm', c: '#0f1689', s: 'HM' },
-    { n: 'SonarQube', c: '#4e9bcd', s: 'SQ' }, { n: 'Trivy', c: '#1904da', s: 'TR' }
   ],
 
   // Flagship DevSecOps pipeline
@@ -122,46 +131,46 @@ const DATA = {
     title: 'AI-Powered DevSecOps Pipeline',
     desc: 'An end-to-end, security-first delivery pipeline: every commit flows through build, test, quality gates, vulnerability scanning, image signing and GitOps deployment — with AI-assisted diagnostics closing the loop back to the team.',
     nodes: [
-      { name: 'GitHub',     stage: 'Source',     icon: '🐙', color: '#8b949e', desc: 'Developers push to main; webhooks trigger the pipeline automatically.', tech: ['Git', 'Webhooks', 'Branch protection'] },
-      { name: 'Jenkins',    stage: 'Orchestrate',icon: '⚙', color: '#d33833', desc: 'Declarative pipeline orchestrates every downstream stage on ephemeral agents.', tech: ['Jenkinsfile', 'Groovy', 'Agents'] },
-      { name: 'Build',      stage: 'Compile',    icon: '🔨', color: '#4d8dff', desc: 'Application is compiled and packaged into reproducible artifacts.', tech: ['Maven', 'Node', 'Cache'] },
-      { name: 'Unit Tests', stage: 'Verify',     icon: '🧪', color: '#2fe08a', desc: 'Automated unit and integration tests gate the build on every run.', tech: ['JUnit', 'Coverage', 'Reports'] },
-      { name: 'SonarQube',  stage: 'Quality',    icon: '🔍', color: '#4e9bcd', desc: 'Static analysis enforces code quality gates and blocks regressions.', tech: ['SAST', 'Quality Gate', 'Debt'] },
-      { name: 'Trivy',      stage: 'Scan',       icon: '🛡', color: '#1904da', desc: 'Scans dependencies and images for CVEs before anything ships.', tech: ['CVE scan', 'SBOM', 'Policy'] },
-      { name: 'Docker',     stage: 'Package',    icon: '🐳', color: '#2496ed', desc: 'Builds a minimal, multi-stage container image for the service.', tech: ['Multi-stage', 'BuildKit'] },
-      { name: 'Harbor',     stage: 'Registry',   icon: '📦', color: '#60b932', desc: 'Signed images are pushed to a private, scanned registry.', tech: ['Registry', 'Cosign', 'Replication'] },
-      { name: 'Kubernetes', stage: 'Deploy',     icon: '⎈', color: '#326ce5', desc: 'GitOps rollout to EKS with health checks and automatic rollback.', tech: ['EKS', 'Rollout', 'HPA'] },
-      { name: 'K8sGPT',     stage: 'Diagnose',   icon: '🤖', color: '#7b6bff', desc: 'Scans cluster state and surfaces issues in plain language.', tech: ['Analyzers', 'CRDs'] },
-      { name: 'OpenAI',     stage: 'Reason',     icon: '✨', color: '#10a37f', desc: 'Enriches diagnostics with root-cause reasoning and remediation steps.', tech: ['LLM', 'RCA', 'Prompting'] },
-      { name: 'Slack',      stage: 'Notify',     icon: '💬', color: '#e01e5a', desc: 'Delivers actionable alerts and deployment status to the team channel.', tech: ['Webhooks', 'ChatOps'] },
-      { name: 'Production', stage: 'Live',       icon: '🚀', color: '#2fe08a', desc: 'Traffic served from a monitored, auto-scaled production environment.', tech: ['SLOs', 'Monitoring', 'Autoscale'] }
+      { name: 'GitHub',     stage: 'Source',     slug: 'github',        color: '#8b949e', desc: 'Developers push to main; webhooks trigger the pipeline automatically.', tech: ['Git', 'Webhooks', 'Branch protection'] },
+      { name: 'Jenkins',    stage: 'Orchestrate',slug: 'jenkins',       color: '#d33833', desc: 'Declarative pipeline orchestrates every downstream stage on ephemeral agents.', tech: ['Jenkinsfile', 'Groovy', 'Agents'] },
+      { name: 'Build',      stage: 'Compile',    icon: '🔨',            color: '#4d8dff', desc: 'Application is compiled and packaged into reproducible artifacts.', tech: ['Maven', 'Node', 'Cache'] },
+      { name: 'Unit Tests', stage: 'Verify',     icon: '🧪',            color: '#2fe08a', desc: 'Automated unit and integration tests gate the build on every run.', tech: ['JUnit', 'Coverage', 'Reports'] },
+      { name: 'SonarQube',  stage: 'Quality',    slug: 'sonarqube',     color: '#4e9bcd', desc: 'Static analysis enforces code quality gates and blocks regressions.', tech: ['SAST', 'Quality Gate', 'Debt'] },
+      { name: 'Trivy',      stage: 'Scan',       slug: 'trivy',         color: '#1904da', desc: 'Scans dependencies and images for CVEs before anything ships.', tech: ['CVE scan', 'SBOM', 'Policy'] },
+      { name: 'Docker',     stage: 'Package',    slug: 'docker',        color: '#2496ed', desc: 'Builds a minimal, multi-stage container image for the service.', tech: ['Multi-stage', 'BuildKit'] },
+      { name: 'Harbor',     stage: 'Registry',   icon: '📦',            color: '#60b932', desc: 'Signed images are pushed to a private, scanned registry.', tech: ['Registry', 'Cosign', 'Replication'] },
+      { name: 'Kubernetes', stage: 'Deploy',     slug: 'kubernetes',    color: '#326ce5', desc: 'GitOps rollout to EKS with health checks and automatic rollback.', tech: ['EKS', 'Rollout', 'HPA'] },
+      { name: 'K8sGPT',     stage: 'Diagnose',   icon: '🤖',            color: '#7b6bff', desc: 'Scans cluster state and surfaces issues in plain language.', tech: ['Analyzers', 'CRDs'] },
+      { name: 'OpenAI',     stage: 'Reason',     icon: '✨',            color: '#10a37f', desc: 'Enriches diagnostics with root-cause reasoning and remediation steps.', tech: ['LLM', 'RCA', 'Prompting'] },
+      { name: 'Slack',      stage: 'Notify',     icon: '💬',            color: '#e01e5a', desc: 'Delivers actionable alerts and deployment status to the team channel.', tech: ['Webhooks', 'ChatOps'] },
+      { name: 'Production', stage: 'Live',       icon: '🚀',            color: '#2fe08a', desc: 'Traffic served from a monitored, auto-scaled production environment.', tech: ['SLOs', 'Monitoring', 'Autoscale'] }
     ]
   },
 
   projects: [
     {
-      icon: '🍽', title: 'Automated Zomato Clone on AWS', accent: '#ff9900',
+      slug: 'kubernetes', title: 'Automated Zomato Clone on AWS', accent: '#ff9900',
       desc: 'React frontend deployed to Amazon EKS via Docker, with a full Jenkins CI/CD pipeline wired to AWS CodeCommit — checkout, build, security scan and automated EKS deploy.',
       tags: ['EKS', 'Docker', 'Jenkins', 'Trivy', 'SonarQube', 'Grafana'],
-      links: [{ label: 'Case study', href: 'https://github.com/iamohsin1273' }]
+      links: [{ label: 'View repo', href: 'https://github.com/iamohsin1273' }]
     },
     {
-      icon: '🏗', title: 'AWS Cloud Infrastructure Automation', accent: '#7b6bff',
+      slug: 'terraform', title: 'AWS Cloud Infrastructure Automation', accent: '#7b6bff',
       desc: 'Reusable Terraform modules provisioning VPCs, EKS, IAM and networking with remote state — repeatable, drift-free environments across dev and prod.',
       tags: ['Terraform', 'AWS', 'IAM', 'VPC', 'IaC'],
-      links: [{ label: 'GitHub', href: 'https://github.com/iamohsin1273' }]
+      links: [{ label: 'View repo', href: 'https://github.com/iamohsin1273' }]
     },
     {
-      icon: '📈', title: 'Production Kubernetes Monitoring', accent: '#e6522c',
+      slug: 'prometheus', title: 'Production Kubernetes Monitoring', accent: '#e6522c',
       desc: 'Prometheus + Grafana observability stack on EKS with curated dashboards, recording rules and alerting for latency, saturation and error budgets.',
       tags: ['Prometheus', 'Grafana', 'Kubernetes', 'Alerting'],
-      links: [{ label: 'GitHub', href: 'https://github.com/iamohsin1273' }]
+      links: [{ label: 'View repo', href: 'https://github.com/iamohsin1273' }]
     },
     {
-      icon: '🚢', title: 'Cloud-Native Deployments', accent: '#2496ed',
+      slug: 'docker', title: 'Cloud-Native Deployments', accent: '#2496ed',
       desc: 'Containerized microservices with Helm charts and GitHub Actions delivery — zero-downtime rolling updates and environment promotion.',
       tags: ['Helm', 'GitHub Actions', 'Docker', 'GitOps'],
-      links: [{ label: 'GitHub', href: 'https://github.com/iamohsin1273' }]
+      links: [{ label: 'View repo', href: 'https://github.com/iamohsin1273' }]
     }
   ],
 
@@ -250,10 +259,18 @@ const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls)
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const NAV = [
-  ['dashboard', 'Platform'], ['experience', 'Experience'], ['skills', 'Skills'],
-  ['tech', 'Tech'], ['projects', 'Projects'], ['architecture', 'Architecture'],
-  ['terminal', 'Terminal'], ['contact', 'Contact']
+  ['projects', 'Work'], ['stack', 'Stack'], ['experience', 'Experience'],
+  ['architecture', 'Architecture'], ['terminal', 'Terminal'], ['contact', 'Contact']
 ];
+
+/* Brand-logo helper — self-hosted monochrome SVGs in assets/icons.
+   Emoji icons were replaced with these for consistent cross-OS rendering. */
+const ICON_BASE = './assets/icons/';
+function logo(slug, label) {
+  return `<img class="logo" src="${ICON_BASE}${slug}.svg" alt="" aria-hidden="true" width="24" height="24" loading="lazy" />`;
+}
+// Prefer a brand logo when a node/project provides a slug, else fall back to its emoji.
+function glyph(o) { return o.slug ? logo(o.slug) : (o.icon || ''); }
 
 /* ---------------------------------------------------------
    3. RENDERERS
@@ -288,29 +305,26 @@ function renderHero() {
   });
 }
 
-function renderDashboard() {
-  const grid = $('#dashGrid');
-  DATA.dashboard.forEach(c => {
-    const card = el('div', 'dash-card');
-    card.style.setProperty('--accent', c.accent);
-    const bars = c.spark.map(h => `<i style="height:${h * 10}%;animation-delay:${(Math.random() * 2).toFixed(2)}s"></i>`).join('');
+function renderStack() {
+  const grid = $('#stackGrid');
+  DATA.stack.forEach((cat, ci) => {
+    const card = el('div', 'stack-cat');
+    card.setAttribute('data-aos', 'fade-up');
+    card.setAttribute('data-aos-delay', String((ci % 3) * 60));
+    card.style.setProperty('--accent', cat.accent);
+    const tools = cat.tools.map(t => `
+      <div class="stack-tool" data-tier="${t.tier}">
+        <span class="stack-tool__logo">${logo(t.slug)}</span>
+        <span class="stack-tool__name">${t.n}</span>
+        <span class="stack-tool__tier tier--${t.tier.toLowerCase()}">${t.tier}</span>
+      </div>`).join('');
     card.innerHTML = `
-      <div class="dash-card__top">
-        <div class="dash-card__icon" style="color:${c.accent}">${c.icon}</div>
-        <span class="dash-card__state ok"><i class="dot"></i>${c.state}</span>
+      <div class="stack-cat__head">
+        <h3 class="stack-cat__title">${cat.title}</h3>
+        <p class="stack-cat__blurb">${cat.blurb}</p>
       </div>
-      <div class="dash-card__name">${c.name}</div>
-      <div class="dash-card__desc">${c.desc}</div>
-      <div class="dash-card__metric"><span data-count="${c.metric}" data-decimals="0">0</span> <small>${c.unit}</small></div>
-      <div class="dash-card__spark">${bars}</div>`;
+      <div class="stack-cat__tools">${tools}</div>`;
     grid.appendChild(card);
-  });
-
-  const row = $('#metricsRow');
-  DATA.metrics.forEach(m => {
-    const d = el('div', 'metric');
-    d.innerHTML = `<div class="metric__n"><span data-count="${m.n}" data-suffix="${m.suffix}" data-decimals="${m.decimals || 0}">0</span></div><div class="metric__l">${m.label}</div>`;
-    row.appendChild(d);
   });
 }
 
@@ -330,31 +344,6 @@ function renderTimeline() {
   });
 }
 
-function renderSkills() {
-  const grid = $('#skillsGrid');
-  DATA.skills.forEach(cat => {
-    const c = el('div', 'skill-cat');
-    c.setAttribute('data-aos', 'fade-up');
-    c.innerHTML = `<div class="skill-cat__title"><span>${cat.icon}</span>${cat.title}</div>` +
-      cat.items.map(i => `
-        <div class="skill">
-          <div class="skill__top"><b>${i.n}</b><span>${i.v}%</span></div>
-          <div class="skill__bar"><div class="skill__fill" data-v="${i.v}"></div></div>
-        </div>`).join('');
-    grid.appendChild(c);
-  });
-}
-
-function renderTech() {
-  const cloud = $('#techCloud');
-  DATA.tech.forEach(t => {
-    const chip = el('div', 'tech-chip');
-    chip.style.setProperty('--chip', t.c);
-    chip.innerHTML = `<span class="tech-chip__ico" style="background:${t.c}">${t.s}</span>${t.n}`;
-    cloud.appendChild(chip);
-  });
-}
-
 function renderFlagship() {
   $('#flagshipTitle').textContent = DATA.flagship.title;
   $('#flagshipDesc').textContent = DATA.flagship.desc;
@@ -365,7 +354,7 @@ function renderFlagship() {
     node.style.setProperty('--node', n.color);
     node.dataset.i = i;
     node.innerHTML = `
-      <div class="pipe-node__ico">${n.icon}</div>
+      <div class="pipe-node__ico">${glyph(n)}</div>
       <div class="pipe-node__name">${n.name}</div>
       <div class="pipe-node__stage">${n.stage}</div>`;
     node.addEventListener('click', () => selectPipe(i));
@@ -382,7 +371,7 @@ function selectPipe(i) {
   d.style.setProperty('--node', n.color);
   d.innerHTML = `
     <div class="pd__head">
-      <div class="pd__ico">${n.icon}</div>
+      <div class="pd__ico">${glyph(n)}</div>
       <div>
         <div class="pd__title">${n.name}</div>
         <div class="pd__stage">Stage ${i + 1}/${DATA.flagship.nodes.length} · ${n.stage}</div>
@@ -397,8 +386,9 @@ function renderProjects() {
   DATA.projects.forEach(p => {
     const card = el('div', 'project');
     card.setAttribute('data-aos', 'fade-up');
+    card.style.setProperty('--accent', p.accent);
     card.innerHTML = `
-      <div class="project__ico" style="color:${p.accent}">${p.icon}</div>
+      <div class="project__ico" style="background:${p.accent}">${glyph(p)}</div>
       <div class="project__title">${p.title}</div>
       <div class="project__desc">${p.desc}</div>
       <div class="project__tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div>
@@ -539,13 +529,12 @@ function setupObservers() {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
       e.target.querySelectorAll('[data-count]').forEach(n => { if (!n.dataset.done) { n.dataset.done = '1'; animateCount(n); } });
-      e.target.querySelectorAll('.skill__fill').forEach(f => { f.style.width = f.dataset.v + '%'; });
       io.unobserve(e.target);
     });
   }, { threshold: 0.25 });
-  $$('#dashboard, #skills, #hero, .metrics-row, #dashGrid').forEach(s => io.observe(s));
-  // observe individual sections that hold counters
-  $$('.dash-card, .metric, .hero__stat').forEach(s => io.observe(s));
+  $$('#hero').forEach(s => io.observe(s));
+  // observe individual elements that hold counters
+  $$('.hero__stat').forEach(s => io.observe(s));
 }
 
 /* scrollspy + progress + nav bg */
@@ -737,10 +726,8 @@ function setupTerminal() {
 function init() {
   renderNav();
   renderHero();
-  renderDashboard();
+  renderStack();
   renderTimeline();
-  renderSkills();
-  renderTech();
   renderFlagship();
   renderProjects();
   renderArchitecture();
