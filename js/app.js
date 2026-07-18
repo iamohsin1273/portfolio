@@ -19,7 +19,7 @@ const DATA = {
     summary:
       'Junior DevOps Engineer working hands-on with Kubernetes, Docker and Jenkins to run containerized deployments and CI/CD pipelines. I support AWS infrastructure across EC2, EKS and ECS, with observability built on Prometheus and Grafana — already handling real production workflows.',
     tags: ['AWS', 'Kubernetes', 'Terraform', 'Docker', 'CI/CD', 'Observability'],
-    photos: ['profile.jpeg', 'profile.jpg', 'profile.png', 'assets/profile.jpeg', 'assets/profile.jpg', 'images/profile.jpg']
+    photos: ['./assets/images/profile.jpeg', 'profile.jpeg', 'profile.jpg', 'profile.png', './assets/profile.jpeg', 'assets/profile.jpeg', 'assets/profile.jpg', 'images/profile.jpg']
   },
 
   roles: [
@@ -649,7 +649,7 @@ function setupProfileImage() {
       );
     }
   });
-  // set first candidate (HTML already has profile.jpeg)
+  // set first candidate (HTML already points to the deployed asset path)
   if (!img.getAttribute('src')) img.src = paths[0];
 }
 
