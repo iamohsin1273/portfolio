@@ -357,25 +357,60 @@ img { display: block; max-width: 100%; }
 .flagship__title { font-family: var(--display); font-size: clamp(22px,3vw,30px); font-weight: 700; margin: 12px 0 8px; }
 .flagship__desc { color: var(--txt-dim); font-size: 15px; max-width: 640px; }
 .flagship__live { font-family: var(--mono); font-size: 12px; color: var(--green); display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid rgba(47,224,138,.25); border-radius: 20px; background: rgba(47,224,138,.06); white-space: nowrap; }
-.pipeline { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; position: relative; z-index: 1; }
-.pipe-node { position: relative; flex: 1 1 auto; min-width: 92px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 12px; border-radius: 14px; background: rgba(255,255,255,.03); border: 1px solid var(--stroke); cursor: pointer; transition: transform .25s, border-color .25s, box-shadow .25s, background .25s; text-align: center; }
-.pipe-node:hover, .pipe-node.active { transform: translateY(-5px); border-color: var(--node,var(--blue)); box-shadow: 0 14px 34px -14px var(--node,var(--blue)); background: rgba(255,255,255,.05); }
-.pipe-node__ico { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 11px; font-size: 19px; background: var(--node,var(--blue)); color: #fff; box-shadow: 0 0 22px -4px var(--node,var(--blue)); }
-.pipe-node__name { font-size: 12px; font-weight: 600; line-height: 1.2; }
-.pipe-node__stage { font-family: var(--mono); font-size: 9.5px; color: var(--txt-mute); }
-.pipe-node::after { content:'→'; position: absolute; right: -12px; top: 50%; transform: translateY(-50%); color: var(--txt-mute); font-size: 14px; z-index: 2; }
-.pipe-node:last-child::after { display: none; }
-.pipe-node.done .pipe-node__stage { color: var(--green); }
-/* brand logos sit on colored chips — render them white */
-.pipe-node__ico .logo, .pd__ico .logo, .project__ico .logo { width: 60%; height: 60%; object-fit: contain; filter: brightness(0) invert(1); }
-/* Jenkins is a detailed full-color mascot — a white silhouette makes it unrecognizable.
-   Show its true colors on a light chip so it reads on the colored node tile. */
-.pipe-node__ico .logo--jenkins, .pd__ico .logo--jenkins, .project__ico .logo--jenkins {
-  filter: none; width: 74%; height: 74%; background: #fff; border-radius: 7px; padding: 2px;
+.pipeline { display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: stretch; position: relative; z-index: 1; }
+.pipe-node {
+  position: relative; flex: 1 1 auto; min-width: 96px; display: flex; flex-direction: column; align-items: center;
+  gap: 9px; padding: 18px 12px 14px; border-radius: 15px; cursor: pointer; text-align: center;
+  background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+  border: 1px solid var(--stroke);
+  transition: transform .25s, border-color .25s, box-shadow .25s, background .25s;
 }
+.pipe-node:hover, .pipe-node.active {
+  transform: translateY(-6px); border-color: color-mix(in srgb, var(--node,var(--blue)) 55%, transparent);
+  box-shadow: 0 16px 38px -16px var(--node,var(--blue));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--node,var(--blue)) 12%, transparent), rgba(255,255,255,.015));
+}
+/* stage index badge */
+.pipe-node__idx {
+  position: absolute; top: 8px; left: 10px; font-family: var(--mono); font-size: 9px; letter-spacing: .05em;
+  color: var(--txt-mute); transition: color .25s;
+}
+.pipe-node:hover .pipe-node__idx, .pipe-node.active .pipe-node__idx { color: var(--node,var(--blue)); }
+/* icon puck — line icon tinted with the stage color, no more white silhouettes */
+.pipe-node__ico {
+  width: 42px; height: 42px; display: grid; place-items: center; border-radius: 12px;
+  color: var(--node,var(--blue));
+  background: color-mix(in srgb, var(--node,var(--blue)) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--node,var(--blue)) 32%, transparent);
+  transition: background .25s, box-shadow .25s;
+}
+.pipe-node:hover .pipe-node__ico, .pipe-node.active .pipe-node__ico {
+  background: color-mix(in srgb, var(--node,var(--blue)) 22%, transparent);
+  box-shadow: 0 0 24px -6px var(--node,var(--blue));
+}
+.pipe-ico { width: 22px; height: 22px; }
+.pipe-node__name { font-size: 12px; font-weight: 600; line-height: 1.2; }
+.pipe-node__stage { font-family: var(--mono); font-size: 9.5px; color: var(--txt-mute); text-transform: uppercase; letter-spacing: .06em; }
+/* animated flow connector between stages */
+.pipe-node::after {
+  content:''; position: absolute; right: -20px; top: 39px; width: 16px; height: 2px; z-index: 2;
+  transform: translateY(-50%); border-radius: 2px; overflow: hidden;
+  background: linear-gradient(90deg, var(--stroke-2), transparent);
+}
+.pipe-node::before {
+  content:''; position: absolute; right: -20px; top: 39px; width: 6px; height: 2px; z-index: 3;
+  transform: translateY(-50%); border-radius: 2px; background: var(--cyan);
+  box-shadow: 0 0 8px 1px var(--cyan); opacity: .9;
+  animation: pipeFlow 2.4s linear infinite;
+}
+.pipe-node:last-child::after, .pipe-node:last-child::before { display: none; }
+@keyframes pipeFlow { 0% { transform: translate(-4px,-50%); opacity: 0; } 25% { opacity: 1; } 100% { transform: translate(14px,-50%); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .pipe-node::before { animation: none; opacity: .5; } }
+.pipe-node.done .pipe-node__stage { color: var(--green); }
 .pipeline__detail { position: relative; z-index: 1; margin-top: 22px; padding: 22px; border-radius: 14px; background: rgba(5,7,12,.5); border: 1px solid var(--stroke); min-height: 120px; }
 .pd__head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-.pd__ico { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 11px; font-size: 19px; background: var(--node,var(--blue)); color: #fff; }
+.pd__ico { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 11px; color: var(--node,var(--blue)); background: color-mix(in srgb, var(--node,var(--blue)) 16%, transparent); border: 1px solid color-mix(in srgb, var(--node,var(--blue)) 34%, transparent); }
+.pd__ico .pipe-ico { width: 22px; height: 22px; }
 .pd__title { font-family: var(--display); font-weight: 600; font-size: 17px; }
 .pd__stage { font-family: var(--mono); font-size: 11px; color: var(--cyan); }
 .pd__desc { color: var(--txt-dim); font-size: 14px; margin-bottom: 12px; }
@@ -385,6 +420,7 @@ img { display: block; max-width: 100%; }
 .project { position: relative; padding: 26px; border-radius: var(--radius); background: var(--panel); border: 1px solid var(--stroke); backdrop-filter: blur(12px); overflow: hidden; transition: transform .3s, border-color .3s, box-shadow .3s; }
 .project:hover { transform: translateY(-6px); border-color: var(--stroke-2); box-shadow: var(--shadow); }
 .project__ico { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 13px; font-size: 22px; background: rgba(255,255,255,.05); border: 1px solid var(--stroke); margin-bottom: 16px; }
+.project__ico .logo { width: 58%; height: 58%; object-fit: contain; filter: brightness(0) invert(1); }
 .project__title { font-family: var(--display); font-size: 18px; font-weight: 600; margin-bottom: 8px; }
 .project__desc { color: var(--txt-dim); font-size: 13.5px; margin-bottom: 16px; }
 .project__tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
@@ -462,8 +498,9 @@ img { display: block; max-width: 100%; }
   .nav__status { display: none; }
   .section { padding: 76px 18px; }
   .stack-grid, .projects-grid { grid-template-columns: 1fr; }
-  .pipe-node::after { display: none; }
+  .pipe-node::after, .pipe-node::before { display: none; }
   .pipe-node { flex: 1 1 44%; }
+  .pipeline { gap: 10px; }
   .hero__stats { gap: 18px; }
 }
 @media (max-width: 420px) {
