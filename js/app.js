@@ -131,19 +131,19 @@ const DATA = {
     title: 'AI-Powered DevSecOps Pipeline',
     desc: 'An end-to-end, security-first delivery pipeline: every commit flows through build, test, quality gates, vulnerability scanning, image signing and GitOps deployment — with AI-assisted diagnostics closing the loop back to the team.',
     nodes: [
-      { name: 'GitHub',     stage: 'Source',     slug: 'github',        color: '#8b949e', desc: 'Developers push to main; webhooks trigger the pipeline automatically.', tech: ['Git', 'Webhooks', 'Branch protection'] },
-      { name: 'Jenkins',    stage: 'Orchestrate',slug: 'jenkins',       color: '#d33833', desc: 'Declarative pipeline orchestrates every downstream stage on ephemeral agents.', tech: ['Jenkinsfile', 'Groovy', 'Agents'] },
-      { name: 'Build',      stage: 'Compile',    icon: '🔨',            color: '#4d8dff', desc: 'Application is compiled and packaged into reproducible artifacts.', tech: ['Maven', 'Node', 'Cache'] },
-      { name: 'Unit Tests', stage: 'Verify',     icon: '🧪',            color: '#2fe08a', desc: 'Automated unit and integration tests gate the build on every run.', tech: ['JUnit', 'Coverage', 'Reports'] },
-      { name: 'SonarQube',  stage: 'Quality',    slug: 'sonarqube',     color: '#4e9bcd', desc: 'Static analysis enforces code quality gates and blocks regressions.', tech: ['SAST', 'Quality Gate', 'Debt'] },
-      { name: 'Trivy',      stage: 'Scan',       slug: 'trivy',         color: '#1904da', desc: 'Scans dependencies and images for CVEs before anything ships.', tech: ['CVE scan', 'SBOM', 'Policy'] },
-      { name: 'Docker',     stage: 'Package',    slug: 'docker',        color: '#2496ed', desc: 'Builds a minimal, multi-stage container image for the service.', tech: ['Multi-stage', 'BuildKit'] },
-      { name: 'Harbor',     stage: 'Registry',   icon: '📦',            color: '#60b932', desc: 'Signed images are pushed to a private, scanned registry.', tech: ['Registry', 'Cosign', 'Replication'] },
-      { name: 'Kubernetes', stage: 'Deploy',     slug: 'kubernetes',    color: '#326ce5', desc: 'GitOps rollout to EKS with health checks and automatic rollback.', tech: ['EKS', 'Rollout', 'HPA'] },
-      { name: 'K8sGPT',     stage: 'Diagnose',   icon: '🤖',            color: '#7b6bff', desc: 'Scans cluster state and surfaces issues in plain language.', tech: ['Analyzers', 'CRDs'] },
-      { name: 'OpenAI',     stage: 'Reason',     icon: '✨',            color: '#10a37f', desc: 'Enriches diagnostics with root-cause reasoning and remediation steps.', tech: ['LLM', 'RCA', 'Prompting'] },
-      { name: 'Slack',      stage: 'Notify',     icon: '💬',            color: '#e01e5a', desc: 'Delivers actionable alerts and deployment status to the team channel.', tech: ['Webhooks', 'ChatOps'] },
-      { name: 'Production', stage: 'Live',       icon: '🚀',            color: '#2fe08a', desc: 'Traffic served from a monitored, auto-scaled production environment.', tech: ['SLOs', 'Monitoring', 'Autoscale'] }
+      { name: 'GitHub',     stage: 'Source',     ico: 'source',    color: '#8b949e', desc: 'Developers push to main; webhooks trigger the pipeline automatically.', tech: ['Git', 'Webhooks', 'Branch protection'] },
+      { name: 'Jenkins',    stage: 'Orchestrate',ico: 'orchestrate',color: '#e0662b', desc: 'Declarative pipeline orchestrates every downstream stage on ephemeral agents.', tech: ['Jenkinsfile', 'Groovy', 'Agents'] },
+      { name: 'Build',      stage: 'Compile',    ico: 'build',     color: '#4d8dff', desc: 'Application is compiled and packaged into reproducible artifacts.', tech: ['Maven', 'Node', 'Cache'] },
+      { name: 'Unit Tests', stage: 'Verify',     ico: 'test',      color: '#2fe08a', desc: 'Automated unit and integration tests gate the build on every run.', tech: ['JUnit', 'Coverage', 'Reports'] },
+      { name: 'SonarQube',  stage: 'Quality',    ico: 'quality',   color: '#4e9bcd', desc: 'Static analysis enforces code quality gates and blocks regressions.', tech: ['SAST', 'Quality Gate', 'Debt'] },
+      { name: 'Trivy',      stage: 'Scan',       ico: 'scan',      color: '#7b6bff', desc: 'Scans dependencies and images for CVEs before anything ships.', tech: ['CVE scan', 'SBOM', 'Policy'] },
+      { name: 'Docker',     stage: 'Package',    ico: 'package',   color: '#2496ed', desc: 'Builds a minimal, multi-stage container image for the service.', tech: ['Multi-stage', 'BuildKit'] },
+      { name: 'Harbor',     stage: 'Registry',   ico: 'registry',  color: '#35e0e0', desc: 'Signed images are pushed to a private, scanned registry.', tech: ['Registry', 'Cosign', 'Replication'] },
+      { name: 'Kubernetes', stage: 'Deploy',     ico: 'deploy',    color: '#326ce5', desc: 'GitOps rollout to EKS with health checks and automatic rollback.', tech: ['EKS', 'Rollout', 'HPA'] },
+      { name: 'K8sGPT',     stage: 'Diagnose',   ico: 'diagnose',  color: '#b06bff', desc: 'Scans cluster state and surfaces issues in plain language.', tech: ['Analyzers', 'CRDs'] },
+      { name: 'OpenAI',     stage: 'Reason',     ico: 'reason',    color: '#10a37f', desc: 'Enriches diagnostics with root-cause reasoning and remediation steps.', tech: ['LLM', 'RCA', 'Prompting'] },
+      { name: 'Slack',      stage: 'Notify',     ico: 'notify',    color: '#ffb648', desc: 'Delivers actionable alerts and deployment status to the team channel.', tech: ['Webhooks', 'ChatOps'] },
+      { name: 'Production', stage: 'Live',       ico: 'live',      color: '#2fe08a', desc: 'Traffic served from a monitored, auto-scaled production environment.', tech: ['SLOs', 'Monitoring', 'Autoscale'] }
     ]
   },
 
@@ -272,6 +272,28 @@ function logo(slug, label) {
 // Prefer a brand logo when a node/project provides a slug, else fall back to its emoji.
 function glyph(o) { return o.slug ? logo(o.slug) : (o.icon || ''); }
 
+/* Custom line-icon set for the DevSecOps pipeline — one cohesive stroke style,
+   tinted per-stage via currentColor, instead of mismatched brand logos + emoji. */
+const PIPE_ICONS = {
+  source:      '<path d="M9 19c-4 1.5-4-2.5-6-3m12 5v-3.5a3 3 0 0 0-.8-2.3c2.7-.3 5.5-1.3 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.9 2.6 5.8 2.9 5.8 2.9a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.4 9.3c0 4.7 2.8 5.7 5.5 6a3 3 0 0 0-.8 2.2V21"/>',
+  orchestrate: '<circle cx="12" cy="12" r="2.5"/><path d="M12 2v4M12 18v4M4.9 4.9l2.9 2.9M16.2 16.2l2.9 2.9M2 12h4M18 12h4M4.9 19.1l2.9-2.9M16.2 7.8l2.9-2.9"/>',
+  build:       '<path d="M14.7 6.3a4 4 0 0 0-5.2 5.2l-6.2 6.2a1.4 1.4 0 0 0 0 2l.7.7a1.4 1.4 0 0 0 2 0l6.2-6.2a4 4 0 0 0 5.2-5.2l-2.4 2.4-2.3-.4-.4-2.3z"/>',
+  test:        '<path d="M9 3h6M10 3v6.5L5.2 18a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 9.5V3"/><path d="M7.5 15h9"/>',
+  quality:     '<path d="M3 6a9 4 0 0 0 18 0M3 6a9 4 0 0 1 18 0v12a9 4 0 0 1-18 0z"/><path d="m8.5 11.5 2 2 4-4"/>',
+  scan:        '<path d="M12 2 4 5v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V5z"/><path d="m9 12 2 2 4-4"/>',
+  package:     '<path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5M12 12v10"/>',
+  registry:    '<rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="10.5" width="18" height="5" rx="1"/><rect x="3" y="17" width="18" height="3.5" rx="1"/><path d="M6.5 6.5h.01M6.5 13h.01"/>',
+  deploy:      '<path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10A15 15 0 0 1 12 2z"/><circle cx="12" cy="9" r="2"/><path d="M8 15l-3 4M16 15l3 4"/>',
+  diagnose:    '<rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 3v4M9 12h.01M15 12h.01M9.5 16h5"/><path d="M2 12h2M20 12h2"/>',
+  reason:      '<path d="M12 3l1.9 4.7L18.6 9l-3.6 3 1.1 5-4.1-2.7L7.9 17l1.1-5-3.6-3 4.7-1.3z"/>',
+  notify:      '<path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+  live:        '<path d="M4.5 16.5 3 21l4.5-1.5M14 4l-8 8 4 4 8-8a4 4 0 0 0-4-4z" /><circle cx="15" cy="6" r="1.2"/>'
+};
+function pipeIcon(name) {
+  const body = PIPE_ICONS[name] || PIPE_ICONS.build;
+  return `<svg class="pipe-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+}
+
 /* ---------------------------------------------------------
    3. RENDERERS
 --------------------------------------------------------- */
@@ -354,7 +376,8 @@ function renderFlagship() {
     node.style.setProperty('--node', n.color);
     node.dataset.i = i;
     node.innerHTML = `
-      <div class="pipe-node__ico">${glyph(n)}</div>
+      <span class="pipe-node__idx">${String(i + 1).padStart(2, '0')}</span>
+      <div class="pipe-node__ico">${pipeIcon(n.ico)}</div>
       <div class="pipe-node__name">${n.name}</div>
       <div class="pipe-node__stage">${n.stage}</div>`;
     node.addEventListener('click', () => selectPipe(i));
@@ -371,7 +394,7 @@ function selectPipe(i) {
   d.style.setProperty('--node', n.color);
   d.innerHTML = `
     <div class="pd__head">
-      <div class="pd__ico">${glyph(n)}</div>
+      <div class="pd__ico">${pipeIcon(n.ico)}</div>
       <div>
         <div class="pd__title">${n.name}</div>
         <div class="pd__stage">Stage ${i + 1}/${DATA.flagship.nodes.length} · ${n.stage}</div>
