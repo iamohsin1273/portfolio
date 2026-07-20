@@ -131,19 +131,32 @@ const DATA = {
     title: 'AI-Powered DevSecOps Pipeline',
     desc: 'An end-to-end, security-first delivery pipeline: every commit flows through build, test, quality gates, vulnerability scanning, image signing and GitOps deployment — with AI-assisted diagnostics closing the loop back to the team.',
     nodes: [
-      { name: 'GitHub',     stage: 'Source',     ico: 'source',    color: '#8b949e', desc: 'Developers push to main; webhooks trigger the pipeline automatically.', tech: ['Git', 'Webhooks', 'Branch protection'] },
-      { name: 'Jenkins',    stage: 'Orchestrate',ico: 'orchestrate',color: '#e0662b', desc: 'Declarative pipeline orchestrates every downstream stage on ephemeral agents.', tech: ['Jenkinsfile', 'Groovy', 'Agents'] },
-      { name: 'Build',      stage: 'Compile',    ico: 'build',     color: '#4d8dff', desc: 'Application is compiled and packaged into reproducible artifacts.', tech: ['Maven', 'Node', 'Cache'] },
-      { name: 'Unit Tests', stage: 'Verify',     ico: 'test',      color: '#2fe08a', desc: 'Automated unit and integration tests gate the build on every run.', tech: ['JUnit', 'Coverage', 'Reports'] },
-      { name: 'SonarQube',  stage: 'Quality',    ico: 'quality',   color: '#4e9bcd', desc: 'Static analysis enforces code quality gates and blocks regressions.', tech: ['SAST', 'Quality Gate', 'Debt'] },
-      { name: 'Trivy',      stage: 'Scan',       ico: 'scan',      color: '#7b6bff', desc: 'Scans dependencies and images for CVEs before anything ships.', tech: ['CVE scan', 'SBOM', 'Policy'] },
-      { name: 'Docker',     stage: 'Package',    ico: 'package',   color: '#2496ed', desc: 'Builds a minimal, multi-stage container image for the service.', tech: ['Multi-stage', 'BuildKit'] },
-      { name: 'Harbor',     stage: 'Registry',   ico: 'registry',  color: '#35e0e0', desc: 'Signed images are pushed to a private, scanned registry.', tech: ['Registry', 'Cosign', 'Replication'] },
-      { name: 'Kubernetes', stage: 'Deploy',     ico: 'deploy',    color: '#326ce5', desc: 'GitOps rollout to EKS with health checks and automatic rollback.', tech: ['EKS', 'Rollout', 'HPA'] },
-      { name: 'K8sGPT',     stage: 'Diagnose',   ico: 'diagnose',  color: '#b06bff', desc: 'Scans cluster state and surfaces issues in plain language.', tech: ['Analyzers', 'CRDs'] },
-      { name: 'OpenAI',     stage: 'Reason',     ico: 'reason',    color: '#10a37f', desc: 'Enriches diagnostics with root-cause reasoning and remediation steps.', tech: ['LLM', 'RCA', 'Prompting'] },
-      { name: 'Slack',      stage: 'Notify',     ico: 'notify',    color: '#ffb648', desc: 'Delivers actionable alerts and deployment status to the team channel.', tech: ['Webhooks', 'ChatOps'] },
-      { name: 'Production', stage: 'Live',       ico: 'live',      color: '#2fe08a', desc: 'Traffic served from a monitored, auto-scaled production environment.', tech: ['SLOs', 'Monitoring', 'Autoscale'] }
+      { name: 'GitHub',     stage: 'Source',     ico: 'source',    color: '#8b949e', desc: 'Developers push to main; webhooks trigger the pipeline automatically.', tech: ['Git', 'Webhooks', 'Branch protection'],
+        log: [['$ git push origin main','cmd'], ['Enumerating objects: 47, done.','dim'], ['remote: webhook → jenkins/devsecops triggered','cy'], ['commit a1f9c72 · "feat: add rate limiter"','']] },
+      { name: 'Jenkins',    stage: 'Orchestrate',ico: 'orchestrate',color: '#e0662b', desc: 'Declarative pipeline orchestrates every downstream stage on ephemeral agents.', tech: ['Jenkinsfile', 'Groovy', 'Agents'],
+        log: [['[Pipeline] Start of Pipeline','dim'], ['Provisioning ephemeral agent  k8s-agent-7f3','b'], ['Loading Jenkinsfile (declarative)','dim'], ['✓ agent online · 12 stages queued','g']] },
+      { name: 'Build',      stage: 'Compile',    ico: 'build',     color: '#4d8dff', desc: 'Application is compiled and packaged into reproducible artifacts.', tech: ['Maven', 'Node', 'Cache'],
+        log: [['$ npm ci && npm run build','cmd'], ['restored cache · 1,284 pkgs (3.1s)','dim'], ['vite build → dist/  (gzip 214 kb)','b'], ['✓ artifact packaged in 22.4s','g']] },
+      { name: 'Unit Tests', stage: 'Verify',     ico: 'test',      color: '#2fe08a', desc: 'Automated unit and integration tests gate the build on every run.', tech: ['Jest', 'Coverage', 'Reports'],
+        log: [['$ npm test -- --coverage','cmd'], ['PASS  src/  · 214 tests','g'], ['coverage: lines 91.4% · branches 87.2%','dim'], ['✓ quality gate: coverage ≥ 80%','g']] },
+      { name: 'SonarQube',  stage: 'Quality',    ico: 'quality',   color: '#4e9bcd', desc: 'Static analysis enforces code quality gates and blocks regressions.', tech: ['SAST', 'Quality Gate', 'Debt'],
+        log: [['$ sonar-scanner','cmd'], ['analyzing 318 files · 0 bugs · 2 smells','dim'], ['security hotspots: 0 · debt 14m','b'], ['✓ Quality Gate: PASSED','g']] },
+      { name: 'Trivy',      stage: 'Scan',       ico: 'scan',      color: '#7b6bff', desc: 'Scans dependencies and image layers for CVEs before anything ships.', tech: ['CVE scan', 'SBOM', 'Policy'],
+        log: [['$ trivy image app:a1f9c72','cmd'], ['scanning 6 layers · 412 packages','dim'], ['CRITICAL 0 · HIGH 0 · MEDIUM 3','y'], ['✓ no blocking vulnerabilities','g']] },
+      { name: 'Docker',     stage: 'Package',    ico: 'package',   color: '#2496ed', desc: 'Builds a minimal, multi-stage container image for the service.', tech: ['Multi-stage', 'BuildKit'],
+        log: [['$ docker build --target prod .','cmd'], ['[+] BuildKit · 8 layers cached','dim'], ['image app:a1f9c72 → 84.2 MB','b'], ['✓ built in 18.7s','g']] },
+      { name: 'Harbor',     stage: 'Registry',   ico: 'registry',  color: '#35e0e0', desc: 'Signed images are pushed to a private, scanned registry.', tech: ['Registry', 'Cosign', 'Replication'],
+        log: [['$ cosign sign && docker push','cmd'], ['pushing to harbor.mohsin.io/app','dim'], ['signature uploaded · attestation ok','cy'], ['✓ digest sha256:3b9d…e1 signed','g']] },
+      { name: 'Kubernetes', stage: 'Deploy',     ico: 'deploy',    color: '#326ce5', desc: 'GitOps rollout to EKS with health checks and automatic rollback.', tech: ['EKS', 'Rollout', 'HPA'],
+        log: [['$ argocd app sync app-prod','cmd'], ['rollout: 3/3 replicas · surge 1','dim'], ['readiness probes green · HPA armed','b'], ['✓ deployed to eks-prod (us-east-1)','g']] },
+      { name: 'K8sGPT',     stage: 'Diagnose',   ico: 'diagnose',  color: '#b06bff', desc: 'Scans live cluster state and surfaces issues in plain language.', tech: ['Analyzers', 'CRDs'],
+        log: [['$ k8sgpt analyze --explain','cmd'], ['scanning 42 resources across 6 ns','dim'], ['0 critical · 1 advisory (pdb)','y'], ['✓ cluster healthy','g']] },
+      { name: 'OpenAI',     stage: 'Reason',     ico: 'reason',    color: '#10a37f', desc: 'Enriches diagnostics with root-cause reasoning and remediation steps.', tech: ['LLM', 'RCA', 'Prompting'],
+        log: [['→ k8sgpt findings sent to gpt-4o','dim'], ['advisory: add PodDisruptionBudget','cy'], ['remediation PR drafted automatically','b'], ['✓ summary attached to run','g']] },
+      { name: 'Slack',      stage: 'Notify',     ico: 'notify',    color: '#ffb648', desc: 'Delivers actionable alerts and deployment status to the team channel.', tech: ['Webhooks', 'ChatOps'],
+        log: [['POST hooks.slack.com/#deploys','dim'], ['🟢 app-prod · a1f9c72 · 2m14s','g'], ['thread: AI advisory + RCA link','cy'], ['✓ team notified','g']] },
+      { name: 'Production', stage: 'Live',       ico: 'live',      color: '#2fe08a', desc: 'Traffic served from a monitored, auto-scaled production environment.', tech: ['SLOs', 'Monitoring', 'Autoscale'],
+        log: [['traffic shifting 0% → 100%','dim'], ['p95 latency 41ms · error rate 0.00%','b'], ['SLO budget healthy · 3 pods · HPA','dim'], ['✓ release live 🚀','g']] }
     ]
   },
 
@@ -366,43 +379,179 @@ function renderTimeline() {
   });
 }
 
+/* ---- Flagship: live CI/CD build replay ----
+   The DevSecOps pipeline actually "runs": a stage rail lights up green as each
+   stage passes while realistic build-log lines stream into the console. */
 function renderFlagship() {
   $('#flagshipTitle').textContent = DATA.flagship.title;
   $('#flagshipDesc').textContent = DATA.flagship.desc;
-  const pipe = $('#pipeline');
-  DATA.flagship.nodes.forEach((n, i) => {
-    const node = el('div', 'pipe-node');
-    node.setAttribute('role', 'listitem');
-    node.style.setProperty('--node', n.color);
-    node.dataset.i = i;
-    node.innerHTML = `
-      <span class="pipe-node__idx">${String(i + 1).padStart(2, '0')}</span>
-      <div class="pipe-node__ico">${pipeIcon(n.ico)}</div>
-      <div class="pipe-node__name">${n.name}</div>
-      <div class="pipe-node__stage">${n.stage}</div>`;
-    node.addEventListener('click', () => selectPipe(i));
-    node.addEventListener('mouseenter', () => selectPipe(i));
-    pipe.appendChild(node);
+
+  const nodes = DATA.flagship.nodes;
+  const rail = $('#ciRail');
+  rail.innerHTML = '';
+  nodes.forEach((n, i) => {
+    const stage = el('button', 'ci-stage');
+    stage.type = 'button';
+    stage.setAttribute('role', 'listitem');
+    stage.style.setProperty('--node', n.color);
+    stage.dataset.i = i;
+    stage.innerHTML = `
+      <span class="ci-stage__ico">${pipeIcon(n.ico)}</span>
+      <span class="ci-stage__body">
+        <span class="ci-stage__name">${n.name}</span>
+        <span class="ci-stage__stage">${n.stage}</span>
+      </span>
+      <span class="ci-stage__tick" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </span>`;
+    stage.addEventListener('click', () => ci.jumpTo(i));
+    rail.appendChild(stage);
   });
-  selectPipe(0);
+
+  ci.init(nodes);
 }
 
-function selectPipe(i) {
-  const n = DATA.flagship.nodes[i];
-  $$('.pipe-node').forEach((el2, idx) => el2.classList.toggle('active', idx === i));
-  const d = $('#pipelineDetail');
-  d.style.setProperty('--node', n.color);
-  d.innerHTML = `
-    <div class="pd__head">
-      <div class="pd__ico">${pipeIcon(n.ico)}</div>
-      <div>
-        <div class="pd__title">${n.name}</div>
-        <div class="pd__stage">Stage ${i + 1}/${DATA.flagship.nodes.length} · ${n.stage}</div>
-      </div>
-    </div>
-    <div class="pd__desc">${n.desc}</div>
-    <div class="pd__tech">${n.tech.map(t => `<span>${t}</span>`).join('')}</div>`;
-}
+/* CI replay engine — sequential, cancellable, restartable. */
+const ci = {
+  nodes: [], stages: [], running: false, token: 0, t0: 0, rafId: 0,
+  els: {},
+
+  init(nodes) {
+    this.nodes = nodes;
+    this.stages = $$('.ci-stage');
+    this.els = {
+      log: $('#ciLog'), status: $('#ciStatus'), timer: $('#ciTimer'),
+      bar: $('#ciProgressBar'), run: $('#ciRun'), runLabel: $('#ciRunLabel'),
+      meta: $('#ciMeta')
+    };
+    this.els.run.addEventListener('click', () => this.running ? this.reset(true) : this.start());
+    this.reset(false);
+
+    // Auto-run once when scrolled into view.
+    if (!prefersReduced && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { io.disconnect(); setTimeout(() => this.start(), 400); }
+        });
+      }, { threshold: 0.35 });
+      io.observe($('#ciRail'));
+    }
+  },
+
+  sleep(ms) {
+    const tok = this.token;
+    return new Promise(res => setTimeout(() => (tok === this.token) && res(), ms));
+  },
+
+  setStatus(text, cls) {
+    this.els.status.className = 'ci__status' + (cls ? ' ' + cls : '');
+    this.els.status.innerHTML = `<i class="dot"></i> ${text}`;
+  },
+
+  print(text, cls) {
+    const line = el('div', 'ci__line' + (cls ? ' ' + cls : ''));
+    line.textContent = text;
+    this.els.log.appendChild(line);
+    this.els.log.scrollTop = this.els.log.scrollHeight;
+  },
+
+  clock() {
+    const tick = () => {
+      if (!this.running) return;
+      const s = (performance.now() - this.t0) / 1000;
+      this.els.timer.textContent = s.toFixed(1).padStart(4, '0') + 's';
+      this.rafId = requestAnimationFrame(tick);
+    };
+    tick();
+  },
+
+  reset(clearLog) {
+    this.token++;
+    this.running = false;
+    cancelAnimationFrame(this.rafId);
+    this.stages.forEach(s => s.classList.remove('done', 'active'));
+    this.els.bar.style.width = '0%';
+    this.els.timer.textContent = '00.0s';
+    this.setStatus('idle', '');
+    this.els.run.classList.remove('is-running');
+    this.els.runLabel.textContent = 'Run pipeline';
+    if (clearLog) this.els.log.innerHTML = '';
+  },
+
+  async start() {
+    this.reset(false);
+    this.els.log.innerHTML = '';
+    const tok = ++this.token;
+    this.running = true;
+    this.t0 = performance.now();
+    this.clock();
+    this.els.run.classList.add('is-running');
+    this.els.runLabel.textContent = 'Running…';
+    this.setStatus('running', 'is-run');
+    this.print('$ jenkins build --pipeline devsecops', 'cy');
+    await this.sleep(500);
+    if (tok !== this.token) return;
+
+    for (let i = 0; i < this.nodes.length; i++) {
+      await this.runStage(i, tok);
+      if (tok !== this.token) return;
+    }
+
+    this.running = false;
+    cancelAnimationFrame(this.rafId);
+    this.setStatus('passed', 'is-ok');
+    this.els.run.classList.remove('is-running');
+    this.els.runLabel.textContent = 'Replay';
+    this.print('', '');
+    this.print('✓ Pipeline succeeded — all 13 stages green.', 'g');
+  },
+
+  async runStage(i, tok) {
+    const n = this.nodes[i];
+    const stage = this.stages[i];
+    stage.classList.add('active');
+    stage.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+
+    this.print('', '');
+    this.print(`▶ [${String(i + 1).padStart(2, '0')}/13] ${n.stage.toUpperCase()} · ${n.name}`, 'b');
+
+    const lines = n.log || [[`Running ${n.name}…`, 'dim'], ['done', 'g']];
+    for (const [text, cls] of lines) {
+      await this.sleep(230 + Math.round(text.length * 4));
+      if (tok !== this.token) return;
+      this.print('  ' + text, cls);
+    }
+
+    await this.sleep(180);
+    if (tok !== this.token) return;
+    stage.classList.remove('active');
+    stage.classList.add('done');
+    this.els.bar.style.width = `${Math.round(((i + 1) / this.nodes.length) * 100)}%`;
+  },
+
+  jumpTo(target) {
+    // Instant fast-forward: mark stages up to target done and dump their logs.
+    this.token++;
+    this.running = false;
+    cancelAnimationFrame(this.rafId);
+    this.els.log.innerHTML = '';
+    this.stages.forEach((s, idx) => {
+      s.classList.toggle('done', idx <= target);
+      s.classList.toggle('active', idx === target);
+    });
+    for (let i = 0; i <= target; i++) {
+      const n = this.nodes[i];
+      this.print('', '');
+      this.print(`▶ [${String(i + 1).padStart(2, '0')}/13] ${n.stage.toUpperCase()} · ${n.name}`, 'b');
+      (n.log || []).forEach(([text, cls]) => this.print('  ' + text, cls));
+    }
+    this.els.bar.style.width = `${Math.round(((target + 1) / this.nodes.length) * 100)}%`;
+    this.setStatus(`stage ${target + 1}/13`, 'is-run');
+    this.els.run.classList.remove('is-running');
+    this.els.runLabel.textContent = 'Run pipeline';
+    this.stages[target].scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+  }
+};
 
 function renderProjects() {
   const grid = $('#projectsGrid');
