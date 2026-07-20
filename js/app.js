@@ -267,7 +267,7 @@ const NAV = [
    Emoji icons were replaced with these for consistent cross-OS rendering. */
 const ICON_BASE = './assets/icons/';
 function logo(slug, label) {
-  return `<img class="logo" src="${ICON_BASE}${slug}.svg" alt="" aria-hidden="true" width="24" height="24" loading="lazy" />`;
+  return `<img class="logo logo--${slug}" src="${ICON_BASE}${slug}.svg" alt="" aria-hidden="true" width="24" height="24" loading="lazy" />`;
 }
 // Prefer a brand logo when a node/project provides a slug, else fall back to its emoji.
 function glyph(o) { return o.slug ? logo(o.slug) : (o.icon || ''); }
