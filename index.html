@@ -176,7 +176,7 @@
         <p class="section__lead">Production-grade pipelines and cloud-native systems.</p>
       </div>
 
-      <!-- Flagship pipeline -->
+      <!-- Flagship pipeline — live CI/CD build replay -->
       <div class="flagship" data-aos="fade-up">
         <div class="flagship__head">
           <div>
@@ -184,10 +184,32 @@
             <h3 class="flagship__title" id="flagshipTitle"></h3>
             <p class="flagship__desc" id="flagshipDesc"></p>
           </div>
-          <div class="flagship__live"><i class="dot"></i> Pipeline running</div>
+          <button class="ci-run" id="ciRun" type="button">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            <span id="ciRunLabel">Run pipeline</span>
+          </button>
         </div>
-        <div class="pipeline" id="pipeline" role="list"></div>
-        <div class="pipeline__detail" id="pipelineDetail"></div>
+
+        <div class="ci">
+          <!-- stage rail -->
+          <div class="ci__rail" id="ciRail" role="list" aria-label="Pipeline stages"></div>
+
+          <!-- streaming build console -->
+          <div class="ci__console">
+            <div class="ci__bar">
+              <span class="term__dot term__dot--r"></span>
+              <span class="term__dot term__dot--y"></span>
+              <span class="term__dot term__dot--g"></span>
+              <span class="ci__meta" id="ciMeta">build #247 · main @ a3f9c2</span>
+              <span class="ci__status" id="ciStatus"><i class="dot"></i> idle</span>
+            </div>
+            <div class="ci__log" id="ciLog" aria-live="polite"></div>
+            <div class="ci__foot">
+              <div class="ci__progress"><span id="ciProgressBar"></span></div>
+              <span class="ci__timer" id="ciTimer">00.0s</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="projects-grid" id="projectsGrid"></div>
