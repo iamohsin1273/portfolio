@@ -51,7 +51,7 @@ Render dynamically from JavaScript data structures. Include Revolite experience 
 
 FEATURED PROJECTS
 1. AI Powered DevSecOps Pipeline (Flagship Project).
-GitHub -> Jenkins -> Build -> Unit Tests -> SonarQube -> Trivy -> Docker -> Harbor -> Kubernetes -> K8sGPT -> OpenAI -> Slack -> Production.
+GitHub -> Jenkins -> Build -> Unit Tests -> SonarQube -> Trivy -> Docker -> Harbor -> Kubernetes -> K8sGPT -> Gemini -> Slack -> Production.
 
 2. AWS Cloud Infrastructure Automation.
 3. Production Kubernetes Monitoring.
