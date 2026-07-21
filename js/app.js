@@ -200,66 +200,20 @@ const DATA = {
 
   deploy: ['GitHub', 'GitHub Actions', 'Validation', 'Performance', 'GitHub Pages', 'Cloudflare', 'Production'],
 
-  // Interactive terminal
-  terminal: {
-    commands: {
-      'kubectl get pods': [
-        'NAME                          READY   STATUS    RESTARTS   AGE',
-        'platform-api-7d9f8c-abc12     1/1     Running   0          4d',
-        'platform-web-6c7b5d-def34     1/1     Running   0          4d',
-        'prometheus-0                  2/2     Running   0          9d',
-        'grafana-5f6a7b-ghi56          1/1     Running   0          9d'
-      ],
-      'terraform apply': [
-        'Terraform will perform the following actions:',
-        '  + aws_eks_cluster.prod',
-        '  + aws_s3_bucket.artifacts',
-        '  + module.vpc.aws_vpc.this',
-        '',
-        'Apply complete! Resources: 3 added, 0 changed, 0 destroyed.'
-      ],
-      'docker ps': [
-        'CONTAINER ID   IMAGE                 STATUS         PORTS',
-        'a1b2c3d4e5f6   platform-api:1.8.0    Up 4 days      0.0.0.0:8080->8080/tcp',
-        'f6e5d4c3b2a1   grafana:11.1          Up 9 days      0.0.0.0:3000->3000/tcp'
-      ],
-      'aws s3 ls': [
-        '2026-01-12 09:14:22 mohsin-platform-artifacts',
-        '2026-02-03 17:41:08 mohsin-terraform-state',
-        '2026-03-21 11:02:55 mohsin-backups'
-      ],
-      'helm install monitoring': [
-        'NAME: monitoring',
-        'STATUS: deployed',
-        'NAMESPACE: observability',
-        'Prometheus + Grafana stack deployed successfully.'
-      ],
-      'kubectl get deployments': [
-        'NAME            READY   UP-TO-DATE   AVAILABLE   AGE',
-        'platform-api    3/3     3            3           4d',
-        'platform-web    2/2     2            2           4d'
-      ],
-      'git push origin main': [
-        'Enumerating objects: 12, done.',
-        'To github.com:iamohsin1273/platform.git',
-        '   9f3a1c2..7b6e4d8  main -> main',
-        'Pipeline triggered ✓'
-      ],
-      'ansible-playbook site.yml': [
-        'PLAY [Configure platform nodes] ***********************',
-        'TASK [Install packages] ... ok',
-        'TASK [Harden sshd] ... changed',
-        'PLAY RECAP : ok=14  changed=3  failed=0'
-      ],
-      'jenkins build pipeline': [
-        '[Pipeline] stage: Build ✓',
-        '[Pipeline] stage: Test ✓',
-        '[Pipeline] stage: Scan (Trivy/Sonar) ✓',
-        '[Pipeline] stage: Deploy to EKS ✓',
-        'Finished: SUCCESS'
-      ]
-    },
-    autoplay: ['kubectl get pods', 'terraform apply', 'docker ps', 'aws s3 ls', 'helm install monitoring', 'jenkins build pipeline']
+  // Live Kubernetes cluster playground
+  cluster: {
+    deployment: 'platform-api',
+    image: 'v1.4.2',
+    nextImages: ['v1.5.0', 'v1.5.1', 'v1.6.0', 'v2.0.0'],
+    workers: [
+      { name: 'ip-10-0-1-24',  zone: 'us-east-1a', cpu: 4, mem: '8Gi' },
+      { name: 'ip-10-0-2-51',  zone: 'us-east-1b', cpu: 4, mem: '8Gi' },
+      { name: 'ip-10-0-3-88',  zone: 'us-east-1c', cpu: 4, mem: '8Gi' }
+    ],
+    minReplicas: 3,
+    maxReplicas: 8,
+    startReplicas: 3,
+    targetCpu: 60          // HPA scale-up threshold (%)
   }
 };
 
@@ -273,7 +227,7 @@ const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').mat
 
 const NAV = [
   ['projects', 'Work'], ['stack', 'Stack'], ['experience', 'Experience'],
-  ['architecture', 'Architecture'], ['terminal', 'Terminal'], ['contact', 'Contact']
+  ['architecture', 'Architecture'], ['cluster', 'Cluster'], ['contact', 'Contact']
 ];
 
 /* Brand-logo helper — self-hosted monochrome SVGs in assets/icons.
@@ -815,81 +769,295 @@ function setupProfileImage() {
 }
 
 /* ---------------------------------------------------------
-   5. INTERACTIVE TERMINAL
+   5. KUBERNETES CLUSTER PLAYGROUND
+   A simulated, operable cluster. Pods have a real lifecycle
+   (Pending → ContainerCreating → Running → Terminating), the
+   scheduler spreads them across worker nodes, killed pods
+   self-heal, rolling updates cycle the image one pod at a time,
+   and an HPA scales replicas from simulated CPU load.
 --------------------------------------------------------- */
-function setupTerminal() {
-  const body = $('#termBody'), input = $('#termInput');
-  const cmds = DATA.terminal.commands;
+const k8s = {
+  cfg: null, pods: [], seq: 0, cpu: 6, desired: 0,
+  loadOn: false, hpaState: 'idle', busy: false,
+  loadTimer: null, hpaTimer: null,
+  els: {},
 
-  function print(text, cls) {
-    const line = el('div', cls || null);
-    line.textContent = text;
-    body.appendChild(line);
-    body.scrollTop = body.scrollHeight;
-    return line;
-  }
-  function printPrompt(cmd) {
-    const line = el('div', 'term__line');
-    line.innerHTML = `<span style="color:var(--green)">mohsin@platform:~$</span> <span style="color:var(--txt)">${escapeHtml(cmd)}</span>`;
-    body.appendChild(line);
-  }
-  function run(cmd) {
-    cmd = cmd.trim();
-    if (!cmd) return;
-    printPrompt(cmd);
-    if (cmd === 'clear') { body.innerHTML = ''; return; }
-    if (cmd === 'help') {
-      print('Available commands:', 'term__muted');
-      Object.keys(cmds).forEach(c => print('  ' + c));
-      print('  clear    — clear the screen');
-      body.scrollTop = body.scrollHeight;
+  init() {
+    this.cfg = DATA.cluster;
+    this.desired = this.cfg.startReplicas;
+    this.image = this.cfg.image;
+    this.els = {
+      nodes:  $('#k8sNodes'),  events: $('#k8sEvents'),
+      ready:  $('#k8sReady'),  desired: $('#k8sDesired'),
+      image:  $('#k8sImage'),  hpa: $('#k8sHpa'),
+      cpu:    $('#k8sCpu'),    cpuBar: $('#k8sCpuBar'),
+      deploy: $('#k8sDeploy'), loadBtn: $('#k8sLoadBtn')
+    };
+    this.els.deploy.textContent = this.cfg.deployment;
+    this.els.image.textContent = this.image;
+
+    // Render the worker-node shells once; pods slot into them.
+    this.els.nodes.innerHTML = '';
+    this.cfg.workers.forEach((w, i) => {
+      const node = el('div', 'k8s-node');
+      node.dataset.node = i;
+      node.innerHTML = `
+        <div class="k8s-node__head">
+          <span class="k8s-node__ico">${pipeIcon('deploy')}</span>
+          <div class="k8s-node__meta">
+            <b>${w.name}</b>
+            <span>${w.zone} · ${w.cpu} vCPU · ${w.mem}</span>
+          </div>
+          <span class="k8s-node__badge">Ready</span>
+        </div>
+        <div class="k8s-node__pods" data-pods="${i}"></div>`;
+      this.els.nodes.appendChild(node);
+    });
+
+    // Wire controls.
+    $$('.k8s__btn').forEach(btn => {
+      btn.addEventListener('click', () => this.action(btn.dataset.act));
+    });
+
+    this.event('cluster', `Connected to eks-prod · ${this.cfg.workers.length} nodes Ready`, 'dim');
+
+    // Boot the initial replicas when scrolled into view.
+    if (!prefersReduced && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { io.disconnect(); setTimeout(() => this.boot(), 350); }
+        });
+      }, { threshold: 0.3 });
+      io.observe(this.els.nodes);
+    } else {
+      this.boot(true);
+    }
+
+    this.startHpaLoop();
+  },
+
+  // ---- helpers ----
+  podName() {
+    const hash = (this.seq++).toString(16).padStart(4, '0');
+    const rnd = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    // Deterministic-ish suffix without Math.random (varies by seq).
+    let suf = '';
+    for (let i = 0; i < 5; i++) suf += rnd[(this.seq * 7 + i * 13) % rnd.length];
+    return `${this.cfg.deployment}-${hash}-${suf}`;
+  },
+
+  // Least-loaded node → spreads pods for anti-affinity feel.
+  pickNode() {
+    const counts = this.cfg.workers.map((_, i) =>
+      this.pods.filter(p => p.node === i && p.phase !== 'Terminating').length);
+    let min = 0;
+    counts.forEach((c, i) => { if (c < counts[min]) min = i; });
+    return min;
+  },
+
+  runningCount() { return this.pods.filter(p => p.phase === 'Running').length; },
+
+  event(kind, msg, cls) {
+    const line = el('div', 'k8s-ev' + (cls ? ' ' + cls : ''));
+    line.innerHTML = `<span class="k8s-ev__k">${kind}</span><span>${msg}</span>`;
+    this.els.events.appendChild(line);
+    while (this.els.events.children.length > 60) this.els.events.removeChild(this.els.events.firstChild);
+    this.els.events.scrollTop = this.els.events.scrollHeight;
+  },
+
+  sync() {
+    this.els.ready.textContent = this.runningCount();
+    this.els.desired.textContent = this.desired;
+    this.els.image.textContent = this.image;
+    const c = Math.round(this.cpu);
+    this.els.cpu.textContent = c + '%';
+    this.els.cpuBar.style.width = Math.min(100, c) + '%';
+    this.els.cpuBar.classList.toggle('hot', c >= this.cfg.targetCpu);
+    this.els.hpa.textContent = `${this.hpaState} · ${this.cfg.minReplicas}–${this.cfg.maxReplicas}`;
+  },
+
+  // ---- pod lifecycle ----
+  spawnPod() {
+    const node = this.pickNode();
+    const pod = { id: ++this.seq, name: this.podName(), node, phase: 'Pending', image: this.image, restarts: 0 };
+    this.pods.push(pod);
+
+    const chip = el('div', 'k8s-pod is-pending');
+    chip.dataset.id = pod.id;
+    chip.innerHTML = `<i class="k8s-pod__dot"></i><span class="k8s-pod__name">${pod.name.split('-').slice(-1)[0]}</span>`;
+    chip.title = `${pod.name}\nimage: ${pod.image}`;
+    $(`[data-pods="${node}"]`, this.els.nodes).appendChild(chip);
+    pod.chip = chip;
+
+    this.event('scheduler', `Scheduled ${pod.name} → ${this.cfg.workers[node].name}`, 'dim');
+
+    // Pending → ContainerCreating → Running
+    this.after(420, () => {
+      if (pod.phase !== 'Pending') return;
+      pod.phase = 'ContainerCreating';
+      chip.className = 'k8s-pod is-creating';
+      this.event('kubelet', `Pulling image "${pod.image}" for ${pod.name.split('-').slice(-1)[0]}`, 'dim');
+    });
+    this.after(1150, () => {
+      if (pod.phase !== 'ContainerCreating') return;
+      pod.phase = 'Running';
+      chip.className = 'k8s-pod is-running';
+      this.event('kubelet', `Started ${pod.name.split('-').slice(-1)[0]} · readiness ✓`, 'g');
+      this.sync();
+    });
+    this.sync();
+    return pod;
+  },
+
+  removePod(pod, reason) {
+    if (!pod || pod.phase === 'Terminating') return;
+    pod.phase = 'Terminating';
+    if (pod.chip) pod.chip.className = 'k8s-pod is-terminating';
+    this.after(700, () => {
+      if (pod.chip && pod.chip.parentNode) pod.chip.parentNode.removeChild(pod.chip);
+      this.pods = this.pods.filter(p => p !== pod);
+      this.sync();
+    });
+    if (reason) this.event('kubelet', reason, 'y');
+  },
+
+  // Bring running pods up to `desired`, remove extras.
+  reconcile(silent) {
+    const alive = this.pods.filter(p => p.phase !== 'Terminating');
+    let diff = this.desired - alive.length;
+    while (diff > 0) { this.spawnPod(); diff--; }
+    if (diff < 0) {
+      // Remove the newest extras.
+      const extras = alive.slice(diff);
+      extras.forEach(p => this.removePod(p, `Scaling down — stopping ${p.name.split('-').slice(-1)[0]}`));
+    }
+    if (!silent) this.event('deploy', `Reconciling ${this.cfg.deployment} → ${this.desired} replicas`, 'cy');
+  },
+
+  boot(instant) {
+    this.event('deploy', `Rolling out ${this.cfg.deployment}:${this.image} · ${this.desired} replicas`, 'cy');
+    for (let i = 0; i < this.desired; i++) {
+      if (instant) this.spawnPod();
+      else this.after(i * 260, () => this.spawnPod());
+    }
+  },
+
+  // ---- user actions ----
+  action(act) {
+    switch (act) {
+      case 'scale-up':   return this.scale(+1);
+      case 'scale-down': return this.scale(-1);
+      case 'kill':       return this.kill();
+      case 'rollout':    return this.rollout();
+      case 'load':       return this.toggleLoad();
+    }
+  },
+
+  scale(delta) {
+    const next = Math.max(1, Math.min(this.cfg.maxReplicas, this.desired + delta));
+    if (next === this.desired) {
+      this.event('hpa', delta > 0 ? `Already at max ${this.cfg.maxReplicas} replicas` : 'Minimum 1 replica', 'y');
       return;
     }
-    const out = cmds[cmd] || matchCommand(cmd);
-    if (out) { out.forEach(l => print(l)); }
-    else { print(`command not found: ${cmd} — type "help"`, 'term__err'); }
-    body.scrollTop = body.scrollHeight;
-  }
-  function matchCommand(cmd) {
-    const key = Object.keys(cmds).find(k => k.startsWith(cmd) || cmd.startsWith(k));
-    return key ? cmds[key] : null;
-  }
-  function escapeHtml(s) { return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+    this.desired = next;
+    this.event('kubectl', `scaled deployment/${this.cfg.deployment} to ${this.desired}`, 'b');
+    this.reconcile(true);
+    this.sync();
+  },
 
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') { autoIdx = -1; run(input.value); input.value = ''; }
-  });
-
-  // autoplay demo until user interacts
-  let autoIdx = 0, autoTimer = null;
-  const seq = DATA.terminal.autoplay;
-  function autoStep() {
-    if (autoIdx < 0) return;
-    const cmd = seq[autoIdx % seq.length];
-    typeInto(cmd, () => {
-      run(cmd);
-      input.value = '';
-      autoIdx = (autoIdx + 1);
-      // trim history
-      while (body.children.length > 40) body.removeChild(body.firstChild);
-      autoTimer = setTimeout(autoStep, 2600);
+  kill() {
+    const running = this.pods.filter(p => p.phase === 'Running');
+    if (!running.length) { this.event('cluster', 'No running pods to kill', 'y'); return; }
+    // Kill a pod, deterministically pick by seq to avoid Math.random.
+    const victim = running[(this.seq) % running.length];
+    victim.chip && victim.chip.classList.add('is-killed');
+    this.event('pod', `${victim.name.split('-').slice(-1)[0]} killed (SIGKILL) — node reported NotReady`, 'r');
+    this.removePod(victim);
+    // ReplicaSet notices the gap and self-heals.
+    this.after(900, () => {
+      this.event('replicaset', 'Observed 1 missing replica — creating replacement', 'cy');
+      this.reconcile(true);
     });
-  }
-  function typeInto(cmd, done) {
-    if (autoIdx < 0) return;
-    let i = 0;
-    (function t() {
-      if (autoIdx < 0) { input.value = ''; return; }
-      input.value = cmd.slice(0, i);
-      if (i++ < cmd.length) setTimeout(t, 55);
-      else setTimeout(done, 350);
-    })();
-  }
-  input.addEventListener('focus', () => { autoIdx = -1; clearTimeout(autoTimer); input.value = ''; });
+  },
 
-  print('Welcome to mohsin@platform — a live cloud shell.', 'term__muted');
-  print('Type "help" to see available commands, or watch the demo run.', 'term__muted');
-  if (!prefersReduced) autoTimer = setTimeout(autoStep, 1400);
+  async rollout() {
+    if (this.busy) { this.event('deploy', 'A rollout is already in progress', 'y'); return; }
+    const pool = this.cfg.nextImages.filter(v => v !== this.image);
+    const nextImg = pool[(this.seq) % pool.length] || this.cfg.nextImages[0];
+    this.busy = true;
+    this.setBtns(true);
+    this.event('deploy', `kubectl set image ${this.cfg.deployment}=${nextImg} · RollingUpdate (maxSurge 1)`, 'b');
+    const old = this.image;
+    this.image = nextImg;
+    this.sync();
+
+    // Replace old-version pods one at a time: surge a new pod, then retire an old one.
+    const stale = this.pods.filter(p => p.image === old && p.phase !== 'Terminating');
+    for (const p of stale) {
+      const fresh = this.spawnPod();               // new pod on the new image (surge)
+      await this.wait(1250);                        // wait until it's Running-ish
+      this.removePod(p, `Terminating ${p.name.split('-').slice(-1)[0]} (old revision)`);
+      await this.wait(750);
+      void fresh;
+    }
+    this.event('deploy', `Rollout complete — ${this.cfg.deployment} now at ${nextImg} ✓`, 'g');
+    this.busy = false;
+    this.setBtns(false);
+  },
+
+  toggleLoad() {
+    this.loadOn = !this.loadOn;
+    this.els.loadBtn.classList.toggle('is-active', this.loadOn);
+    this.event('loadgen', this.loadOn ? 'Traffic ramp started — 200 → 4k req/s' : 'Traffic ramp stopped', this.loadOn ? 'y' : 'dim');
+  },
+
+  // ---- HPA + CPU simulation loop ----
+  startHpaLoop() {
+    if (prefersReduced) return;
+    const tick = () => {
+      const running = Math.max(1, this.runningCount());
+      // Load pushes CPU up; more replicas spread it out. Drift toward a target.
+      const pressure = this.loadOn ? 78 + (this.seq % 12) : 6 + (this.seq % 5);
+      const perPod = pressure * (this.desired / running);   // fewer ready pods → hotter
+      const target = Math.min(99, perPod);
+      this.cpu += (target - this.cpu) * 0.25;
+
+      // HPA control loop.
+      const c = this.cpu;
+      if (c >= this.cfg.targetCpu && this.desired < this.cfg.maxReplicas && !this.busy) {
+        this.hpaState = 'scaling ▲';
+        this.desired++;
+        this.event('hpa', `CPU ${Math.round(c)}% > ${this.cfg.targetCpu}% target — scaling up to ${this.desired}`, 'cy');
+        this.reconcile(true);
+      } else if (c < this.cfg.targetCpu * 0.5 && this.desired > this.cfg.minReplicas && !this.loadOn && !this.busy) {
+        this.hpaState = 'scaling ▼';
+        this.desired--;
+        this.event('hpa', `CPU ${Math.round(c)}% low — scaling down to ${this.desired}`, 'dim');
+        this.reconcile(true);
+      } else {
+        this.hpaState = this.loadOn ? 'watching' : 'idle';
+      }
+      this.sync();
+      this.hpaTimer = setTimeout(tick, 2200);
+    };
+    this.hpaTimer = setTimeout(tick, 2200);
+  },
+
+  setBtns(disabled) {
+    $$('.k8s__btn').forEach(b => {
+      if (b.dataset.act === 'load') return;         // load stays togglable
+      b.disabled = disabled;
+    });
+  },
+
+  // Timers that we don't need to cancel individually.
+  after(ms, fn) { return setTimeout(fn, ms); },
+  wait(ms) { return new Promise(res => setTimeout(res, ms)); }
+};
+
+function setupCluster() {
+  if (!$('#k8sNodes')) return;
+  k8s.init();
 }
 
 /* ---------------------------------------------------------
@@ -913,7 +1081,7 @@ function init() {
   setupMenu();
   setupScroll();
   setupObservers();
-  setupTerminal();
+  setupCluster();
 
   if (window.AOS) AOS.init({ duration: 700, once: true, offset: 80, disable: prefersReduced });
 

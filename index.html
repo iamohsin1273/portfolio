@@ -225,24 +225,55 @@
       <div class="arch" id="arch"></div>
     </section>
 
-    <!-- ============ TERMINAL ============ -->
-    <section class="section" id="terminal">
+    <!-- ============ CLUSTER PLAYGROUND ============ -->
+    <section class="section" id="cluster">
       <div class="section__head" data-aos="fade-up">
-        <span class="kicker">Live Shell</span>
-        <h2 class="section__title">Interactive Terminal</h2>
-        <p class="section__lead">Real commands from a working day. Type <code>help</code> to explore.</p>
+        <span class="kicker">Live Playground</span>
+        <h2 class="section__title">Kubernetes Cluster Playground</h2>
+        <p class="section__lead">A simulated cluster you can actually operate — scale the deployment, kill pods and watch them self-heal, roll out a new version, or drive the HPA with load.</p>
       </div>
-      <div class="term" id="term" data-aos="fade-up">
-        <div class="term__bar">
-          <span class="term__dot term__dot--r"></span>
-          <span class="term__dot term__dot--y"></span>
-          <span class="term__dot term__dot--g"></span>
-          <span class="term__title">mohsin@platform: ~</span>
+
+      <div class="k8s" id="k8s" data-aos="fade-up">
+        <!-- context / status bar -->
+        <div class="k8s__bar">
+          <span class="k8s__ctx"><i class="k8s__ctx-dot"></i> context <b>eks-prod</b> · ns <b>default</b></span>
+          <span class="k8s__stat"><span class="l">deployment</span><span class="v" id="k8sDeploy">platform-api</span></span>
+          <span class="k8s__stat"><span class="l">replicas</span><span class="v"><b id="k8sReady">0</b>/<span id="k8sDesired">3</span></span></span>
+          <span class="k8s__stat"><span class="l">image</span><span class="v" id="k8sImage">v1.4.2</span></span>
+          <span class="k8s__stat"><span class="l">hpa</span><span class="v" id="k8sHpa">idle · 3–8</span></span>
+          <span class="k8s__hpa">
+            <span class="l">CPU</span>
+            <span class="k8s__meter" id="k8sMeter"><span id="k8sCpuBar"></span></span>
+            <span class="v" id="k8sCpu">6%</span>
+          </span>
         </div>
-        <div class="term__body" id="termBody"></div>
-        <div class="term__inputline">
-          <span class="term__prompt">mohsin@platform:~$</span>
-          <input id="termInput" class="term__input" autocomplete="off" spellcheck="false" aria-label="Terminal input" />
+
+        <!-- controls -->
+        <div class="k8s__controls">
+          <button class="k8s__btn" type="button" data-act="scale-up">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>Scale up
+          </button>
+          <button class="k8s__btn" type="button" data-act="scale-down">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>Scale down
+          </button>
+          <button class="k8s__btn" type="button" data-act="kill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Kill a pod
+          </button>
+          <button class="k8s__btn" type="button" data-act="rollout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Rolling update
+          </button>
+          <button class="k8s__btn" type="button" data-act="load" id="k8sLoadBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Simulate load
+          </button>
+        </div>
+
+        <!-- worker nodes -->
+        <div class="k8s__nodes" id="k8sNodes"></div>
+
+        <!-- event stream -->
+        <div class="k8s__events">
+          <div class="k8s__events-head">kubectl get events --watch</div>
+          <div class="k8s__events-log" id="k8sEvents" aria-live="polite"></div>
         </div>
       </div>
     </section>
