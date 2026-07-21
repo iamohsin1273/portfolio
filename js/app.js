@@ -188,13 +188,13 @@ const DATA = {
   ],
 
   architecture: [
-    { name: 'Edge & CDN', sub: 'Global entrypoint', icon: '🌐', color: '#35e0e0',
+    { name: 'Edge & CDN', sub: 'Global entrypoint', ico: 'edge', icon: '🌐', color: '#35e0e0',
       nodes: [ { b: 'Cloudflare', s: 'DNS · WAF · CDN' }, { b: 'Route 53', s: 'DNS routing' }, { b: 'ALB', s: 'TLS termination' } ] },
-    { name: 'Compute', sub: 'Kubernetes on AWS', icon: '⎈', color: '#326ce5',
+    { name: 'Compute', sub: 'Kubernetes on AWS', ico: 'compute', icon: '⎈', color: '#326ce5',
       nodes: [ { b: 'EKS Cluster', s: 'Managed control plane' }, { b: 'Node Groups', s: 'Auto-scaled workers' }, { b: 'HPA', s: 'Pod autoscaling' } ] },
-    { name: 'Data & State', sub: 'Persistence layer', icon: '🗄', color: '#7b6bff',
+    { name: 'Data & State', sub: 'Persistence layer', ico: 'data', icon: '🗄', color: '#7b6bff',
       nodes: [ { b: 'RDS', s: 'Managed Postgres' }, { b: 'S3', s: 'Object storage' }, { b: 'ElastiCache', s: 'Redis caching' } ] },
-    { name: 'Observability', sub: 'See everything', icon: '📊', color: '#ff5a72',
+    { name: 'Observability', sub: 'See everything', ico: 'observe', icon: '📊', color: '#ff5a72',
       nodes: [ { b: 'Prometheus', s: 'Metrics' }, { b: 'Grafana', s: 'Dashboards' }, { b: 'Loki', s: 'Log aggregation' } ] }
   ],
 
@@ -259,6 +259,18 @@ const PIPE_ICONS = {
 function pipeIcon(name) {
   const body = PIPE_ICONS[name] || PIPE_ICONS.build;
   return `<svg class="pipe-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+}
+
+/* Line icons for the architecture tiers — same cohesive stroke style. */
+const ARCH_ICONS = {
+  edge:    '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.6 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.6-3.8-9S9.5 5.5 12 3z"/>',
+  compute: '<path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5M12 12v10"/><circle cx="12" cy="7.5" r="1.4"/>',
+  data:    '<ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+  observe: '<path d="M3 3v18h18"/><path d="m7 15 3-4 3 2 4-6"/><circle cx="17" cy="7" r="1.3"/>'
+};
+function archIcon(name) {
+  const body = ARCH_ICONS[name] || ARCH_ICONS.compute;
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
 }
 
 /* ---------------------------------------------------------
@@ -525,17 +537,79 @@ function renderProjects() {
 
 function renderArchitecture() {
   const wrap = $('#arch');
-  DATA.architecture.forEach(t => {
+  const tiers = DATA.architecture;
+  tiers.forEach((t, ti) => {
     const tier = el('div', 'arch__tier');
     tier.setAttribute('data-aos', 'fade-up');
     tier.style.setProperty('--tier', t.color);
+    tier.style.setProperty('--i', ti);
     tier.innerHTML = `
-      <div class="arch__tier-head">
-        <div class="ico">${t.icon}</div>
-        <div><div class="arch__tier-name">${t.name}</div><div class="arch__tier-sub">${t.sub}</div></div>
-      </div>
-      <div class="arch__nodes">${t.nodes.map(n => `<div class="arch__node"><b>${n.b}</b><span>${n.s}</span></div>`).join('')}</div>`;
+      <div class="arch__glow"></div>
+      <div class="arch__card">
+        <div class="arch__sheen"></div>
+        <div class="arch__tier-head">
+          <div class="arch__ico" data-depth="40">${archIcon(t.ico)}</div>
+          <div class="arch__tier-meta" data-depth="26">
+            <div class="arch__tier-name">${t.name}</div>
+            <div class="arch__tier-sub">${t.sub}</div>
+          </div>
+          <span class="arch__tier-num" data-depth="18">${String(ti + 1).padStart(2, '0')}</span>
+        </div>
+        <div class="arch__nodes" data-depth="30">
+          ${t.nodes.map(n => `
+            <div class="arch__node">
+              <span class="arch__node-dot"></span>
+              <b>${n.b}</b><span>${n.s}</span>
+            </div>`).join('')}
+        </div>
+      </div>`;
     wrap.appendChild(tier);
+
+    // Flow connector between tiers — traffic descends through the stack.
+    if (ti < tiers.length - 1) {
+      const flow = el('div', 'arch__flow');
+      flow.setAttribute('aria-hidden', 'true');
+      flow.innerHTML = `<span class="arch__flow-line"></span><span class="arch__flow-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>`;
+      wrap.appendChild(flow);
+    }
+  });
+}
+
+/* 3D tilt — tiers follow the cursor with parallax-depth layers and a moving sheen. */
+function setupArchTilt() {
+  if (prefersReduced) return;
+  const MAX = 7;                                   // max tilt in degrees
+  $$('.arch__tier').forEach(tier => {
+    const card = $('.arch__card', tier);
+    const sheen = $('.arch__sheen', tier);
+    const layers = $$('[data-depth]', tier);
+    let raf = 0;
+
+    function onMove(e) {
+      const r = tier.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width  - 0.5;   // -0.5 … 0.5
+      const py = (e.clientY - r.top)  / r.height - 0.5;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        card.style.transform = `rotateX(${(-py * MAX).toFixed(2)}deg) rotateY(${(px * MAX).toFixed(2)}deg)`;
+        layers.forEach(l => {
+          const d = +l.dataset.depth;
+          l.style.transform = `translate3d(${(px * d * 0.6).toFixed(1)}px, ${(py * d * 0.6).toFixed(1)}px, ${d}px)`;
+        });
+        sheen.style.setProperty('--mx', ((px + 0.5) * 100).toFixed(1) + '%');
+        sheen.style.setProperty('--my', ((py + 0.5) * 100).toFixed(1) + '%');
+        sheen.style.opacity = '1';
+      });
+    }
+    function onLeave() {
+      cancelAnimationFrame(raf);
+      card.style.transform = '';
+      layers.forEach(l => { l.style.transform = ''; });
+      sheen.style.opacity = '0';
+    }
+    tier.addEventListener('pointermove', onMove);
+    tier.addEventListener('pointerleave', onLeave);
   });
 }
 
@@ -1082,6 +1156,7 @@ function init() {
   setupScroll();
   setupObservers();
   setupCluster();
+  setupArchTilt();
 
   if (window.AOS) AOS.init({ duration: 700, once: true, offset: 80, disable: prefersReduced });
 

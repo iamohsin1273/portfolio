@@ -446,18 +446,55 @@ img { display: block; max-width: 100%; }
 .project__links a { font-size: 13px; color: var(--cyan); display: inline-flex; align-items: center; gap: 6px; }
 .project__links a:hover { text-decoration: underline; }
 
-/* ===== ARCHITECTURE ===== */
-.arch { display: grid; gap: 18px; max-width: 1000px; margin: 0 auto; }
-.arch__tier { padding: 22px; border-radius: var(--radius); background: var(--panel); border: 1px solid var(--stroke); backdrop-filter: blur(12px); }
-.arch__tier-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.arch__tier-head .ico { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 10px; font-size: 18px; background: var(--tier,var(--blue)); color:#fff; }
-.arch__tier-name { font-family: var(--display); font-weight: 600; font-size: 16px; }
+/* ===== ARCHITECTURE (3D layered blueprint) ===== */
+.arch { display: flex; flex-direction: column; align-items: center; gap: 0; max-width: 900px; margin: 0 auto; perspective: 1400px; }
+
+.arch__tier { position: relative; width: 100%; }
+/* radial color glow that blooms on hover */
+.arch__glow { position: absolute; inset: -1px; border-radius: var(--radius); background: radial-gradient(120% 120% at 50% 0%, color-mix(in srgb, var(--tier) 30%, transparent), transparent 60%); opacity: 0; filter: blur(18px); transition: opacity .4s; pointer-events: none; z-index: 0; }
+.arch__tier:hover .arch__glow { opacity: .9; }
+
+/* the tilting card */
+.arch__card { position: relative; z-index: 1; padding: 22px 24px; border-radius: var(--radius); background: linear-gradient(160deg, var(--panel-2), var(--panel)); border: 1px solid var(--stroke); backdrop-filter: blur(12px); transform-style: preserve-3d; transition: transform .5s cubic-bezier(.2,.9,.3,1), box-shadow .4s, border-color .4s; box-shadow: 0 10px 30px -18px rgba(0,0,0,.8); overflow: hidden; will-change: transform; }
+.arch__card::before { content:''; position: absolute; top:0; left:0; right:0; height:2px; background: linear-gradient(90deg, transparent, var(--tier), transparent); opacity:.7; }
+.arch__tier:hover .arch__card { border-color: color-mix(in srgb, var(--tier) 55%, transparent); box-shadow: 0 30px 60px -24px color-mix(in srgb, var(--tier) 40%, #000), 0 0 0 1px color-mix(in srgb, var(--tier) 25%, transparent) inset; }
+
+/* moving glare that tracks the cursor */
+.arch__sheen { position: absolute; inset: 0; border-radius: var(--radius); pointer-events: none; opacity: 0; transition: opacity .3s; background: radial-gradient(340px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.10), transparent 45%); z-index: 3; }
+
+/* header */
+.arch__tier-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; transform-style: preserve-3d; }
+.arch__ico { width: 46px; height: 46px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 13px; color: #fff; background: linear-gradient(150deg, color-mix(in srgb, var(--tier) 90%, #000), color-mix(in srgb, var(--tier) 55%, #000)); box-shadow: 0 10px 22px -8px color-mix(in srgb, var(--tier) 70%, transparent); transition: transform .5s cubic-bezier(.2,.9,.3,1); }
+.arch__ico svg { width: 24px; height: 24px; }
+.arch__tier-meta { flex: 1; }
+.arch__tier-name { font-family: var(--display); font-weight: 600; font-size: 17px; }
 .arch__tier-sub { font-size: 12.5px; color: var(--txt-mute); }
-.arch__nodes { display: flex; flex-wrap: wrap; gap: 12px; }
-.arch__node { flex: 1 1 160px; padding: 14px; border-radius: 12px; background: rgba(255,255,255,.03); border: 1px solid var(--stroke); transition: border-color .25s, transform .25s; }
-.arch__node:hover { border-color: var(--tier,var(--blue)); transform: translateY(-3px); }
-.arch__node b { display: block; font-size: 13.5px; margin-bottom: 3px; }
+.arch__tier-num { font-family: var(--mono); font-size: 34px; font-weight: 700; line-height: 1; color: transparent; -webkit-text-stroke: 1.2px color-mix(in srgb, var(--tier) 55%, transparent); opacity: .55; transition: opacity .4s; }
+.arch__tier:hover .arch__tier-num { opacity: .9; }
+
+/* node grid */
+.arch__nodes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; transform-style: preserve-3d; }
+.arch__node { position: relative; display: flex; flex-direction: column; gap: 3px; padding: 14px 14px 14px 16px; border-radius: 12px; background: rgba(255,255,255,.03); border: 1px solid var(--stroke); overflow: hidden; transition: transform .28s, border-color .28s, background .28s, box-shadow .28s; }
+.arch__node::before { content:''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--tier); transform: scaleY(0); transform-origin: top; transition: transform .3s; }
+.arch__node:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--tier) 45%, transparent); background: color-mix(in srgb, var(--tier) 9%, rgba(255,255,255,.02)); box-shadow: 0 14px 26px -16px color-mix(in srgb, var(--tier) 60%, #000); }
+.arch__node:hover::before { transform: scaleY(1); }
+.arch__node b { font-size: 13.5px; }
 .arch__node span { font-size: 12px; color: var(--txt-mute); }
+.arch__node-dot { position: absolute; top: 13px; right: 13px; width: 7px; height: 7px; border-radius: 50%; background: var(--tier); box-shadow: 0 0 8px var(--tier); opacity: .5; transition: opacity .3s; }
+.arch__node:hover .arch__node-dot { opacity: 1; }
+
+/* flow connector between tiers */
+.arch__flow { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 42px; color: var(--txt-mute); position: relative; z-index: 0; }
+.arch__flow-line { width: 2px; flex: 1; background: linear-gradient(var(--txt-mute), transparent); position: relative; overflow: hidden; opacity: .5; }
+.arch__flow-line::after { content:''; position: absolute; left: 0; right: 0; top: -40%; height: 40%; background: linear-gradient(#fff, transparent); animation: archFlow 1.8s linear infinite; }
+.arch__flow-arrow { position: absolute; bottom: 2px; display: grid; place-items: center; }
+.arch__flow-arrow svg { width: 16px; height: 16px; }
+@keyframes archFlow { from { top: -40%; } to { top: 140%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .arch__flow-line::after { animation: none; display: none; }
+  .arch__card { transition: none; }
+}
 
 /* ===== KUBERNETES CLUSTER PLAYGROUND ===== */
 .k8s { max-width: 1000px; margin: 0 auto; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--stroke-2); background: rgba(8,11,18,.72); box-shadow: var(--shadow); backdrop-filter: blur(12px); }
@@ -569,6 +606,8 @@ img { display: block; max-width: 100%; }
   .k8s__nodes { grid-template-columns: 1fr; }
   .k8s__hpa { margin-left: 0; width: 100%; }
   .k8s__meter { flex: 1; width: auto; }
+  .arch__nodes { grid-template-columns: 1fr; }
+  .arch__card { padding: 18px; }
   .ci__rail { flex-direction: row; overflow-x: auto; padding-bottom: 6px; }
   .ci__rail::before { display: none; }
   .ci-stage { flex: 0 0 auto; min-width: 150px; }
