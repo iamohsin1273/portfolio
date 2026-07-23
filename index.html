@@ -3,318 +3,345 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#05060a" />
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-
-  <title>Mohamed Mohsin — Cloud &amp; Platform Engineer</title>
-  <meta name="description" content="Mohamed Mohsin — Cloud & Platform / DevOps Engineer specializing in AWS, Kubernetes, Terraform, Docker, Jenkins and observability. Building production-grade cloud-native platforms." />
+  <meta name="theme-color" content="#00040f" />
+  <title>Mohsin.OS — Cloud & Platform Engineer</title>
+  <meta name="description" content="Mohamed Mohsin — Cloud & Platform / DevOps Engineer. AWS · Kubernetes · Terraform · CI/CD · Observability." />
   <meta name="author" content="Mohamed Mohsin" />
-  <meta name="keywords" content="Mohamed Mohsin, DevOps Engineer, Cloud Engineer, AWS, Kubernetes, Terraform, Docker, Jenkins, Prometheus, Grafana, CI/CD, DevSecOps, Chennai" />
   <link rel="canonical" href="https://iamohsin1273.github.io/portfolio/" />
-
-  <!-- Open Graph / social -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Mohamed Mohsin — Cloud & Platform Engineer" />
-  <meta property="og:description" content="Production-grade cloud-native platforms. AWS · Kubernetes · Terraform · CI/CD · Observability." />
+  <meta property="og:title" content="Mohsin.OS — Cloud & Platform Engineer" />
+  <meta property="og:description" content="Production-grade cloud-native platforms. AWS · Kubernetes · Terraform · CI/CD." />
   <meta property="og:url" content="https://iamohsin1273.github.io/portfolio/" />
   <meta property="og:image" content="https://iamohsin1273.github.io/portfolio/assets/images/profile.jpeg" />
-  <meta property="og:image:alt" content="Portrait of Mohamed Mohsin, Cloud & Platform Engineer" />
-  <meta property="og:site_name" content="Mohamed Mohsin Portfolio" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://iamohsin1273.github.io/portfolio/" />
-  <meta name="twitter:title" content="Mohamed Mohsin — Cloud & Platform Engineer" />
-  <meta name="twitter:description" content="Production-grade cloud-native platforms. AWS · Kubernetes · Terraform · CI/CD · Observability." />
-  <meta name="twitter:image" content="https://iamohsin1273.github.io/portfolio/assets/images/profile.jpeg" />
-
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%81%EF%B8%8F%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='none' stroke='%2300d4ff' stroke-width='8'/%3E%3Ccircle cx='50' cy='50' r='18' fill='%2300d4ff'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- AOS -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
-
-  <!-- Structured data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Mohamed Mohsin",
-    "jobTitle": "Cloud & Platform Engineer",
-    "email": "iamohsin0033@gmail.com",
-    "address": { "@type": "PostalAddress", "addressLocality": "Chennai", "addressCountry": "India" },
-    "url": "https://iamohsin1273.github.io/portfolio/",
-    "sameAs": [
-      "https://github.com/iamohsin1273",
-      "https://linkedin.com/in/iam-mohsin"
-    ],
-    "knowsAbout": ["AWS","Kubernetes","Terraform","Docker","Jenkins","CI/CD","DevSecOps","Prometheus","Grafana","Ansible","Linux"]
-  }
-  </script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Mohamed Mohsin","jobTitle":"Cloud & Platform Engineer","email":"iamohsin0033@gmail.com","url":"https://iamohsin1273.github.io/portfolio/","sameAs":["https://github.com/iamohsin1273","https://linkedin.com/in/iam-mohsin"]}</script>
   <link rel="stylesheet" href="./css/styles.css" />
 </head>
 <body>
 
-  <!-- ============ LOADING SCREEN ============ -->
-  <div id="loader" class="loader" aria-hidden="true">
-    <div class="loader__core">
-      <div class="loader__ring"></div>
-      <div class="loader__glyph">☁</div>
+<!-- ═══════════════════════════════════════════════════════
+     BOOT SEQUENCE
+═══════════════════════════════════════════════════════ -->
+<div id="boot" class="boot" aria-live="polite" role="status">
+  <canvas id="bootCanvas" class="boot__canvas"></canvas>
+  <div class="boot__inner">
+    <div class="boot__logo">
+      <svg class="boot__ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="339" stroke-dashoffset="339"/><circle cx="60" cy="60" r="38" fill="none" stroke="currentColor" stroke-width="1" opacity=".4" stroke-dasharray="239" stroke-dashoffset="239"/><circle cx="60" cy="60" r="10" fill="currentColor"/></svg>
+      <div class="boot__os">MOHSIN<span>.OS</span></div>
     </div>
-    <div class="loader__label" id="loaderLabel">Initializing platform</div>
-    <div class="loader__bar"><span id="loaderBar"></span></div>
-    <div class="loader__pct" id="loaderPct">0%</div>
+    <div class="boot__log" id="bootLog" aria-label="Boot sequence"></div>
+    <div class="boot__bar"><div class="boot__fill" id="bootFill"></div></div>
+    <div class="boot__pct" id="bootPct">0%</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     CANVAS LAYERS
+═══════════════════════════════════════════════════════ -->
+<canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+<div class="scanline" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════════════════ -->
+<header class="nav" id="nav" role="banner">
+  <a class="nav__brand" href="#hero" aria-label="Mohsin.OS Home">
+    <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="21"/><line x1="3" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="21" y2="12"/></svg>
+    <span class="nav__title">MOHSIN<span class="nav__os">.OS</span></span>
+  </a>
+  <nav class="nav__links" id="navLinks" aria-label="Primary navigation"></nav>
+  <div class="nav__right">
+    <div class="nav__mode-wrap" id="modeWrap">
+      <button class="nav__mode-btn" id="modeBtnToggle" aria-haspopup="true" aria-expanded="false">
+        <span class="nav__mode-dot"></span>
+        <span id="modeLabel">RECRUITER</span>
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="nav__mode-menu" id="modeModeMenu" role="menu">
+        <button role="menuitem" data-mode="recruiter">RECRUITER MODE</button>
+        <button role="menuitem" data-mode="engineer">ENGINEER MODE</button>
+        <button role="menuitem" data-mode="client">CLIENT MODE</button>
+        <button role="menuitem" data-mode="interview">AI INTERVIEW</button>
+      </div>
+    </div>
+    <div class="nav__status"><span class="pulse"></span>ONLINE</div>
+    <button class="nav__burger" id="navBurger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════ -->
+<section class="section hero" id="hero">
+  <div class="hero__grid">
+    <div class="hero__left">
+      <div class="hero__badge">
+        <span class="pulse"></span>
+        <span id="heroBadgeMode">RECRUITER MODE ACTIVE</span>
+      </div>
+      <h1 class="hero__name">
+        <span class="hero__first">MOHAMED</span>
+        <span class="hero__last">MOHSIN</span>
+      </h1>
+      <div class="hero__role"><span id="typedRole"></span><span class="cursor-blink">_</span></div>
+      <p class="hero__desc" id="heroDesc"></p>
+
+      <div class="hero__boot-log" id="heroBoot" aria-hidden="true"></div>
+
+      <div class="hero__cta" id="heroCta"></div>
+
+      <div class="hero__stats" id="heroStats"></div>
+    </div>
+
+    <div class="hero__right">
+      <div class="profile-holo" id="profileHolo">
+        <div class="profile-holo__rings">
+          <div class="ring ring--1"></div>
+          <div class="ring ring--2"></div>
+          <div class="ring ring--3"></div>
+        </div>
+        <div class="profile-holo__card" id="profileCard">
+          <div class="profile-holo__glow"></div>
+          <div class="profile-holo__scan"></div>
+          <img class="profile-holo__img" src="./assets/images/profile.jpeg" alt="Mohamed Mohsin" decoding="async" fetchpriority="high" />
+          <div class="profile-holo__overlay">
+            <div class="profile-holo__name">MOHSIN</div>
+            <div class="profile-holo__sub">CLOUD · PLATFORM · DEVOPS</div>
+            <div class="profile-holo__tags" id="profileTags"></div>
+          </div>
+          <div class="profile-holo__corner tl">AWS</div>
+          <div class="profile-holo__corner tr">K8s</div>
+          <div class="profile-holo__corner bl">IaC</div>
+          <div class="profile-holo__corner br">CI/CD</div>
+        </div>
+        <div class="profile-holo__data" id="profileData"></div>
+      </div>
+    </div>
+  </div>
+  <a href="#skills" class="hero__scroll" aria-label="Scroll to skills">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </a>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SKILLS ORBIT
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="skills">
+  <div class="section__head">
+    <div class="kicker">CAPABILITY MATRIX</div>
+    <h2 class="section__title">SKILL CORE</h2>
+    <p class="section__lead">Click any skill node to expand its subsystem.</p>
+  </div>
+  <div class="orbit-wrap" id="orbitWrap">
+    <div class="orbit-core" id="orbitCore">
+      <div class="orbit-core__ring"></div>
+      <div class="orbit-core__ring orbit-core__ring--2"></div>
+      <div class="orbit-core__label">AI<br/>CORE</div>
+    </div>
+    <div class="orbit-field" id="orbitField"></div>
+    <div class="orbit-detail" id="orbitDetail">
+      <div class="orbit-detail__inner" id="orbitDetailInner"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     PROJECTS — HOLOGRAPHIC
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="projects">
+  <div class="section__head">
+    <div class="kicker">MISSION LOG</div>
+    <h2 class="section__title">PROJECTS</h2>
+    <p class="section__lead">Select a mission file to open its holographic briefing.</p>
   </div>
 
-  <!-- ============ SCROLL PROGRESS ============ -->
-  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-
-  <!-- ============ BACKGROUND LAYERS ============ -->
-  <div class="bg-aurora" aria-hidden="true">
-    <span class="aurora aurora--1"></span>
-    <span class="aurora aurora--2"></span>
-    <span class="aurora aurora--3"></span>
-    <div class="bg-grid"></div>
-  </div>
-  <div id="particles" class="particles-layer" aria-hidden="true"></div>
-  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
-
-  <!-- ============ NAV ============ -->
-  <header class="nav" id="nav">
-    <a class="nav__brand" href="#hero" aria-label="Home">
-      <span class="nav__logo" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6"/><path d="M13 18h6"/></svg>
-      </span>
-      <span class="nav__brandtext">mohsin<span class="dim">@cloud</span><i class="nav__caret" aria-hidden="true"></i></span>
-    </a>
-    <nav class="nav__links" id="navLinks" aria-label="Primary"></nav>
-    <div class="nav__right">
-      <span class="nav__status"><i class="dot"></i> ONLINE</span>
-      <button class="nav__burger" id="navBurger" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
+  <!-- Flagship pipeline -->
+  <div class="flagship" id="flagship">
+    <div class="flagship__head">
+      <div class="flagship__badge">FLAGSHIP SYSTEM</div>
+      <h3 class="flagship__title" id="flagshipTitle"></h3>
+      <p class="flagship__desc" id="flagshipDesc"></p>
+      <button class="btn-holo" id="ciRun">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <span id="ciRunLabel">EXECUTE PIPELINE</span>
       </button>
     </div>
-  </header>
-
-  <main>
-    <!-- ============ HERO ============ -->
-    <section class="hero section" id="hero">
-      <div class="hero__grid">
-        <div class="hero__left">
-          <div class="hero__badge" data-aos="fade-up">
-            <i class="dot"></i> Cloud Platform Status: <b>ONLINE</b>
-          </div>
-          <h1 class="hero__title" data-aos="fade-up" data-aos-delay="60">
-            Mohamed<br /><span class="grad">Mohsin</span>
-          </h1>
-          <div class="hero__role" data-aos="fade-up" data-aos-delay="120">
-            <span id="typedRole" class="typed"></span>
-          </div>
-          <p class="hero__desc" data-aos="fade-up" data-aos-delay="180" id="heroDesc"></p>
-
-          <div class="hero__boot" data-aos="fade-up" data-aos-delay="220" aria-hidden="true">
-            <div id="bootLog" class="hero__bootlog"></div>
-          </div>
-
-          <div class="hero__cta" data-aos="fade-up" data-aos-delay="280" id="heroCta"></div>
-
-          <div class="hero__stats" id="heroStatStrip" data-aos="fade-up" data-aos-delay="340"></div>
+    <div class="ci">
+      <div class="ci__rail" id="ciRail" role="list"></div>
+      <div class="ci__console">
+        <div class="ci__bar">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="ci__meta" id="ciMeta">build #247 · main @ a3f9c2</span>
+          <span class="ci__status" id="ciStatus"><span class="pulse"></span>idle</span>
         </div>
-
-        <div class="hero__right">
-          <div class="profile-card" id="profileCard">
-            <div class="profile-card__glow"></div>
-            <div class="profile-card__inner" id="profileInner">
-              <div class="profile-card__shine"></div>
-              <div class="profile-card__ring"></div>
-              <div class="profile-card__photo">
-                <img id="profileImg" src="./assets/images/profile.jpeg" alt="Portrait of Mohamed Mohsin, Cloud & Platform Engineer" decoding="async" fetchpriority="high" />
-                <div class="profile-card__scan"></div>
-              </div>
-              <div class="profile-card__meta">
-                <div class="profile-card__name">Mohamed Mohsin</div>
-                <div class="profile-card__sub">Cloud &amp; Platform Engineer</div>
-                <div class="profile-card__tags" id="profileTags"></div>
-              </div>
-              <div class="profile-card__badge profile-card__badge--tl">AWS</div>
-              <div class="profile-card__badge profile-card__badge--tr">K8s</div>
-              <div class="profile-card__badge profile-card__badge--bl">Terraform</div>
-              <div class="profile-card__badge profile-card__badge--br">CI/CD</div>
-            </div>
-          </div>
+        <div class="ci__log" id="ciLog" aria-live="polite"></div>
+        <div class="ci__foot">
+          <div class="ci__progress"><span id="ciProgressBar"></span></div>
+          <span class="ci__timer" id="ciTimer">00.0s</span>
         </div>
-      </div>
-      <a href="#stack" class="hero__scroll" aria-label="Scroll down"><span></span></a>
-    </section>
-
-    <!-- ============ THE STACK ============ -->
-    <section class="section" id="stack">
-      <div class="section__head" data-aos="fade-up">
-        <span class="kicker">Platform &amp; Capabilities</span>
-        <h2 class="section__title">The Stack</h2>
-        <p class="section__lead">The cloud-native toolchain I build and operate with — grouped by what it does, from provisioning to delivery to observability.</p>
-      </div>
-      <div class="stack-grid" id="stackGrid"></div>
-    </section>
-
-    <!-- ============ EXPERIENCE ============ -->
-    <section class="section" id="experience">
-      <div class="section__head" data-aos="fade-up">
-        <span class="kicker">Trajectory</span>
-        <h2 class="section__title">Experience &amp; Education</h2>
-        <p class="section__lead">Hands-on with real production workflows since day one.</p>
-      </div>
-      <div class="timeline" id="timeline"></div>
-    </section>
-
-    <!-- ============ PROJECTS ============ -->
-    <section class="section" id="projects">
-      <div class="section__head" data-aos="fade-up">
-        <span class="kicker">Featured Work</span>
-        <h2 class="section__title">Projects</h2>
-        <p class="section__lead">Production-grade pipelines and cloud-native systems.</p>
-      </div>
-
-      <!-- Flagship pipeline — live CI/CD build replay -->
-      <div class="flagship" data-aos="fade-up">
-        <div class="flagship__head">
-          <div>
-            <span class="flagship__tag">Flagship</span>
-            <h3 class="flagship__title" id="flagshipTitle"></h3>
-            <p class="flagship__desc" id="flagshipDesc"></p>
-          </div>
-          <button class="ci-run" id="ciRun" type="button">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            <span id="ciRunLabel">Run pipeline</span>
-          </button>
-        </div>
-
-        <div class="ci">
-          <!-- stage rail -->
-          <div class="ci__rail" id="ciRail" role="list" aria-label="Pipeline stages"></div>
-
-          <!-- streaming build console -->
-          <div class="ci__console">
-            <div class="ci__bar">
-              <span class="term__dot term__dot--r"></span>
-              <span class="term__dot term__dot--y"></span>
-              <span class="term__dot term__dot--g"></span>
-              <span class="ci__meta" id="ciMeta">build #247 · main @ a3f9c2</span>
-              <span class="ci__status" id="ciStatus"><i class="dot"></i> idle</span>
-            </div>
-            <div class="ci__log" id="ciLog" aria-live="polite"></div>
-            <div class="ci__foot">
-              <div class="ci__progress"><span id="ciProgressBar"></span></div>
-              <span class="ci__timer" id="ciTimer">00.0s</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="projects-grid" id="projectsGrid"></div>
-    </section>
-
-    <!-- ============ ARCHITECTURE ============ -->
-    <section class="section" id="architecture">
-      <div class="section__head" data-aos="fade-up">
-        <span class="kicker">System Design</span>
-        <h2 class="section__title">Reference Cloud Architecture</h2>
-        <p class="section__lead">A highly-available, multi-tier deployment on AWS EKS.</p>
-      </div>
-      <div class="arch" id="arch"></div>
-    </section>
-
-    <!-- ============ CLUSTER PLAYGROUND ============ -->
-    <section class="section" id="cluster">
-      <div class="section__head" data-aos="fade-up">
-        <span class="kicker">Live Playground</span>
-        <h2 class="section__title">Kubernetes Cluster Playground</h2>
-        <p class="section__lead">A simulated cluster you can actually operate — scale the deployment, kill pods and watch them self-heal, roll out a new version, or drive the HPA with load.</p>
-      </div>
-
-      <div class="k8s" id="k8s" data-aos="fade-up">
-        <!-- context / status bar -->
-        <div class="k8s__bar">
-          <span class="k8s__ctx"><i class="k8s__ctx-dot"></i> context <b>eks-prod</b> · ns <b>default</b></span>
-          <span class="k8s__stat"><span class="l">deployment</span><span class="v" id="k8sDeploy">platform-api</span></span>
-          <span class="k8s__stat"><span class="l">replicas</span><span class="v"><b id="k8sReady">0</b>/<span id="k8sDesired">3</span></span></span>
-          <span class="k8s__stat"><span class="l">image</span><span class="v" id="k8sImage">v1.4.2</span></span>
-          <span class="k8s__stat"><span class="l">hpa</span><span class="v" id="k8sHpa">idle · 3–8</span></span>
-          <span class="k8s__hpa">
-            <span class="l">CPU</span>
-            <span class="k8s__meter" id="k8sMeter"><span id="k8sCpuBar"></span></span>
-            <span class="v" id="k8sCpu">6%</span>
-          </span>
-        </div>
-
-        <!-- controls -->
-        <div class="k8s__controls">
-          <button class="k8s__btn" type="button" data-act="scale-up">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>Scale up
-          </button>
-          <button class="k8s__btn" type="button" data-act="scale-down">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>Scale down
-          </button>
-          <button class="k8s__btn" type="button" data-act="kill">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Kill a pod
-          </button>
-          <button class="k8s__btn" type="button" data-act="rollout">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Rolling update
-          </button>
-          <button class="k8s__btn" type="button" data-act="load" id="k8sLoadBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Simulate load
-          </button>
-        </div>
-
-        <!-- worker nodes -->
-        <div class="k8s__nodes" id="k8sNodes"></div>
-
-        <!-- event stream -->
-        <div class="k8s__events">
-          <div class="k8s__events-head">kubectl get events --watch</div>
-          <div class="k8s__events-log" id="k8sEvents" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ CONTACT ============ -->
-    <section class="section" id="contact">
-      <div class="section__head" data-aos="fade-up">
-        <span class="kicker">Get in touch</span>
-        <h2 class="section__title">Let's build something reliable</h2>
-        <p class="section__lead">Open to cloud, platform and DevOps engineering opportunities.</p>
-      </div>
-      <div class="contact" id="contactGrid" data-aos="fade-up"></div>
-    </section>
-  </main>
-
-  <!-- ============ FOOTER ============ -->
-  <footer class="footer">
-    <div class="footer__inner">
-      <div class="footer__brand">
-        <span class="nav__logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6"/><path d="M13 18h6"/></svg>
-        </span>
-        <div>
-          <div class="footer__name">Mohamed Mohsin</div>
-          <div class="footer__sub">Cloud &amp; Platform Engineer · Chennai, India</div>
-        </div>
-      </div>
-      <div class="footer__deploy" id="footerDeploy"></div>
-      <div class="footer__legal">
-        <span id="footerYear"></span> · Built as a cloud-native experience.
-        <span class="footer__status"><i class="dot"></i> All systems operational</span>
       </div>
     </div>
-  </footer>
+  </div>
 
-  <!-- ============ LIBS ============ -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.1.0/typed.umd.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script src="./js/app.js" defer></script>
+  <div class="projects-grid" id="projectsGrid"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     TIMELINE
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="experience">
+  <div class="section__head">
+    <div class="kicker">MEMORY ARCHIVE</div>
+    <h2 class="section__title">TIMELINE</h2>
+    <p class="section__lead">Loading biographical data from persistent memory...</p>
+  </div>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     ARCHITECTURE
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="architecture">
+  <div class="section__head">
+    <div class="kicker">SYSTEM DESIGN</div>
+    <h2 class="section__title">CLOUD ARCHITECTURE</h2>
+    <p class="section__lead">Reference multi-tier deployment on AWS EKS.</p>
+  </div>
+  <div class="arch" id="arch"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     KUBERNETES PLAYGROUND
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="cluster">
+  <div class="section__head">
+    <div class="kicker">LIVE SIMULATION</div>
+    <h2 class="section__title">K8s CLUSTER</h2>
+    <p class="section__lead">Operate a simulated production cluster in real time.</p>
+  </div>
+  <div class="k8s" id="k8s">
+    <div class="k8s__bar">
+      <span class="k8s__ctx"><span class="pulse"></span>context <b>eks-prod</b> · ns <b>default</b></span>
+      <span class="k8s__stat"><span class="l">deployment</span><span class="v" id="k8sDeploy">platform-api</span></span>
+      <span class="k8s__stat"><span class="l">replicas</span><span class="v"><b id="k8sReady">0</b>/<span id="k8sDesired">3</span></span></span>
+      <span class="k8s__stat"><span class="l">image</span><span class="v" id="k8sImage">v1.4.2</span></span>
+      <span class="k8s__stat"><span class="l">hpa</span><span class="v" id="k8sHpa">idle · 3–8</span></span>
+      <span class="k8s__hpa"><span class="l">CPU</span><span class="k8s__meter"><span id="k8sCpuBar"></span></span><span class="v" id="k8sCpu">6%</span></span>
+    </div>
+    <div class="k8s__controls">
+      <button class="k8s__btn" data-act="scale-up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 15l-6-6-6 6"/></svg>Scale Up</button>
+      <button class="k8s__btn" data-act="scale-down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>Scale Down</button>
+      <button class="k8s__btn" data-act="kill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>Kill Pod</button>
+      <button class="k8s__btn" data-act="rollout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Rolling Update</button>
+      <button class="k8s__btn" data-act="load" id="k8sLoadBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Simulate Load</button>
+    </div>
+    <div class="k8s__nodes" id="k8sNodes"></div>
+    <div class="k8s__events">
+      <div class="k8s__events-head">kubectl get events --watch</div>
+      <div class="k8s__events-log" id="k8sEvents" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     DASHBOARD
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="dashboard">
+  <div class="section__head">
+    <div class="kicker">MISSION CONTROL</div>
+    <h2 class="section__title">DASHBOARD</h2>
+    <p class="section__lead">Live system telemetry and performance metrics.</p>
+  </div>
+  <div class="dashboard" id="dashboard"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     CONTACT
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="contact">
+  <div class="section__head">
+    <div class="kicker">OPEN CHANNEL</div>
+    <h2 class="section__title">CONTACT</h2>
+    <p class="section__lead">Establish a secure connection.</p>
+  </div>
+  <div class="contact" id="contactGrid"></div>
+</section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">MOHSIN<span>.OS</span> · Cloud & Platform Engineer · Chennai, India</div>
+    <div class="footer__status"><span class="pulse"></span>ALL SYSTEMS OPERATIONAL · <span id="footerYear"></span></div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════
+     AI ASSISTANT
+═══════════════════════════════════════════════════════ -->
+<div class="jarvis" id="jarvis" role="dialog" aria-label="JARVIS AI Assistant" aria-hidden="true">
+  <div class="jarvis__backdrop" id="jarvisBackdrop"></div>
+  <div class="jarvis__panel">
+    <div class="jarvis__head">
+      <div class="jarvis__head-left">
+        <div class="jarvis__avatar">
+          <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="10" stroke="currentColor" stroke-width="1"/><circle cx="20" cy="20" r="4" fill="currentColor"/><line x1="20" y1="2" x2="20" y2="8" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="32" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/><line x1="2" y1="20" x2="8" y2="20" stroke="currentColor" stroke-width="1.5"/><line x1="32" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="1.5"/></svg>
+        </div>
+        <div>
+          <div class="jarvis__title">J.A.R.V.I.S</div>
+          <div class="jarvis__sub">Just A Rather Very Intelligent System</div>
+        </div>
+      </div>
+      <button class="jarvis__close" id="jarvisClose" aria-label="Close assistant">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="jarvis__messages" id="jarvisMessages" aria-live="polite"></div>
+    <div class="jarvis__suggestions" id="jarvisSuggestions"></div>
+    <div class="jarvis__input-wrap">
+      <input class="jarvis__input" id="jarvisInput" type="text" placeholder="Ask me anything about Mohsin..." autocomplete="off" aria-label="Message JARVIS" />
+      <button class="jarvis__send" id="jarvisSend" aria-label="Send message">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2 11 13M22 2 15 22l-4-9-9-4z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- FAB -->
+<button class="jarvis-fab" id="jarvisFab" aria-label="Open JARVIS AI Assistant">
+  <div class="jarvis-fab__ring"></div>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="21"/><line x1="3" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="21" y2="12"/></svg>
+  <span class="jarvis-fab__label">JARVIS</span>
+</button>
+
+<!-- Project hologram modal -->
+<div class="holo-modal" id="holoModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="holo-modal__backdrop" id="holoBackdrop"></div>
+  <div class="holo-modal__panel" id="holoPanel"></div>
+</div>
+
+<!-- Konami / secret overlay -->
+<div class="secret" id="secret" aria-hidden="true">
+  <div class="secret__inner">
+    <div class="secret__title">⚡ CLASSIFIED ACCESS GRANTED ⚡</div>
+    <div class="secret__msg" id="secretMsg"></div>
+    <button class="btn-holo" id="secretClose">CLOSE</button>
+  </div>
+</div>
+
+<!-- LIBS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.1.0/typed.umd.js"></script>
+<script src="./js/app.js" defer></script>
 </body>
 </html>
