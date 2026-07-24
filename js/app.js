@@ -16,6 +16,7 @@ const DATA = {
     phone: '+91 7305421447',
     github: 'https://github.com/iamohsin1273',
     linkedin: 'https://linkedin.com/in/iam-mohsin',
+    resume: './assets/resume/MohamedMohsinResume.pdf',
     summary:
       'Junior DevOps Engineer working hands-on with Kubernetes, Docker and Jenkins to run containerized deployments and CI/CD pipelines. I support AWS infrastructure across EC2, EKS and ECS, with observability built on Prometheus and Grafana — already handling real production workflows.',
     tags: ['AWS', 'Kubernetes', 'Terraform', 'Docker', 'CI/CD', 'Observability']
@@ -210,7 +211,7 @@ const DATA = {
   /* JARVIS knowledge base — intent-matched responses */
   jarvis: {
     greeting: "Good day. I am JARVIS — Mohsin's personal AI. Ask me about his experience, skills, projects, or why he'd be a strong addition to your team.",
-    suggestions: ['Tell me about Mohsin', 'His Kubernetes experience', 'Show his AWS projects', 'What technologies?', 'Why hire him?'],
+    suggestions: ['Tell me about Mohsin', 'His Kubernetes experience', 'Show his AWS projects', 'Download résumé', 'Why hire him?'],
     intents: [
       { k: ['who', 'about', 'tell me about', 'introduce', 'yourself', 'mohsin'],
         a: "Mohamed Mohsin is a Cloud & Platform / DevOps Engineer based in Chennai, India. He works hands-on with Kubernetes, Docker and Jenkins to run containerized deployments and CI/CD pipelines, and supports AWS across EC2, EKS and ECS. He's a Junior DevOps Engineer at Revolite Infotech, already operating real production workflows." },
@@ -230,6 +231,8 @@ const DATA = {
         a: "Why hire Mohsin? He already runs real production workflows, not just tutorials — CI/CD, EKS, IaC and observability end-to-end. He automates relentlessly (Terraform, Ansible), builds security into pipelines by default (Trivy, SonarQube, image signing), and thinks in SLOs and error budgets. He's early-career, fast-learning, and ships reliable systems." },
       { k: ['contact', 'email', 'reach', 'hire him', 'get in touch', 'phone'],
         a: "You can reach Mohsin at iamohsin0033@gmail.com or +91 7305421447. He's on GitHub (@iamohsin1273) and LinkedIn (/in/iam-mohsin). Head to the Contact section to open a channel." },
+      { k: ['resume', 'cv', 'download', 'curriculum'],
+        a: "You can download Mohsin's résumé here: <a href='./assets/resume/MohamedMohsinResume.pdf' target='_blank' rel='noopener' download>MohamedMohsinResume.pdf</a>. There's also a RÉSUMÉ button in the hero section." },
       { k: ['experience', 'work', 'job', 'revolite', 'career'],
         a: "Mohsin is a Junior DevOps Engineer at Revolite Infotech, Chennai (Jan 2026–present). He handles Linux administration, AWS provisioning (EC2/IAM/S3/ECS/EKS/CloudFormation), Git-based release management, Ansible automation, and infrastructure monitoring. He holds a B.Tech in CSE from D.R. M.G.R. University." },
       { k: ['project', 'built', 'portfolio', 'work sample'],
@@ -483,9 +486,11 @@ function initHero() {
   gh.href = DATA.profile.github; gh.target = '_blank'; gh.rel = 'noopener';
   const li = el('a', 'btn-holo', `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LINKEDIN`);
   li.href = DATA.profile.linkedin; li.target = '_blank'; li.rel = 'noopener';
+  const cv = el('a', 'btn-holo', `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> RÉSUMÉ`);
+  cv.href = DATA.profile.resume; cv.target = '_blank'; cv.rel = 'noopener'; cv.setAttribute('download', '');
   const ct = el('a', 'btn-holo btn-holo--gold', `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> CONTACT`);
   ct.href = '#contact';
-  cta.append(gh, li, ct);
+  cta.append(gh, li, cv, ct);
   // stats
   const stats = $('#heroStats');
   DATA.heroStats.forEach(s => {
