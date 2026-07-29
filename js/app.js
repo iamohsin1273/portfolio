@@ -22,9 +22,23 @@ function initLenis() {
   if (!hasLenis || reduceMo) return;
   lenis = new Lenis({ duration: 1.1, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
   if (hasGSAP && window.ScrollTrigger) {
+    ScrollTrigger.scrollerProxy(document.documentElement, {
+      scrollTop(value) {
+        return arguments.length ? lenis.scrollTo(value, { duration: 0, immediate: true }) : lenis.scroll.instance.scroll.y;
+      },
+      scrollLeft(value) {
+        return arguments.length ? lenis.scrollTo(value, { horizontal: true, duration: 0, immediate: true }) : lenis.scroll.instance.scroll.x;
+      },
+      getBoundingClientRect() {
+        return { top: 0, left: 0, width: innerWidth, height: innerHeight };
+      },
+      pinType: document.documentElement.style.transform ? 'transform' : 'fixed'
+    });
     lenis.on('scroll', ScrollTrigger.update);
+    ScrollTrigger.addEventListener('refresh', () => lenis.update());
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
+    ScrollTrigger.refresh();
   } else {
     const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
     requestAnimationFrame(raf);
