@@ -158,8 +158,8 @@ function initBuildDAG() {
 
   // scrubbed assembly + horizontal pan of the DAG as the section pins (desktop only)
   const wrap = $('#build-scroll'), dag = $('#build-dag');
-  gsap.set(nodeEls, { opacity: 1, scale: 0.6, transformOrigin: '50% 50%' });
-  edgeEls.forEach(e => gsap.set(e, { opacity: 0.35 }));
+  gsap.set(nodeEls, { opacity: 1, scale: 0.84, transformOrigin: '50% 50%' });
+  edgeEls.forEach(e => gsap.set(e, { opacity: 1 }));
 
   ScrollTrigger.create({
     trigger: '#build',
@@ -169,11 +169,11 @@ function initBuildDAG() {
     scrub: 0.6,
     onUpdate: self => {
       const p = self.progress;
-      // light nodes in order
+      // accent nodes in order
       nodeEls.forEach((n, i) => {
         const thresh = i / nodeEls.length * 0.8;
         const on = p > thresh;
-        gsap.to(n, { opacity: on ? 1 : 0.15, scale: on ? 1 : 0.6, duration: 0.3, overwrite: 'auto' });
+        gsap.to(n, { opacity: 1, scale: on ? 1 : 0.84, duration: 0.3, overwrite: 'auto' });
         n.classList.toggle('lit', on);
       });
       edgeEls.forEach((e, i) => e.classList.toggle('drawn', p > (i / edgeEls.length * 0.8 + 0.05)));
