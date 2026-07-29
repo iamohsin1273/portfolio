@@ -158,7 +158,8 @@ function initBuildDAG() {
 
   // scrubbed assembly + horizontal pan of the DAG as the section pins (desktop only)
   const wrap = $('#build-scroll'), dag = $('#build-dag');
-  gsap.set(nodeEls, { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' });
+  gsap.set(nodeEls, { opacity: 1, scale: 0.6, transformOrigin: '50% 50%' });
+  edgeEls.forEach(e => gsap.set(e, { opacity: 0.35 }));
 
   ScrollTrigger.create({
     trigger: '#build',

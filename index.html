@@ -95,10 +95,10 @@ main{margin-left:var(--rail-w)}
 
 /* ══ STAGE 1 — SOURCE ══ */
 #source{min-height:100vh;display:flex;align-items:center;gap:clamp(32px,6vw,80px);
-  padding:0 clamp(32px,7vw,100px);border-bottom:1px solid var(--rule)}
-.source-inner{max-width:760px;width:100%;flex:1 1 auto}
+  padding:0 clamp(32px,7vw,100px);border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.source-inner{flex:1 1 0;min-width:0;max-width:calc(100% - 320px)}
 /* framed editorial portrait */
-.source-portrait{flex:0 0 auto;width:clamp(200px,22vw,300px);position:relative;opacity:0;transform:translateY(20px)}
+.source-portrait{flex:0 0 clamp(200px,22vw,300px);position:relative;opacity:0;transform:translateY(20px)}
 .source-portrait figure{position:relative;border:1px solid var(--rule);background:var(--panel);padding:10px;border-radius:4px}
 .source-portrait img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:2px;
   filter:grayscale(1) contrast(1.04);transition:filter .5s var(--ease)}
@@ -116,9 +116,10 @@ main{margin-left:var(--rail-w)}
 .source-commit::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--ok);flex-shrink:0}
 .source-hash{color:var(--accent)}
 h1.source-name{font-family:var(--ff-d);font-weight:700;
-  font-size:clamp(52px,10vw,130px);line-height:.92;letter-spacing:-.02em;color:var(--ink);
-  margin-bottom:28px}
+  font-size:clamp(52px,8vw,90px);line-height:.92;letter-spacing:-.02em;color:var(--ink);
+  margin-bottom:28px;}
 h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
+@media(max-width:1120px){h1.source-name{font-size:clamp(52px,10vw,82px)}}
 .source-role{font-family:var(--ff-b);font-weight:400;font-size:clamp(16px,2.2vw,22px);
   color:var(--ink-soft);margin-bottom:16px;opacity:0;transform:translateY(20px)}
 .source-tagline{font-family:var(--ff-b);font-weight:600;font-size:clamp(14px,1.8vw,18px);
@@ -149,16 +150,16 @@ h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
 .build-header h2 em{font-style:normal;color:var(--accent)}
 .build-scroll-wrap{position:relative;height:520px;overflow:hidden}
 .build-dag{position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;
-  display:flex;align-items:center;padding:0 clamp(32px,7vw,100px)}
+  display:flex;align-items:center;padding:0 clamp(32px,7vw,100px);min-height:100%}
 .dag-svg{min-width:900px;width:100%;height:420px;overflow:visible}
+.dag-edge{stroke:var(--rule);stroke-width:1.5;fill:none;stroke-dasharray:4 4;stroke-dashoffset:0;opacity:.35;transition:stroke .4s var(--ease),opacity .4s var(--ease)}
+.dag-edge.drawn{stroke:var(--ink-soft);opacity:1;stroke-dasharray:2 3}
 .dag-node{cursor:default}
 .dag-node circle{fill:var(--paper-2);stroke:var(--rule);stroke-width:1.5;transition:.4s var(--ease)}
 .dag-node.lit circle{fill:var(--ink);stroke:var(--ink)}
 .dag-node.lit .dag-icon{color:var(--paper)}
 .dag-node text{font-family:var(--ff-m);font-size:10px;fill:var(--ink-faint);text-anchor:middle}
 .dag-node.lit text{fill:var(--ink)}
-.dag-edge{stroke:var(--rule);stroke-width:1.5;fill:none;stroke-dasharray:200;stroke-dashoffset:200;transition:stroke .4s}
-.dag-edge.drawn{stroke:var(--ink-soft)}
 .dag-cert{font-family:var(--ff-m);font-size:9px;fill:var(--ok);text-anchor:middle}
 
 /* ══ STAGE 3 — TEST / REVIEW ══ */
@@ -326,6 +327,10 @@ h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
   .milestone-dot{display:none}
   .milestone-card{margin-top:0}
 }
+@media(min-width:901px){
+  #source{flex-wrap:nowrap}
+}
+
 @media(max-width:560px){
   h1.source-name{font-size:clamp(40px,13vw,64px)}
   .promote-diagram{padding:24px 16px}
