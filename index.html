@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Mohamed Mohsin — Cloud & Platform / DevOps Engineer</title>
-<meta name="description" content="Mohamed Mohsin — Cloud & Platform / DevOps Engineer in Chennai, India. AWS Cloud Practitioner. Jenkins/IIS deployment pipelines, Terraform, Kubernetes, Docker, Linux."/>
+<title>Mohamed Mohsin — DevOps Engineer</title>
+<meta name="description" content="Mohamed Mohsin — Junior DevOps Engineer in Chennai, India. AWS DevOps certified. CI/CD with Jenkins & GitHub Actions, Kubernetes, Docker, Terraform, Ansible, and DevSecOps (SonarQube, Trivy, K8sGPT)."/>
 <meta name="author" content="Mohamed Mohsin"/>
 <meta name="theme-color" content="#12203A"/>
 <link rel="canonical" href="https://iamohsin1273.github.io/portfolio/"/>
 <meta property="og:type" content="website"/>
-<meta property="og:title" content="Mohamed Mohsin — Cloud & Platform / DevOps Engineer"/>
-<meta property="og:description" content="I move code from commit to production. AWS Cloud Practitioner · Jenkins/IIS pipelines · Terraform · Kubernetes."/>
+<meta property="og:title" content="Mohamed Mohsin — DevOps Engineer"/>
+<meta property="og:description" content="I build and secure the path from commit to Kubernetes. AWS DevOps certified · Jenkins · Docker · Trivy · SonarQube · K8sGPT."/>
 <meta property="og:url" content="https://iamohsin1273.github.io/portfolio/"/>
 <meta property="og:image" content="https://iamohsin1273.github.io/portfolio/assets/images/profile.jpeg"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Mohamed Mohsin — Cloud & Platform / DevOps Engineer"/>
-<meta name="twitter:description" content="I move code from commit to production. AWS Cloud Practitioner · Jenkins/IIS pipelines · Terraform · Kubernetes."/>
+<meta name="twitter:title" content="Mohamed Mohsin — DevOps Engineer"/>
+<meta name="twitter:description" content="I build and secure the path from commit to Kubernetes. AWS DevOps certified · Jenkins · Docker · Trivy · SonarQube · K8sGPT."/>
 <meta name="twitter:image" content="https://iamohsin1273.github.io/portfolio/assets/images/profile.jpeg"/>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F4F1EA'/%3E%3Cpath d='M22 70V30h10l18 26 18-26h10v40H68V48L52 70h-4L32 48v22z' fill='%2312203A'/%3E%3Crect x='20' y='78' width='60' height='4' fill='%23E8563F'/%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Mohamed Mohsin","jobTitle":"Cloud & Platform / DevOps Engineer","address":{"@type":"PostalAddress","addressLocality":"Chennai","addressCountry":"India"},"email":"iamohsin0033@gmail.com","url":"https://iamohsin1273.github.io/portfolio/","sameAs":["https://github.com/iamohsin1273","https://linkedin.com/in/iam-mohsin"],"knowsAbout":["AWS","Terraform","Kubernetes","Docker","Jenkins","IIS","Linux","Git","CI/CD"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Mohamed Mohsin","jobTitle":"Junior DevOps Engineer","worksFor":{"@type":"Organization","name":"Revolite Infotech Pvt. Ltd."},"alumniOf":{"@type":"CollegeOrUniversity","name":"D.R. M.G.R. Educational and Research Institute"},"address":{"@type":"PostalAddress","addressLocality":"Chennai","addressCountry":"India"},"email":"iamohsin0033@gmail.com","url":"https://iamohsin1273.github.io/portfolio/","sameAs":["https://github.com/iamohsin1273","https://linkedin.com/in/iam-mohsin"],"knowsAbout":["AWS","Kubernetes","Docker","Jenkins","GitHub Actions","Terraform","Ansible","Linux","Git","CI/CD","DevSecOps","SonarQube","Trivy","Prometheus","Grafana","Python"]}</script>
 <style>
 /* ══ SIGNAL — Editorial / Technical Print. Pipeline made visible. ══ */
 :root{
@@ -181,6 +181,9 @@ h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
 .ledger-desc{font-size:13px;color:var(--ink-soft);line-height:1.5}
 .ledger-meta{font-family:var(--ff-m);font-size:10px;letter-spacing:.1em;color:var(--ink-faint);margin-top:6px}
 .ledger-score{font-family:var(--ff-m);font-size:22px;font-weight:500;color:var(--ok);white-space:nowrap;padding-top:2px}
+.ledger-status{font-family:var(--ff-m);font-size:11px;letter-spacing:.16em;white-space:nowrap;padding-top:6px;font-weight:500}
+.ledger-status.ok{color:var(--ok)}
+.ledger-status.live{color:var(--accent)}
 .ledger-score.active-score{color:var(--accent)}
 .ledger-score.pending-score{color:var(--ink-faint)}
 .ledger-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--ff-m);font-size:9px;
@@ -310,6 +313,7 @@ h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
   main{margin-left:0;padding-top:54px}
   .foot{margin-left:0}
   .source-annotation{display:none}
+  .source-portrait{display:none}
   .deploy-grid{grid-template-columns:1fr;gap:28px}
   .promote-narrative{grid-template-columns:1fr;gap:28px}
   .build-scroll-wrap{height:auto}
@@ -331,7 +335,7 @@ h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.15s!important}
   h1.source-name .char{opacity:1;transform:none}
-  .source-role,.source-tagline,.source-cta,.source-annotation,.scroll-hint{opacity:1;transform:none}
+  .source-role,.source-tagline,.source-cta,.source-annotation,.source-portrait,.scroll-hint{opacity:1;transform:none}
   .flow-node{opacity:1;transform:none}
   .rv{opacity:1;transform:none}
 }
@@ -372,17 +376,23 @@ h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
     <div class="source-inner">
       <p class="source-commit">commit <span class="source-hash">a1b2c3d</span> · main · deployed to production</p>
       <h1 class="source-name" id="source-name" data-text="Mohamed Mohsin">Mohamed Mohsin</h1>
-      <p class="source-role">Cloud &amp; Platform / DevOps Engineer — Chennai, India</p>
-      <p class="source-tagline">I move code from commit to production: Jenkins/IIS pipelines, promoted Dev → UAT → Prod, backed up before every release.</p>
+      <p class="source-role">Junior DevOps Engineer — Chennai, India</p>
+      <p class="source-tagline">I build and secure the path from commit to Kubernetes: CI/CD pipelines, container &amp; code scanning, and AI-assisted cluster diagnostics.</p>
       <div class="source-cta">
         <a class="btn primary" href="#build">View the pipeline ↓</a>
         <a class="btn" href="assets/resume/MohamedMohsinResume.pdf" download>Download résumé</a>
       </div>
+      <div class="source-annotation" aria-hidden="true">
+        <span class="ann">AWS DEVOPS CERTIFIED · FITA</span>
+        <span class="ann">DEVSECOPS · JENKINS · K8S · TRIVY</span>
+        <span class="ann">REVOLITE INFOTECH · CHENNAI</span>
+      </div>
     </div>
-    <div class="source-annotation" aria-hidden="true">
-      <span class="ann">AWS CLOUD PRACTITIONER</span>
-      <span class="ann">30-LAB TERRAFORM CURRICULUM</span>
-      <span class="ann">JENKINS · IIS · DOCKER · K8S</span>
+    <div class="source-portrait" aria-hidden="true">
+      <figure>
+        <img src="assets/images/profile.jpeg" alt="Mohamed Mohsin" width="300" height="400" loading="eager" decoding="async"/>
+        <figcaption><span>M. MOHSIN</span><b>● ONLINE</b></figcaption>
+      </figure>
     </div>
     <span class="scroll-hint" id="scroll-hint">SCROLL TO BUILD</span>
   </section>
@@ -395,7 +405,7 @@ h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
     </div>
     <div class="build-scroll-wrap" id="build-scroll">
       <div class="build-dag" id="build-dag">
-        <svg class="dag-svg" id="dag-svg" viewBox="0 0 1000 420" role="img" aria-label="Skill dependency graph: Linux underpins Docker, Git and Jenkins; Docker feeds Kubernetes; Terraform provisions AWS; Jenkins deploys to IIS.">
+        <svg class="dag-svg" id="dag-svg" viewBox="0 0 1000 420" role="img" aria-label="Skill dependency graph: Linux underpins Docker, Git and Jenkins; Docker and Jenkins feed Kubernetes; Jenkins runs Trivy scans; Kubernetes feeds Prometheus; Terraform and Ansible provision AWS.">
           <!-- edges (drawn by JS) -->
           <g id="dag-edges" fill="none"></g>
           <!-- nodes injected/animated by JS; static fallback text below for a11y/SEO -->
@@ -406,45 +416,54 @@ h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
     <!-- SEO / no-JS accessible list of the same content -->
     <noscript><ul style="padding:0 100px 60px;columns:2;font-family:var(--ff-m)">
       <li>Linux — foundation</li><li>Git — version control</li><li>Docker — containers</li>
-      <li>Kubernetes — orchestration</li><li>Jenkins — CI/CD</li><li>IIS — Windows web host</li>
-      <li>Terraform — infrastructure as code</li><li>AWS — cloud (Cloud Practitioner certified)</li>
+      <li>Kubernetes — orchestration</li><li>Jenkins — CI/CD</li><li>Trivy — vulnerability scanning</li>
+      <li>Terraform — infrastructure as code</li><li>Ansible — configuration management</li>
+      <li>Prometheus — monitoring</li><li>AWS — cloud (AWS DevOps certified, FITA)</li>
     </ul></noscript>
   </section>
 
   <!-- ══ 03 · TEST / REVIEW (Terraform lab ledger) ══ -->
   <section class="stage" id="test" aria-labelledby="test-h">
     <div class="test-inner">
-      <p class="stage-label"><span class="stage-num">03</span> Test / Review · learning ledger</p>
-      <h2 id="test-h">Still shipping, still <em>reviewed</em>.</h2>
-      <p class="test-sub">A self-driven 30-lab Terraform curriculum — every lab gated by a PR-style review and a viva exam before the next unlocks. This is deliberate practice, logged like a changelog.</p>
+      <p class="stage-label"><span class="stage-num">03</span> Test / Review · quality &amp; security gates</p>
+      <h2 id="test-h">Nothing reaches the cluster <em>unchecked</em>.</h2>
+      <p class="test-sub">In my DevSecOps pipeline, every commit passes a chain of automated gates — code quality, dependency and image vulnerabilities, a trusted registry, and AI-assisted cluster review — before it ships.</p>
       <div class="ledger" id="ledger">
         <div class="ledger-row">
           <span class="ledger-dot done" aria-hidden="true"></span>
           <div>
-            <div class="ledger-title">Lab 01 — Provider config &amp; first resource</div>
-            <div class="ledger-desc">Authored provider blocks, created and destroyed real infrastructure, passed PR review + viva.</div>
-            <span class="ledger-badge badge-done">✓ Merged</span>
+            <div class="ledger-title">SonarQube — code quality &amp; static analysis</div>
+            <div class="ledger-desc">Runs on every Jenkins build; the quality gate flags bugs, code smells, and security hotspots before an artifact is built.</div>
+            <span class="ledger-badge badge-done">✓ Gate enforced</span>
           </div>
-          <div class="ledger-score" data-score="92">92<span style="font-size:12px;color:var(--ink-faint)">/100</span></div>
+          <div class="ledger-status ok">PASS</div>
+        </div>
+        <div class="ledger-row">
+          <span class="ledger-dot done" aria-hidden="true"></span>
+          <div>
+            <div class="ledger-title">Trivy — container &amp; dependency scanning</div>
+            <div class="ledger-desc">Image and filesystem scans catch known CVEs before any image is promoted, so vulnerable layers never reach the registry.</div>
+            <span class="ledger-badge badge-done">✓ Gate enforced</span>
+          </div>
+          <div class="ledger-status ok">PASS</div>
+        </div>
+        <div class="ledger-row">
+          <span class="ledger-dot done" aria-hidden="true"></span>
+          <div>
+            <div class="ledger-title">Harbor — trusted image registry</div>
+            <div class="ledger-desc">Only scanned images are pushed to Harbor and pulled by the cluster — a single, controlled source of truth for deployable artifacts.</div>
+            <span class="ledger-badge badge-done">✓ Gate enforced</span>
+          </div>
+          <div class="ledger-status ok">PASS</div>
         </div>
         <div class="ledger-row">
           <span class="ledger-dot active" aria-hidden="true"></span>
           <div>
-            <div class="ledger-title">Lab 02 — Variables, outputs &amp; state</div>
-            <div class="ledger-desc">In progress: parameterising configs and reasoning about state. PR open, viva pending.</div>
-            <span class="ledger-badge badge-review">● In review</span>
+            <div class="ledger-title">K8sGPT — AI-assisted cluster review</div>
+            <div class="ledger-desc">Continuously analyses Kubernetes workloads for misconfiguration, failed pods, and resource constraints — with OpenAI-backed explanations delivered to Slack.</div>
+            <span class="ledger-badge badge-review">● Live</span>
           </div>
-          <div class="ledger-score active-score">·· <span style="font-size:12px;color:var(--ink-faint)">/100</span></div>
-        </div>
-        <!-- MOHSIN: add Labs 03+ here as you complete them — copy a row, set dot class (done/pending), score, and badge. -->
-        <div class="ledger-row">
-          <span class="ledger-dot pending" aria-hidden="true"></span>
-          <div>
-            <div class="ledger-title">Labs 03 – 30 — locked</div>
-            <div class="ledger-desc">Modules, remote state, workspaces, and provider depth — each unlocked by passing the one before it.</div>
-            <span class="ledger-badge badge-pending">Queued</span>
-          </div>
-          <div class="ledger-score pending-score">28<span style="font-size:12px">left</span></div>
+          <div class="ledger-status live">LIVE</div>
         </div>
       </div>
     </div>
@@ -453,48 +472,49 @@ h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
   <!-- ══ 04 · PROMOTE (flagship case study) ══ -->
   <section class="stage" id="promote" aria-labelledby="promote-h">
     <div class="promote-head">
-      <p class="stage-label"><span class="stage-num">04</span> Promote · flagship case study</p>
-      <h2 id="promote-h">Dev → UAT → Prod, <em>the real pipeline</em>.</h2>
-      <p>The customer-portal deployment pipeline I run in production: a Linux Jenkins server driving deployments onto a Windows IIS host over an SMB mount — promoted stage by stage, backed up before every release.</p>
+      <p class="stage-label"><span class="stage-num">04</span> Promote · flagship project</p>
+      <h2 id="promote-h">AI-Powered <em>DevSecOps</em> pipeline for Kubernetes.</h2>
+      <p>A self-built, end-to-end pipeline that takes code from GitHub to a Kubernetes cluster — gated by code-quality and vulnerability scanning, served from a trusted registry, and watched by AI-assisted diagnostics that report to Slack. <a href="https://github.com/iamohsin1273" target="_blank" rel="noopener" style="color:var(--accent);border-bottom:1px solid var(--accent)">View on GitHub →</a></p>
     </div>
     <div class="promote-diagram" id="promote-diagram">
       <div class="flow" id="promote-flow">
-        <div class="flow-node" data-i="0"><div class="fn-env">Source</div><div class="fn-title">Linux Jenkins</div><div class="fn-desc">Build job triggers on change; prepares the release artifact.</div></div>
+        <div class="flow-node" data-i="0"><div class="fn-env">Source</div><div class="fn-title">GitHub → Jenkins</div><div class="fn-desc">A push triggers the Jenkins pipeline that orchestrates every downstream stage.</div></div>
         <span class="flow-arrow">→</span>
-        <div class="flow-node" data-i="1"><div class="fn-env">Transport</div><div class="fn-title">SMB mount</div><div class="fn-desc">Jenkins mounts the Windows IIS server's share to reach the web root.</div></div>
+        <div class="flow-node" data-i="1"><div class="fn-env">Quality</div><div class="fn-title">SonarQube</div><div class="fn-desc">Static analysis and a quality gate on code smells, bugs, and security hotspots.</div></div>
         <span class="flow-arrow">→</span>
-        <div class="flow-node" data-i="2"><div class="fn-env">Deploy</div><div class="fn-title">xcopy → IIS</div><div class="fn-desc">Files copied to the site directory on the Windows IIS server.</div></div>
+        <div class="flow-node" data-i="2"><div class="fn-env">Security</div><div class="fn-title">Docker + Trivy</div><div class="fn-desc">Image is built, then scanned for CVEs before it's allowed to be published.</div></div>
         <span class="flow-arrow">→</span>
-        <div class="flow-node" data-i="3"><div class="fn-env">Cutover</div><div class="fn-title">App-pool restart</div><div class="fn-desc">IIS application pool recycled so the new build goes live cleanly.</div></div>
+        <div class="flow-node" data-i="3"><div class="fn-env">Registry</div><div class="fn-title">Harbor</div><div class="fn-desc">Only scanned, trusted images are pushed to Harbor and pulled by the cluster.</div></div>
         <span class="flow-arrow">→</span>
-        <div class="flow-node" data-i="4"><div class="fn-env">Safety</div><div class="fn-title">Pre-deploy backup</div><div class="fn-desc">Current release archived first, so any promotion is reversible.</div></div>
+        <div class="flow-node" data-i="4"><div class="fn-env">Deploy</div><div class="fn-title">Kubernetes</div><div class="fn-desc">Workloads deployed to the cluster via a GitOps-inspired workflow.</div></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" data-i="5"><div class="fn-env">Diagnose</div><div class="fn-title">K8sGPT → Slack</div><div class="fn-desc">AI analyses cluster health and posts troubleshooting insights to Slack.</div></div>
       </div>
     </div>
     <div class="promote-narrative">
       <div class="narr-block rv">
         <h3>Context</h3>
-        <p>A customer-facing portal site is promoted across three environments — Dev, UAT, then Prod. UAT → Prod is the promotion that matters: it's the release gate before real users see a change.</p>
+        <p>A self-learnt project to prove out a secure, end-to-end delivery path for containerised applications — integrating the DevSecOps toolchain I work with into one automated pipeline, from commit to a running Kubernetes cluster.</p>
       </div>
       <div class="narr-block rv">
-        <h3>What I do</h3>
+        <h3>What it does</h3>
         <ul>
-          <li>Run UAT → Prod promotions on the Jenkins/IIS pipeline</li>
-          <li>Handle direct file uploads and xcopy-based deploys to the Windows server</li>
-          <li>Recycle IIS application pools so new builds take effect</li>
-          <li>Take pre-deployment backups so every release is reversible</li>
+          <li>Integrates GitHub, Jenkins, SonarQube, Trivy, Docker, Harbor &amp; Kubernetes into one flow</li>
+          <li>Automates Kubernetes analysis for misconfig, failed workloads &amp; resource constraints</li>
+          <li>Scans images and code quality before any deploy, GitOps-inspired</li>
+          <li>Adds OpenAI-powered diagnostics via K8sGPT with Slack notifications</li>
         </ul>
       </div>
       <div class="narr-block rv">
-        <h3>What breaks / the runbook</h3>
-        <p>SMB mount availability, app-pool state, and file-lock timing are the usual failure points. The runbook covers backup-first, verify-after, and a clean rollback path to the previous archived release.</p>
-        <!-- MOHSIN: add concrete incident/runbook details or metrics here if you'd like. -->
+        <h3>Why it matters</h3>
+        <p>Security and quality are enforced as gates, not afterthoughts — vulnerable images and low-quality code are caught before they reach the cluster. When something does go wrong at runtime, AI-assisted diagnostics shorten the path from incident to insight.</p>
       </div>
       <div class="narr-block rv">
-        <h3>What I'd improve</h3>
+        <h3>What I'd extend</h3>
         <ul>
-          <li>Replace xcopy/SMB with a versioned artifact + automated rollback</li>
-          <li>Add health-check gating before the app-pool cutover</li>
-          <li>Codify the Windows host + IIS config in Terraform/Ansible</li>
+          <li>Codify cluster &amp; infra provisioning in Terraform and Ansible</li>
+          <li>Add Prometheus/Grafana dashboards and alerting on the deployed workloads</li>
+          <li>Promote across environments with automated rollback on failed health checks</li>
         </ul>
       </div>
     </div>
@@ -545,33 +565,33 @@ h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
         <div class="milestone">
           <span class="milestone-dot"></span>
           <div class="milestone-card">
-            <div class="milestone-time">FOUNDATION</div>
-            <h3>Linux, Git &amp; the fundamentals</h3>
-            <p>Hands-on with Linux administration, version control, and the shell that underpins everything else.</p>
+            <div class="milestone-time">2021 – 2025</div>
+            <h3>B.Tech, Computer Science</h3>
+            <p>Computer Science &amp; Engineering at D.R. M.G.R. Educational and Research Institute, Chennai.</p>
           </div>
         </div>
         <div class="milestone">
           <span class="milestone-dot"></span>
           <div class="milestone-card">
-            <div class="milestone-time">CERTIFIED</div>
-            <h3>AWS Cloud Practitioner</h3>
-            <p>Cloud fundamentals certified — the vocabulary and mental model for building on AWS.</p>
+            <div class="milestone-time">JUN 2025 · CERTIFIED</div>
+            <h3>AWS DevOps Certification</h3>
+            <p>Completed the AWS DevOps certification with FITA Academy — pipelines, cloud services, and automation on AWS.</p>
           </div>
         </div>
         <div class="milestone">
           <span class="milestone-dot"></span>
           <div class="milestone-card">
-            <div class="milestone-time">PRODUCTION</div>
-            <h3>DevOps — Jenkins/IIS pipelines</h3>
-            <p>Running real Dev → UAT → Prod promotions: SMB-mounted deploys, IIS app-pool restarts, pre-deploy backups.</p>
+            <div class="milestone-time">SELF-LEARNT</div>
+            <h3>AI-Powered DevSecOps Pipeline</h3>
+            <p>Built an end-to-end secure delivery pipeline for Kubernetes with SonarQube, Trivy, Harbor, K8sGPT and Slack diagnostics.</p>
           </div>
         </div>
         <div class="milestone now">
           <span class="milestone-dot"></span>
           <div class="milestone-card">
-            <div class="milestone-time">NOW</div>
-            <h3>Terraform 30-lab curriculum</h3>
-            <p>Deliberate IaC practice with PR reviews and viva gating. Lab 01 merged (92/100), Lab 02 in review.</p>
+            <div class="milestone-time">NOW · JAN 2026 →</div>
+            <h3>Junior DevOps Engineer — Revolite Infotech</h3>
+            <p>Linux administration, AWS (EC2, IAM, S3, ECS, EKS, CloudFormation), Ansible automation, release management, and infra monitoring.</p>
           </div>
         </div>
         <div class="milestone next">
@@ -579,7 +599,7 @@ h1.source-name .char{display:inline-block;opacity:0;transform:translateY(60px)}
           <div class="milestone-card">
             <div class="milestone-time">NEXT</div>
             <h3>Deeper cloud &amp; platform work</h3>
-            <p>Growing from operating pipelines toward designing them — IaC-first, Kubernetes-native platforms.</p>
+            <p>Growing from operating pipelines toward designing them — IaC-first, Kubernetes-native, security-gated platforms.</p>
           </div>
         </div>
       </div>

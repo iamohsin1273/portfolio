@@ -84,7 +84,7 @@ function initSource() {
     c === ' ' ? ' ' : `<span class="char" aria-hidden="true">${c}</span>`
   ).join('');
   const chars = $$('.char', nameEl);
-  const fades = ['.source-role', '.source-tagline', '.source-cta', '.source-annotation', '#scroll-hint']
+  const fades = ['.source-role', '.source-tagline', '.source-cta', '.source-annotation', '.source-portrait', '#scroll-hint']
     .map(s => $(s)).filter(Boolean);
 
   if (reduceMo || !hasGSAP) {
@@ -100,19 +100,22 @@ function initSource() {
 /* ══ 02 · BUILD — dependency DAG assembles on scroll ══ */
 const DAG = {
   nodes: [
-    { id: 'linux', label: 'Linux', x: 140, y: 210 },
-    { id: 'git', label: 'Git', x: 320, y: 90 },
-    { id: 'docker', label: 'Docker', x: 320, y: 210 },
-    { id: 'jenkins', label: 'Jenkins', x: 320, y: 330 },
-    { id: 'k8s', label: 'Kubernetes', x: 520, y: 150 },
-    { id: 'iis', label: 'IIS', x: 520, y: 330 },
-    { id: 'terraform', label: 'Terraform', x: 720, y: 210 },
-    { id: 'aws', label: 'AWS', x: 900, y: 210, cert: 'CP certified' },
+    { id: 'linux', label: 'Linux', x: 110, y: 210 },
+    { id: 'git', label: 'Git', x: 300, y: 80 },
+    { id: 'docker', label: 'Docker', x: 300, y: 210 },
+    { id: 'jenkins', label: 'Jenkins', x: 300, y: 340 },
+    { id: 'k8s', label: 'Kubernetes', x: 500, y: 150 },
+    { id: 'trivy', label: 'Trivy', x: 500, y: 320 },
+    { id: 'terraform', label: 'Terraform', x: 690, y: 90 },
+    { id: 'ansible', label: 'Ansible', x: 690, y: 230 },
+    { id: 'prometheus', label: 'Prometheus', x: 690, y: 370 },
+    { id: 'aws', label: 'AWS', x: 890, y: 210, cert: 'AWS DevOps · FITA' },
   ],
   edges: [
     ['linux', 'git'], ['linux', 'docker'], ['linux', 'jenkins'],
-    ['docker', 'k8s'], ['jenkins', 'iis'], ['jenkins', 'k8s'],
-    ['terraform', 'aws'], ['k8s', 'terraform'], ['git', 'jenkins'],
+    ['git', 'jenkins'], ['docker', 'k8s'], ['jenkins', 'k8s'],
+    ['jenkins', 'trivy'], ['k8s', 'prometheus'],
+    ['terraform', 'aws'], ['ansible', 'aws'], ['k8s', 'aws'],
   ],
 };
 function initBuildDAG() {
