@@ -114,17 +114,17 @@ function initSource() {
     .to(fades, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out', stagger: 0.12 }, '-=0.3');
 }
 
-/* ══ 02 · BUILD — a signal relay assembles on scroll ══ */
+/* ══ 02 · BUILD — interactive signal network ══ */
 const DAG = {
   nodes: [
-    { id: 'source', label: 'Source', caption: 'Git', x: 140, y: 120, detail: 'A commit arrives as the first signal and enters the pipeline.' },
-    { id: 'build', label: 'Build', caption: 'Jenkins', x: 330, y: 90, detail: 'The build stage turns that signal into a validated artifact.' },
-    { id: 'container', label: 'Container', caption: 'Docker', x: 170, y: 280, detail: 'Packaging makes the release portable and repeatable.' },
-    { id: 'infra', label: 'Infra', caption: 'Terraform', x: 330, y: 360, detail: 'Infrastructure is provisioned as code before the rollout.' },
-    { id: 'deploy', label: 'Deploy', caption: 'K8s', x: 560, y: 280, detail: 'The release is rolled out across the cluster with controlled pacing.' },
-    { id: 'prometheus', label: 'Prometheus', caption: 'Observe', x: 560, y: 120, isMain: true, detail: 'Prometheus gathers the signal and turns it into evidence.' },
-    { id: 'cloud', label: 'Cloud', caption: 'AWS', x: 775, y: 240, detail: 'Cloud runtime keeps the service available at production scale.' },
-    { id: 'web', label: 'Runtime', caption: 'IIS', x: 775, y: 360, detail: 'The user-facing release lands on the target host.' },
+    { id:'source', label:'Source', caption:'Git', category:'Change', x:210,y:255,size:27,strength:78,confidence:'High',time:'2m ago',summary:'A fresh commit is the originating signal for every change moving through the system.',insight:'It is the earliest opportunity to connect code intent to delivery evidence.' },
+    { id:'build', label:'Build', caption:'Jenkins', category:'Delivery', x:415,y:175,size:35,strength:87,confidence:'High',time:'6m ago',summary:'Jenkins turns committed code into a tested, traceable build artifact.',insight:'Build health is the strongest early indicator of release readiness.' },
+    { id:'container', label:'Container', caption:'Docker', category:'Packaging', x:325,y:440,size:31,strength:72,confidence:'Medium',time:'12m ago',summary:'Container packaging makes the release portable and ready for controlled rollout.',insight:'A new image pattern is emerging across the active release path.' },
+    { id:'infra', label:'Infra', caption:'Terraform', category:'Infrastructure', x:565,y:500,size:29,strength:69,confidence:'Medium',time:'18m ago',summary:'Infrastructure state signals whether the target environment matches the intended release.',insight:'A dependency change makes this cluster worth checking before the next deployment.' },
+    { id:'deploy', label:'Deploy', caption:'Kubernetes', category:'Runtime', x:710,y:345,size:38,strength:91,confidence:'High',time:'Now',summary:'Kubernetes is the active release surface where desired state meets live workload behavior.',insight:'It bridges packaging, infrastructure, runtime health, and delivery outcomes.' },
+    { id:'prometheus', label:'Prometheus', caption:'Observe', category:'Observability', x:620,y:165,size:47,strength:94,confidence:'High',time:'Now',summary:'Central telemetry turns pipeline activity into observable evidence across the release system.',insight:'It connects build activity to live runtime evidence, making changes explainable.', featured:true },
+    { id:'cloud', label:'Cloud', caption:'AWS', category:'Platform', x:925,y:250,size:34,strength:83,confidence:'High',time:'4m ago',summary:'Cloud runtime signals show whether the deployed service has the capacity and reach it needs.',insight:'It is the platform context behind the strongest delivery and observability relationships.' },
+    { id:'web', label:'Runtime', caption:'IIS', category:'Experience', x:950,y:470,size:25,strength:58,confidence:'Medium',time:'26m ago',summary:'The delivery endpoint makes release effects visible to users and downstream systems.',insight:'Its weaker relationship to the active cluster is unexpected and worth exploring.' },
   ],
   edges: [
     ['source', 'build'], ['build', 'prometheus'], ['prometheus', 'deploy'],
@@ -133,120 +133,105 @@ const DAG = {
   ],
 };
 function initBuildDAG() {
-  const svg = $('#dag-svg');
+  const svg = $('#signal-svg');
   if (!svg) return;
-  const nodeG = $('#dag-nodes'), edgeG = $('#dag-edges');
+  const canvas = $('#graph-canvas'), viewport = $('#signal-viewport');
+  const nodeG = $('#signal-nodes'), edgeG = $('#signal-edges'), preview = $('#signal-preview');
   const NS = 'http://www.w3.org/2000/svg';
   const byId = Object.fromEntries(DAG.nodes.map(n => [n.id, n]));
-  const detailTitle = $('#build-detail strong');
-  const detailBody = $('#build-detail span');
   const edgePairs = DAG.edges.map(([a, b]) => [a, b]);
+  const nodeEls = {}, edgeEls = [];
+  let selected = 'prometheus', mode = 'trending', zoom = 1, pan = { x: 0, y: 0 }, drag = null, searchTerm = '';
+  const related = id => edgePairs.filter(([a,b]) => a === id || b === id).map(([a,b]) => a === id ? b : a);
+  const point = n => `${n.x} ${n.y}`;
 
-  const edgeEls = DAG.edges.map(([a, b]) => {
-    const n1 = byId[a], n2 = byId[b];
+  DAG.edges.forEach(([a, b]) => {
     const p = document.createElementNS(NS, 'path');
-    const mx = (n1.x + n2.x) / 2;
-    const my = (n1.y + n2.y) / 2 - 24;
-    p.setAttribute('d', `M${n1.x} ${n1.y} C ${mx} ${my}, ${mx} ${my}, ${n2.x} ${n2.y}`);
-    p.setAttribute('class', 'dag-edge');
+    const pulse = document.createElementNS(NS, 'path');
+    p.setAttribute('class', 'signal-edge'); pulse.setAttribute('class', 'signal-edge-pulse');
     edgeG.appendChild(p);
-    return p;
+    edgeG.appendChild(pulse); edgeEls.push({ a, b, p, pulse });
   });
 
-  const nodeEls = DAG.nodes.map(n => {
+  DAG.nodes.forEach(n => {
     const g = document.createElementNS(NS, 'g');
-    g.setAttribute('class', 'dag-node');
-    g.setAttribute('transform', `translate(${n.x} ${n.y})`);
+    g.setAttribute('class', 'signal-node' + (n.featured ? ' is-featured' : ''));
+    g.setAttribute('transform', `translate(${point(n)})`);
     g.setAttribute('tabindex', '0');
     g.setAttribute('role', 'button');
-    g.setAttribute('aria-label', `${n.label} — ${n.caption}`);
+    g.setAttribute('aria-label', `${n.label}, ${n.category}, ${n.strength}% strength`);
     g.dataset.nodeId = n.id;
-
-    const ring = document.createElementNS(NS, 'circle');
-    ring.setAttribute('class', 'dag-node-ring');
-    ring.setAttribute('r', n.isMain ? 54 : 42);
-
+    const aura = document.createElementNS(NS, 'circle'); aura.setAttribute('class', 'node-aura'); aura.setAttribute('r', n.size + 16);
     const core = document.createElementNS(NS, 'circle');
-    core.setAttribute('class', 'dag-node-core');
-    core.setAttribute('r', n.isMain ? 38 : 31);
-
+    core.setAttribute('class', 'node-core'); core.setAttribute('r', n.size);
+    const dot = document.createElementNS(NS, 'circle'); dot.setAttribute('class', 'node-dot'); dot.setAttribute('r', Math.max(3, n.size * .13)); dot.setAttribute('cy', -n.size * .34);
     const label = document.createElementNS(NS, 'text');
-    label.setAttribute('class', 'dag-label');
-    label.setAttribute('y', n.isMain ? 6 : 4);
+    label.setAttribute('class', 'node-label'); label.setAttribute('text-anchor', 'middle'); label.setAttribute('y', n.size + 20);
     label.textContent = n.label;
-
-    const caption = document.createElementNS(NS, 'text');
-    caption.setAttribute('class', 'dag-caption');
-    caption.setAttribute('y', n.isMain ? 34 : 30);
-    caption.textContent = n.caption;
-
-    g.appendChild(ring); g.appendChild(core); g.appendChild(label); g.appendChild(caption);
+    g.append(aura, core, dot, label);
     nodeG.appendChild(g);
-    return g;
+    nodeEls[n.id] = g;
   });
 
-  let activeOverride = null;
-  const setDetail = nodeId => {
-    const node = DAG.nodes.find(item => item.id === nodeId);
-    if (!node || !detailTitle || !detailBody) return;
-    detailTitle.textContent = node.label;
-    detailBody.textContent = node.detail;
-  };
-
-  const renderGraph = p => {
-    const index = Math.min(DAG.nodes.length - 1, Math.max(0, Math.floor(p * DAG.nodes.length)));
-    const activeId = activeOverride || DAG.nodes[index].id;
-    setDetail(activeId);
-
-    nodeEls.forEach((n, i) => {
-      const item = DAG.nodes[i];
-      const on = p > (i / nodeEls.length) * 0.82;
-      const isActive = item.id === activeId;
-      const connectedToActive = !!activeOverride && edgePairs.some(([a, b]) => (a === activeOverride && b === item.id) || (b === activeOverride && a === item.id));
-      const lit = on || isActive || connectedToActive;
-      gsap.to(n, { opacity: lit ? 1 : 0.16, scale: isActive ? 1.04 : lit ? 1 : 0.72, duration: 0.25, overwrite: 'auto' });
-      n.classList.toggle('lit', lit);
-      n.classList.toggle('active', isActive);
+  function draw() {
+    viewport.setAttribute('transform', `translate(${pan.x} ${pan.y}) scale(${zoom})`);
+    edgeEls.forEach(({a,b,p,pulse}) => {
+      const from = byId[a], to = byId[b], mx = (from.x + to.x) / 2, my = (from.y + to.y) / 2 - 45;
+      const path = `M${from.x} ${from.y} Q${mx} ${my} ${to.x} ${to.y}`;
+      p.setAttribute('d', path); pulse.setAttribute('d', path);
+      const on = selected && (a === selected || b === selected);
+      p.classList.toggle('is-related', on); pulse.style.opacity = on ? '1' : '.24';
+      p.classList.toggle('is-muted', !!searchTerm && !(a.includes(searchTerm) || b.includes(searchTerm)));
     });
-
-    edgeEls.forEach((e, i) => {
-      const [a, b] = edgePairs[i];
-      const connectedToActive = !!activeOverride && (a === activeOverride || b === activeOverride);
-      const on = p > (i / edgeEls.length) * 0.82 + 0.04 || connectedToActive;
-      e.classList.toggle('drawn', on);
+    DAG.nodes.forEach(n => {
+      nodeEls[n.id].setAttribute('transform', `translate(${point(n)})`);
+      const matches = !searchTerm || `${n.label} ${n.caption} ${n.category}`.toLowerCase().includes(searchTerm);
+      nodeEls[n.id].classList.toggle('is-muted', !matches);
+      nodeEls[n.id].classList.toggle('is-selected', n.id === selected);
     });
+  }
+  function setPanel(id) {
+    const n = byId[id]; if (!n) return;
+    $('#signal-category').textContent = `${n.category} · ${n.caption} signal`;
+    $('#signal-title').textContent = n.label; $('#signal-summary').textContent = n.summary;
+    $('#signal-strength').textContent = `${n.strength}%`; $('#signal-confidence').textContent = n.confidence; $('#signal-time').textContent = n.time;
+    $('#signal-insight').textContent = n.insight;
+    const chips = $('#signal-related'); chips.innerHTML = '';
+    related(id).forEach(rel => { const b = document.createElement('button'); b.textContent = byId[rel].label; b.addEventListener('click', () => focus(rel)); chips.appendChild(b); });
   };
-
-  const revealAll = () => { edgeEls.forEach(e => e.classList.add('drawn')); nodeEls.forEach(n => n.classList.add('lit')); };
-
-  nodeEls.forEach(n => {
-    const id = n.dataset.nodeId;
-    n.addEventListener('mouseenter', () => { activeOverride = id; renderGraph(1); });
-    n.addEventListener('focus', () => { activeOverride = id; renderGraph(1); });
-    n.addEventListener('click', () => { activeOverride = id; renderGraph(1); });
-    n.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activeOverride = id; renderGraph(1); } });
-  });
-
-  if (reduceMo || !hasGSAP || !window.ScrollTrigger) { revealAll(); setDetail('prometheus'); return; }
-
-  const dag = $('#build-dag');
-  gsap.set(nodeEls, { opacity: 0, scale: 0.72, transformOrigin: '50% 50%' });
-
-  ScrollTrigger.create({
-    trigger: '#build',
-    start: 'top top',
-    end: '+=1500',
-    pin: !isMobile(),
-    scrub: 0.6,
-    onUpdate: self => {
-      const p = self.progress;
-      renderGraph(p);
-      if (!isMobile() && dag) {
-        const maxPan = Math.max(0, dag.scrollWidth - dag.clientWidth);
-        dag.scrollLeft = maxPan * p;
-      }
-    },
-  });
+  function animateView(target, ms = 620) {
+    const start = { x:pan.x, y:pan.y, z:zoom }, begun = performance.now();
+    const tick = now => { const p = Math.min(1, (now-begun)/ms), ease = 1 - Math.pow(1-p, 3); pan.x = start.x + (target.x-start.x)*ease; pan.y = start.y + (target.y-start.y)*ease; zoom = start.z + (target.z-start.z)*ease; draw(); if (p < 1) requestAnimationFrame(tick); };
+    if (reduceMo) { pan.x=target.x;pan.y=target.y;zoom=target.z;draw(); } else requestAnimationFrame(tick);
+  }
+  function focus(id) { selected = id; setPanel(id); const n = byId[id]; animateView({ x:600 - n.x * 1.18, y:340 - n.y * 1.18, z:1.18 }); draw(); }
+  function showPreview(id) { const n = byId[id], rect = nodeEls[id].getBoundingClientRect(), host = canvas.getBoundingClientRect(); preview.innerHTML = `<b>${n.label}</b><p>${n.category} · ${n.strength}% strength · ${n.time}<br>${n.insight}</p><span>${n.confidence} confidence</span>`; preview.style.left = `${Math.min(host.width-230, Math.max(12, rect.left-host.left+22))}px`; preview.style.top = `${Math.max(64, rect.top-host.top-20)}px`; preview.classList.add('is-open'); preview.setAttribute('aria-hidden','false'); }
+  function hidePreview() { preview.classList.remove('is-open'); preview.setAttribute('aria-hidden','true'); }
+  function layout(nextMode) {
+    mode = nextMode; const center = {x:600,y:340};
+    const order = [...DAG.nodes].sort((a,b) => b.strength-a.strength);
+    order.forEach((n,i) => {
+      const angle = (Math.PI*2*i/order.length) - Math.PI/2, radius = 138 + i*38;
+      if (nextMode === 'trending') { n.x = 600 + Math.cos(angle)*radius; n.y = 340 + Math.sin(angle)*radius*.7; }
+      if (nextMode === 'emerging') { n.x = 280 + (i%3)*185; n.y = 170 + Math.floor(i/3)*175; }
+      if (nextMode === 'connected') { const ring = related(selected).includes(n.id) ? 170 : 330; n.x = center.x + Math.cos(angle)*ring; n.y = center.y + Math.sin(angle)*ring*.72; }
+      if (nextMode === 'unexpected') { n.x = 190 + ((i*167)%820); n.y = 150 + ((i*113)%390); }
+      if (nextMode === 'recent') { n.x = 170 + i*125; n.y = 300 + Math.sin(i*1.7)*145; }
+    });
+    document.querySelectorAll('.explore-mode').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === nextMode ? 'true' : 'false'));
+    animateView({x:0,y:0,z:1});
+  }
+  Object.values(nodeEls).forEach(el => { const id = el.dataset.nodeId; el.addEventListener('mouseenter', () => showPreview(id)); el.addEventListener('mouseleave', hidePreview); el.addEventListener('focus', () => showPreview(id)); el.addEventListener('blur', hidePreview); el.addEventListener('click', () => focus(id)); el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); focus(id); } }); });
+  canvas.addEventListener('pointerdown', e => { if (e.target.closest('.signal-node')) return; drag = {x:e.clientX,y:e.clientY,px:pan.x,py:pan.y}; canvas.classList.add('is-panning'); canvas.setPointerCapture(e.pointerId); });
+  canvas.addEventListener('pointermove', e => { if (!drag) return; pan.x=drag.px+(e.clientX-drag.x);pan.y=drag.py+(e.clientY-drag.y);draw(); });
+  canvas.addEventListener('pointerup', () => { drag=null;canvas.classList.remove('is-panning'); });
+  canvas.addEventListener('wheel', e => { e.preventDefault(); const next=Math.max(.62,Math.min(1.8,zoom*(e.deltaY>0?.9:1.1))); animateView({x:pan.x,y:pan.y,z:next}, 130); }, {passive:false});
+  $('#signal-search').addEventListener('input', e => { searchTerm=e.target.value.trim().toLowerCase(); draw(); });
+  $$('.explore-mode').forEach(b => b.addEventListener('click', () => layout(b.dataset.mode)));
+  $('#signal-discover').addEventListener('click', () => { const unseen = DAG.nodes.filter(n => n.id !== selected && !related(selected).includes(n.id)); focus((unseen[0] || DAG.nodes.find(n => n.id !== selected)).id); });
+  $('#signal-next').addEventListener('click', () => { const next = related(selected).sort((a,b)=>byId[b].strength-byId[a].strength)[0]; if (next) focus(next); });
+  $$('.radar-pulse').forEach(p => p.addEventListener('click', () => { layout('emerging'); setTimeout(() => focus(p.dataset.signalId), reduceMo ? 0 : 230); }));
+  draw(); setPanel(selected);
 }
 
 /* ══ 03 · TEST — count-up the lab score when in view ══ */
