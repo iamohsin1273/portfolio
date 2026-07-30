@@ -101,7 +101,7 @@ function initSource() {
     ).join('')}</span>`;
   }).join('');
   const chars = $$('.char', nameEl);
-  const fades = ['.source-role', '.source-tagline', '.source-cta', '.source-annotation', '.source-portrait', '#scroll-hint']
+  const fades = ['.source-role', '.source-tagline', '.source-intro', '.source-cta', '.source-annotation', '.source-portrait', '#scroll-hint']
     .map(s => $(s)).filter(Boolean);
 
   if (reduceMo || !hasGSAP) {
@@ -124,12 +124,21 @@ const DAG = {
     { id:'deploy', label:'Deploy', caption:'Kubernetes', category:'Runtime', x:710,y:345,size:38,strength:91,confidence:'High',time:'Now',summary:'Kubernetes is the active release surface where desired state meets live workload behavior.',insight:'It bridges packaging, infrastructure, runtime health, and delivery outcomes.' },
     { id:'prometheus', label:'Prometheus', caption:'Observe', category:'Observability', x:620,y:165,size:47,strength:94,confidence:'High',time:'Now',summary:'Central telemetry turns pipeline activity into observable evidence across the release system.',insight:'It connects build activity to live runtime evidence, making changes explainable.', featured:true },
     { id:'cloud', label:'Cloud', caption:'AWS', category:'Platform', x:925,y:250,size:34,strength:83,confidence:'High',time:'4m ago',summary:'Cloud runtime signals show whether the deployed service has the capacity and reach it needs.',insight:'It is the platform context behind the strongest delivery and observability relationships.' },
-    { id:'web', label:'Runtime', caption:'IIS', category:'Experience', x:950,y:470,size:25,strength:58,confidence:'Medium',time:'26m ago',summary:'The delivery endpoint makes release effects visible to users and downstream systems.',insight:'Its weaker relationship to the active cluster is unexpected and worth exploring.' },
+    { id:'web', label:'Runtime', caption:'IIS', category:'Experience', x:950,y:470,size:25,strength:58,confidence:'Hands-on',time:'Application delivery',summary:'The delivery endpoint makes release effects visible to users and downstream systems.',insight:'Application runtime and release troubleshooting.' },
+    { id:'grafana', label:'Grafana', caption:'Dashboards', category:'Observability', x:780,y:105,size:29,strength:79,confidence:'Hands-on',time:'Monitoring stack',summary:'Dashboards for cluster resources, workloads, system health, and operational visibility.',insight:'Visualization for Prometheus-collected infrastructure metrics.' },
+    { id:'git', label:'Git', caption:'Version control', category:'Change', x:155,y:120,size:23,strength:71,confidence:'Hands-on',time:'CI/CD',summary:'Version control and the source trigger for automated delivery.',insight:'Connects changes to Jenkins-based deployment pipelines.' },
+    { id:'ansible', label:'Ansible', caption:'Automation', category:'Infrastructure', x:430,y:590,size:24,strength:66,confidence:'Hands-on',time:'Automation',summary:'Automation for repeatable system and infrastructure tasks.',insight:'Supports configuration and environment automation.' },
+    { id:'harbor', label:'Harbor', caption:'Registry', category:'Packaging', x:480,y:390,size:22,strength:62,confidence:'Project use',time:'DevSecOps pipeline',summary:'Trusted registry for scanned container images.',insight:'Connects Docker builds to Kubernetes deployments.' },
+    { id:'sonarqube', label:'SonarQube', caption:'Quality', category:'Delivery', x:300,y:290,size:22,strength:61,confidence:'Project use',time:'DevSecOps pipeline',summary:'Code quality analysis and automated quality gates.',insight:'A delivery-pipeline quality gate before image builds.' },
+    { id:'trivy', label:'Trivy', caption:'Scanning', category:'Delivery', x:420,y:300,size:20,strength:59,confidence:'Project use',time:'DevSecOps pipeline',summary:'Container and dependency scanning inside the delivery pipeline.',insight:'Security tooling is used as a pipeline gate, not a primary identity.' },
+    { id:'linux', label:'Linux', caption:'Systems', category:'Operations', x:900,y:570,size:24,strength:73,confidence:'Hands-on',time:'Operations',summary:'Linux systems administration, deployment support, and troubleshooting.',insight:'The operating environment beneath application and platform services.' },
+    { id:'k8sgpt', label:'K8sGPT', caption:'Diagnostics', category:'Operations', x:700,y:555,size:20,strength:56,confidence:'Project use',time:'DevSecOps pipeline',summary:'AI-assisted Kubernetes diagnostics for failed workloads and configuration issues.',insight:'Routes relevant operational insights to Slack.' },
+    { id:'slack', label:'Slack', caption:'Alerts', category:'Operations', x:1030,y:360,size:18,strength:52,confidence:'Project use',time:'Notifications',summary:'Operational alert and diagnostic delivery channel.',insight:'Keeps deployment and cluster signals visible to the team.' },
   ],
   edges: [
     ['source', 'build'], ['build', 'prometheus'], ['prometheus', 'deploy'],
     ['source', 'container'], ['container', 'deploy'], ['deploy', 'cloud'],
-    ['deploy', 'web'], ['infra', 'deploy'], ['build', 'infra'], ['prometheus', 'cloud'],
+    ['deploy', 'web'], ['infra', 'deploy'], ['build', 'infra'], ['prometheus', 'cloud'], ['prometheus','grafana'], ['source','git'], ['git','build'], ['infra','ansible'], ['container','harbor'], ['build','sonarqube'], ['sonarqube','trivy'], ['trivy','harbor'], ['harbor','deploy'], ['deploy','k8sgpt'], ['k8sgpt','slack'], ['cloud','linux'],
   ],
 };
 function initBuildDAG() {
@@ -141,7 +150,7 @@ function initBuildDAG() {
   const byId = Object.fromEntries(DAG.nodes.map(n => [n.id, n]));
   const edgePairs = DAG.edges.map(([a, b]) => [a, b]);
   const nodeEls = {}, edgeEls = [];
-  let selected = 'prometheus', mode = 'trending', zoom = 1, pan = { x: 0, y: 0 }, drag = null, searchTerm = '';
+  let selected = 'prometheus', mode = 'all', zoom = 1, pan = { x: 0, y: 0 }, drag = null, searchTerm = '', activeFilter = 'all';
   const related = id => edgePairs.filter(([a,b]) => a === id || b === id).map(([a,b]) => a === id ? b : a);
   const point = n => `${n.x} ${n.y}`;
 
@@ -159,7 +168,7 @@ function initBuildDAG() {
     g.setAttribute('transform', `translate(${point(n)})`);
     g.setAttribute('tabindex', '0');
     g.setAttribute('role', 'button');
-    g.setAttribute('aria-label', `${n.label}, ${n.category}, ${n.strength}% strength`);
+    g.setAttribute('aria-label', `${n.label}, ${n.category}, ${n.caption}`);
     g.dataset.nodeId = n.id;
     const aura = document.createElementNS(NS, 'circle'); aura.setAttribute('class', 'node-aura'); aura.setAttribute('r', n.size + 16);
     const core = document.createElementNS(NS, 'circle');
@@ -185,7 +194,9 @@ function initBuildDAG() {
     });
     DAG.nodes.forEach(n => {
       nodeEls[n.id].setAttribute('transform', `translate(${point(n)})`);
-      const matches = !searchTerm || `${n.label} ${n.caption} ${n.category}`.toLowerCase().includes(searchTerm);
+      const filterMap = { cloud:['Platform'], cicd:['Change','Delivery'], containers:['Packaging','Runtime'], iac:['Infrastructure'], observability:['Observability'] };
+      const inFilter = activeFilter === 'all' || (filterMap[activeFilter] || []).includes(n.category);
+      const matches = inFilter && (!searchTerm || `${n.label} ${n.caption} ${n.category}`.toLowerCase().includes(searchTerm));
       nodeEls[n.id].classList.toggle('is-muted', !matches);
       nodeEls[n.id].classList.toggle('is-selected', n.id === selected);
     });
@@ -194,7 +205,7 @@ function initBuildDAG() {
     const n = byId[id]; if (!n) return;
     $('#signal-category').textContent = `${n.category} · ${n.caption} signal`;
     $('#signal-title').textContent = n.label; $('#signal-summary').textContent = n.summary;
-    $('#signal-strength').textContent = `${n.strength}%`; $('#signal-confidence').textContent = n.confidence; $('#signal-time').textContent = n.time;
+    $('#signal-strength').textContent = n.category; $('#signal-confidence').textContent = 'Hands-on'; $('#signal-time').textContent = n.caption;
     $('#signal-insight').textContent = n.insight;
     const chips = $('#signal-related'); chips.innerHTML = '';
     related(id).forEach(rel => { const b = document.createElement('button'); b.textContent = byId[rel].label; b.addEventListener('click', () => focus(rel)); chips.appendChild(b); });
@@ -205,18 +216,14 @@ function initBuildDAG() {
     if (reduceMo) { pan.x=target.x;pan.y=target.y;zoom=target.z;draw(); } else requestAnimationFrame(tick);
   }
   function focus(id) { selected = id; setPanel(id); const n = byId[id]; animateView({ x:600 - n.x * 1.18, y:340 - n.y * 1.18, z:1.18 }); draw(); }
-  function showPreview(id) { const n = byId[id], rect = nodeEls[id].getBoundingClientRect(), host = canvas.getBoundingClientRect(); preview.innerHTML = `<b>${n.label}</b><p>${n.category} · ${n.strength}% strength · ${n.time}<br>${n.insight}</p><span>${n.confidence} confidence</span>`; preview.style.left = `${Math.min(host.width-230, Math.max(12, rect.left-host.left+22))}px`; preview.style.top = `${Math.max(64, rect.top-host.top-20)}px`; preview.classList.add('is-open'); preview.setAttribute('aria-hidden','false'); }
+  function showPreview(id) { const n = byId[id], rect = nodeEls[id].getBoundingClientRect(), host = canvas.getBoundingClientRect(); preview.innerHTML = `<b>${n.label}</b><p>${n.category} · ${n.caption}<br>${n.insight}</p><span>${n.confidence} experience</span>`; preview.style.left = `${Math.min(host.width-230, Math.max(12, rect.left-host.left+22))}px`; preview.style.top = `${Math.max(64, rect.top-host.top-20)}px`; preview.classList.add('is-open'); preview.setAttribute('aria-hidden','false'); }
   function hidePreview() { preview.classList.remove('is-open'); preview.setAttribute('aria-hidden','true'); }
   function layout(nextMode) {
-    mode = nextMode; const center = {x:600,y:340};
+    mode = nextMode; activeFilter = nextMode; const center = {x:600,y:340};
     const order = [...DAG.nodes].sort((a,b) => b.strength-a.strength);
     order.forEach((n,i) => {
       const angle = (Math.PI*2*i/order.length) - Math.PI/2, radius = 138 + i*38;
-      if (nextMode === 'trending') { n.x = 600 + Math.cos(angle)*radius; n.y = 340 + Math.sin(angle)*radius*.7; }
-      if (nextMode === 'emerging') { n.x = 280 + (i%3)*185; n.y = 170 + Math.floor(i/3)*175; }
-      if (nextMode === 'connected') { const ring = related(selected).includes(n.id) ? 170 : 330; n.x = center.x + Math.cos(angle)*ring; n.y = center.y + Math.sin(angle)*ring*.72; }
-      if (nextMode === 'unexpected') { n.x = 190 + ((i*167)%820); n.y = 150 + ((i*113)%390); }
-      if (nextMode === 'recent') { n.x = 170 + i*125; n.y = 300 + Math.sin(i*1.7)*145; }
+      if (nextMode === 'all') { n.x = 600 + Math.cos(angle)*radius; n.y = 340 + Math.sin(angle)*radius*.7; }
     });
     document.querySelectorAll('.explore-mode').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === nextMode ? 'true' : 'false'));
     animateView({x:0,y:0,z:1});
@@ -228,7 +235,7 @@ function initBuildDAG() {
   canvas.addEventListener('wheel', e => { e.preventDefault(); const next=Math.max(.62,Math.min(1.8,zoom*(e.deltaY>0?.9:1.1))); animateView({x:pan.x,y:pan.y,z:next}, 130); }, {passive:false});
   $('#signal-search').addEventListener('input', e => { searchTerm=e.target.value.trim().toLowerCase(); draw(); });
   $$('.explore-mode').forEach(b => b.addEventListener('click', () => layout(b.dataset.mode)));
-  $('#signal-discover').addEventListener('click', () => { const unseen = DAG.nodes.filter(n => n.id !== selected && !related(selected).includes(n.id)); focus((unseen[0] || DAG.nodes.find(n => n.id !== selected)).id); });
+  $('#signal-discover').addEventListener('click', () => { activeFilter='all'; selected='prometheus'; layout('all'); animateView({x:0,y:0,z:1}); setPanel(selected); });
   $('#signal-next').addEventListener('click', () => { const next = related(selected).sort((a,b)=>byId[b].strength-byId[a].strength)[0]; if (next) focus(next); });
   $$('.radar-pulse').forEach(p => p.addEventListener('click', () => { layout('emerging'); setTimeout(() => focus(p.dataset.signalId), reduceMo ? 0 : 230); }));
   draw(); setPanel(selected);
@@ -359,24 +366,7 @@ function initDeploy() {
 
 /* ══ 06 · OBSERVE — vertical scroll drives horizontal pan (desktop) ══ */
 function initObserve() {
-  const track = $('#observe-track');
-  const wrap = $('#observe-wrap');
-  if (!track || !wrap) return;
-  if (reduceMo || !hasGSAP || !window.ScrollTrigger || isMobile()) return; // mobile = vertical stack (CSS)
-
-  const dist = () => track.scrollWidth - innerWidth + 120;
-  gsap.to(track, {
-    x: () => -dist(),
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '#observe',
-      start: 'top top',
-      end: () => '+=' + dist(),
-      pin: true,
-      scrub: 0.6,
-      invalidateOnRefresh: true,
-    },
-  });
+  // Experience is intentionally a vertical changelog; no scroll-driven carousel.
 }
 
 /* ── BOOT ── */
