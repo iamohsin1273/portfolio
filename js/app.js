@@ -111,25 +111,22 @@ function initSource() {
     .to(fades, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out', stagger: 0.12 }, '-=0.3');
 }
 
-/* ══ 02 · BUILD — dependency DAG assembles on scroll ══ */
+/* ══ 02 · BUILD — a signal relay assembles on scroll ══ */
 const DAG = {
   nodes: [
-    { id: 'linux', label: 'Linux', x: 110, y: 210 },
-    { id: 'git', label: 'Git', x: 300, y: 80 },
-    { id: 'docker', label: 'Docker', x: 300, y: 210 },
-    { id: 'jenkins', label: 'Jenkins', x: 300, y: 340 },
-    { id: 'k8s', label: 'Kubernetes', x: 500, y: 150 },
-    { id: 'trivy', label: 'Trivy', x: 500, y: 320 },
-    { id: 'terraform', label: 'Terraform', x: 690, y: 90 },
-    { id: 'ansible', label: 'Ansible', x: 690, y: 230 },
-    { id: 'prometheus', label: 'Prometheus', x: 690, y: 370 },
-    { id: 'aws', label: 'AWS', x: 890, y: 210, cert: 'AWS DevOps · FITA' },
+    { id: 'source', label: 'Source', caption: 'Git', x: 140, y: 120, detail: 'A commit arrives as the first signal and enters the pipeline.' },
+    { id: 'build', label: 'Build', caption: 'Jenkins', x: 330, y: 90, detail: 'The build stage turns that signal into a validated artifact.' },
+    { id: 'container', label: 'Container', caption: 'Docker', x: 170, y: 280, detail: 'Packaging makes the release portable and repeatable.' },
+    { id: 'infra', label: 'Infra', caption: 'Terraform', x: 330, y: 360, detail: 'Infrastructure is provisioned as code before the rollout.' },
+    { id: 'deploy', label: 'Deploy', caption: 'K8s', x: 560, y: 280, detail: 'The release is rolled out across the cluster with controlled pacing.' },
+    { id: 'prometheus', label: 'Prometheus', caption: 'Observe', x: 560, y: 120, isMain: true, detail: 'Prometheus gathers the signal and turns it into evidence.' },
+    { id: 'cloud', label: 'Cloud', caption: 'AWS', x: 775, y: 240, detail: 'Cloud runtime keeps the service available at production scale.' },
+    { id: 'web', label: 'Runtime', caption: 'IIS', x: 775, y: 360, detail: 'The user-facing release lands on the target host.' },
   ],
   edges: [
-    ['linux', 'git'], ['linux', 'docker'], ['linux', 'jenkins'],
-    ['git', 'jenkins'], ['docker', 'k8s'], ['jenkins', 'k8s'],
-    ['jenkins', 'trivy'], ['k8s', 'prometheus'],
-    ['terraform', 'aws'], ['ansible', 'aws'], ['k8s', 'aws'],
+    ['source', 'build'], ['build', 'prometheus'], ['prometheus', 'deploy'],
+    ['source', 'container'], ['container', 'deploy'], ['deploy', 'cloud'],
+    ['deploy', 'web'], ['infra', 'deploy'], ['build', 'infra'], ['prometheus', 'cloud'],
   ],
 };
 function initBuildDAG() {
@@ -138,60 +135,109 @@ function initBuildDAG() {
   const nodeG = $('#dag-nodes'), edgeG = $('#dag-edges');
   const NS = 'http://www.w3.org/2000/svg';
   const byId = Object.fromEntries(DAG.nodes.map(n => [n.id, n]));
+  const detailTitle = $('#build-detail strong');
+  const detailBody = $('#build-detail span');
+  const edgePairs = DAG.edges.map(([a, b]) => [a, b]);
 
-  // edges first (behind nodes)
   const edgeEls = DAG.edges.map(([a, b]) => {
     const n1 = byId[a], n2 = byId[b];
     const p = document.createElementNS(NS, 'path');
     const mx = (n1.x + n2.x) / 2;
-    p.setAttribute('d', `M${n1.x} ${n1.y} C ${mx} ${n1.y}, ${mx} ${n2.y}, ${n2.x} ${n2.y}`);
+    const my = (n1.y + n2.y) / 2 - 24;
+    p.setAttribute('d', `M${n1.x} ${n1.y} C ${mx} ${my}, ${mx} ${my}, ${n2.x} ${n2.y}`);
     p.setAttribute('class', 'dag-edge');
     edgeG.appendChild(p);
     return p;
   });
-  // nodes
+
   const nodeEls = DAG.nodes.map(n => {
     const g = document.createElementNS(NS, 'g');
     g.setAttribute('class', 'dag-node');
     g.setAttribute('transform', `translate(${n.x} ${n.y})`);
-    const c = document.createElementNS(NS, 'circle'); c.setAttribute('r', 34);
-    const t = document.createElementNS(NS, 'text'); t.setAttribute('y', 5); t.textContent = n.label;
-    g.appendChild(c); g.appendChild(t);
-    if (n.cert) {
-      const ct = document.createElementNS(NS, 'text');
-      ct.setAttribute('class', 'dag-cert'); ct.setAttribute('y', 52); ct.textContent = n.cert;
-      g.appendChild(ct);
-    }
+    g.setAttribute('tabindex', '0');
+    g.setAttribute('role', 'button');
+    g.setAttribute('aria-label', `${n.label} — ${n.caption}`);
+    g.dataset.nodeId = n.id;
+
+    const ring = document.createElementNS(NS, 'circle');
+    ring.setAttribute('class', 'dag-node-ring');
+    ring.setAttribute('r', n.isMain ? 54 : 42);
+
+    const core = document.createElementNS(NS, 'circle');
+    core.setAttribute('class', 'dag-node-core');
+    core.setAttribute('r', n.isMain ? 38 : 31);
+
+    const label = document.createElementNS(NS, 'text');
+    label.setAttribute('class', 'dag-label');
+    label.setAttribute('y', n.isMain ? 6 : 4);
+    label.textContent = n.label;
+
+    const caption = document.createElementNS(NS, 'text');
+    caption.setAttribute('class', 'dag-caption');
+    caption.setAttribute('y', n.isMain ? 34 : 30);
+    caption.textContent = n.caption;
+
+    g.appendChild(ring); g.appendChild(core); g.appendChild(label); g.appendChild(caption);
     nodeG.appendChild(g);
     return g;
   });
 
-  const litAll = () => { edgeEls.forEach(e => e.classList.add('drawn')); nodeEls.forEach(n => n.classList.add('lit')); };
+  let activeOverride = null;
+  const setDetail = nodeId => {
+    const node = DAG.nodes.find(item => item.id === nodeId);
+    if (!node || !detailTitle || !detailBody) return;
+    detailTitle.textContent = node.label;
+    detailBody.textContent = node.detail;
+  };
 
-  if (reduceMo || !hasGSAP || !window.ScrollTrigger) { litAll(); return; }
+  const renderGraph = p => {
+    const index = Math.min(DAG.nodes.length - 1, Math.max(0, Math.floor(p * DAG.nodes.length)));
+    const activeId = activeOverride || DAG.nodes[index].id;
+    setDetail(activeId);
 
-  // scrubbed assembly + horizontal pan of the DAG as the section pins (desktop only)
-  const wrap = $('#build-scroll'), dag = $('#build-dag');
-  gsap.set(nodeEls, { opacity: 1, scale: 0.84, transformOrigin: '50% 50%' });
-  edgeEls.forEach(e => gsap.set(e, { opacity: 1 }));
+    nodeEls.forEach((n, i) => {
+      const item = DAG.nodes[i];
+      const on = p > (i / nodeEls.length) * 0.82;
+      const isActive = item.id === activeId;
+      const connectedToActive = !!activeOverride && edgePairs.some(([a, b]) => (a === activeOverride && b === item.id) || (b === activeOverride && a === item.id));
+      const lit = on || isActive || connectedToActive;
+      gsap.to(n, { opacity: lit ? 1 : 0.16, scale: isActive ? 1.04 : lit ? 1 : 0.72, duration: 0.25, overwrite: 'auto' });
+      n.classList.toggle('lit', lit);
+      n.classList.toggle('active', isActive);
+    });
+
+    edgeEls.forEach((e, i) => {
+      const [a, b] = edgePairs[i];
+      const connectedToActive = !!activeOverride && (a === activeOverride || b === activeOverride);
+      const on = p > (i / edgeEls.length) * 0.82 + 0.04 || connectedToActive;
+      e.classList.toggle('drawn', on);
+    });
+  };
+
+  const revealAll = () => { edgeEls.forEach(e => e.classList.add('drawn')); nodeEls.forEach(n => n.classList.add('lit')); };
+
+  nodeEls.forEach(n => {
+    const id = n.dataset.nodeId;
+    n.addEventListener('mouseenter', () => { activeOverride = id; renderGraph(1); });
+    n.addEventListener('focus', () => { activeOverride = id; renderGraph(1); });
+    n.addEventListener('click', () => { activeOverride = id; renderGraph(1); });
+    n.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activeOverride = id; renderGraph(1); } });
+  });
+
+  if (reduceMo || !hasGSAP || !window.ScrollTrigger) { revealAll(); setDetail('prometheus'); return; }
+
+  const dag = $('#build-dag');
+  gsap.set(nodeEls, { opacity: 0, scale: 0.72, transformOrigin: '50% 50%' });
 
   ScrollTrigger.create({
     trigger: '#build',
     start: 'top top',
-    end: '+=1600',
+    end: '+=1500',
     pin: !isMobile(),
     scrub: 0.6,
     onUpdate: self => {
       const p = self.progress;
-      // accent nodes in order
-      nodeEls.forEach((n, i) => {
-        const thresh = i / nodeEls.length * 0.8;
-        const on = p > thresh;
-        gsap.to(n, { opacity: 1, scale: on ? 1 : 0.84, duration: 0.3, overwrite: 'auto' });
-        n.classList.toggle('lit', on);
-      });
-      edgeEls.forEach((e, i) => e.classList.toggle('drawn', p > (i / edgeEls.length * 0.8 + 0.05)));
-      // gentle horizontal pan across the graph on desktop
+      renderGraph(p);
       if (!isMobile() && dag) {
         const maxPan = Math.max(0, dag.scrollWidth - dag.clientWidth);
         dag.scrollLeft = maxPan * p;
