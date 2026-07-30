@@ -92,11 +92,14 @@ function initSource() {
   const nameEl = $('#source-name');
   if (!nameEl) return;
   const text = nameEl.dataset.text || nameEl.textContent;
-  // split into chars (spaces preserved) for the git-blame settle
+  // Keep each name together while still revealing its letters individually.
   nameEl.setAttribute('aria-label', text);
-  nameEl.innerHTML = [...text].map(c =>
-    c === ' ' ? ' ' : `<span class="char" aria-hidden="true">${c}</span>`
-  ).join('');
+  nameEl.innerHTML = text.split(/(\s+)/).map(part => {
+    if (/^\s+$/.test(part)) return part;
+    return `<span class="word">${[...part].map(c =>
+      `<span class="char" aria-hidden="true">${c}</span>`
+    ).join('')}</span>`;
+  }).join('');
   const chars = $$('.char', nameEl);
   const fades = ['.source-role', '.source-tagline', '.source-cta', '.source-annotation', '.source-portrait', '#scroll-hint']
     .map(s => $(s)).filter(Boolean);
