@@ -43,12 +43,12 @@ docs/               — misc docs
 - **Pipeline rail** (`.rail`, desktop) doubles as nav + scroll progress; collapses to `.topnav` +
   `.topbar` on mobile (≤900px).
 - **Stages** (in order), each structurally distinct:
-  1. `#source` — hero; name resolves char-by-char, margin annotations
+  1. `#source` — hero; name resolves char-by-char, margin annotations, framed b/w portrait
   2. `#build` — self-assembling dependency **DAG** (SVG), horizontal pan, pinned+scrubbed
-  3. `#test` — Terraform lab **ledger** (changelog/PR style), score count-up
-  4. `#promote` — flagship **case study**, off-grid animated Jenkins/IIS flow diagram + margin narrative
+  3. `#test` — DevSecOps **quality/security gates** ledger (SonarQube, Trivy, Harbor, K8sGPT)
+  4. `#promote` — flagship project: **AI-Powered DevSecOps Pipeline** flow diagram + narrative
   5. `#deploy` — interactive **K8s simulator** (scale/kill/rollout/load), editorial controls
-  6. `#observe` — **horizontal scroll-jacked** timeline (now/next); vertical stack on mobile
+  6. `#observe` — **horizontal scroll-jacked** timeline (education→cert→project→now→next); vertical stack on mobile
   7. `#connect` — calm contact close (email, GitHub, LinkedIn, résumé)
 - CDN (all `defer`): GSAP 3.12.5, ScrollTrigger, Lenis 1.1.13; then `./js/app.js`.
 
@@ -97,18 +97,19 @@ Security: SonarQube, Trivy
 Languages: Python, Shell Scripting
 VCS: Git, GitHub
 OS: Linux, Windows
+Certification: AWS DevOps Certification — FITA Academy (Jun 2025)
 
 ## Real projects
 1. AI-Powered DevSecOps Pipeline — GitHub, Jenkins, SonarQube, Trivy, Docker, Harbor, Kubernetes, K8sGPT, Slack notifications. Link: https://github.com/iamohsin1273
 
 ## Personalisation points
 - **Stage content** is static in `index.html` — edit each `<section>` directly (no HERO config object)
-- **Terraform ledger** (`#test` section): copy a `.ledger-row` to add completed labs; set dot class (`done`/`active`/`pending`), score `data-score`, and badge class
+- **Test/Review gates** (`#test` section): copy a `.ledger-row` to add a gate; set dot class (`done`/`active`/`pending`), badge class, and `.ledger-status` (`ok`/`live`)
 - **DAG nodes/edges** (`DAG` object in `js/app.js`): add/remove nodes or edges to reflect new skills
-- **PROMOTE narrative** (`#promote` section): fill in `<!-- MOHSIN: ... -->` placeholders with real metrics/runbook details
+- **PROMOTE narrative** (`#promote` section): real AI-Powered DevSecOps Pipeline project; edit the flow nodes + narrative blocks directly
 - **Contact links** (`#connect` section): email, GitHub, LinkedIn hrefs + résumé path
 - **Meta / OG tags** at top of `<head>`
-- **Profile image**: `assets/images/profile.jpeg` (used as OG image; not displayed inline — add an `<img>` to `#source` if desired)
+- **Profile image**: `assets/images/profile.jpeg` — displayed as a framed b/w portrait in `#source` (also used as OG image)
 
 ---
 
@@ -119,12 +120,11 @@ OS: Linux, Windows
 - `prefers-reduced-motion` respected: Lenis off, scroll-jack disabled, static end-states shown
 - CDN libs loaded `defer` — all modules guard with `hasGSAP`/`hasLenis` flags for graceful degradation
 - `.backup/` is gitignored (pre-SIGNAL snapshot marker)
+- **All content must be real** (résumé-backed) — never fabricate certs, labs, metrics, or projects
 
 ---
 
 ## Ongoing / next tasks
-- [ ] Add Terraform labs 3+ to the ledger as they complete
-- [ ] Fill `<!-- MOHSIN: -->` placeholders in PROMOTE stage with real metrics/runbook details
-- [ ] Optionally add profile photo to SOURCE stage (`assets/images/profile.jpeg`)
-- [ ] Add any additional real project links or case studies
+- [ ] Optimize `assets/images/profile.jpeg` (currently 3024×4032, ~870KB — resize to ~600px wide for perf)
+- [ ] Add any additional real project links or case studies as they're built
 - [ ] Run Lighthouse mobile audit post-deploy; tune if Perf < 90
