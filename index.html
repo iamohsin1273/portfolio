@@ -529,6 +529,29 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
         <span class="cp-backup-tools">LINUX CRON · BASH · S3</span>
       </button>
     </div>
+
+    <div class="pipeline-visual-card rv" aria-labelledby="delivery-flow-h">
+      <p class="stage-label"><span class="stage-num">02</span> Delivery pathway</p>
+      <h3 id="delivery-flow-h">A release flow from source to validated rollout.</h3>
+      <p>This is the deployment path I operate with: source control, CI automation, containerization, registry handoff, and controlled rollout into production.</p>
+      <div class="delivery-pipeline">
+        <div class="delivery-step"><div class="step-index">01</div><div><strong>AWS CodeCommit</strong><span>Versioned source control</span></div></div>
+        <div class="delivery-arrow" aria-hidden="true"></div>
+        <div class="delivery-step"><div class="step-index">02</div><div><strong>Jenkins</strong><span>Build, test, and pipeline orchestration</span></div></div>
+        <div class="delivery-arrow" aria-hidden="true"></div>
+        <div class="delivery-step"><div class="step-index">03</div><div><strong>Docker Build</strong><span>Container image creation</span></div></div>
+        <div class="delivery-arrow" aria-hidden="true"></div>
+        <div class="delivery-step"><div class="step-index">04</div><div><strong>Harbor Registry</strong><span>Image storage and promotion</span></div></div>
+        <div class="delivery-arrow" aria-hidden="true"></div>
+        <div class="delivery-step"><div class="step-index">05</div><div><strong>Deployment</strong><span>Release to runtime environments</span></div></div>
+        <div class="delivery-branch">
+          <div class="delivery-step is-branch"><div class="step-index">B1</div><div><strong>Backend</strong><span>Remote server · Docker Compose</span></div></div>
+          <div class="delivery-step is-branch"><div class="step-index">F1</div><div><strong>Frontend</strong><span>Kubernetes · Blue / Green deployment</span></div></div>
+        </div>
+        <div class="delivery-arrow" aria-hidden="true"></div>
+        <div class="delivery-step"><div class="step-index">06</div><div><strong>Rollout &amp; Health Verification</strong><span>Checks, validation, and release confidence</span></div></div>
+      </div>
+    </div>
   </section>
 
   <section class="stage" id="test" aria-labelledby="test-h">
