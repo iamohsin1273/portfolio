@@ -507,11 +507,11 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
         <div class="cp-pipeline" aria-label="Interactive infrastructure pipeline">
           <div class="cp-pipeline-head"><span>INFRASTRUCTURE FLOW</span><span>LIVE PATH</span></div>
           <div class="cp-flow" role="list">
-            <button class="cp-layer" type="button" data-plane="source" aria-pressed="false"><b>01</b><span><small>SYS::SOURCE</small>GitHub <em>Git</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
-            <button class="cp-layer" type="button" data-plane="automation" aria-pressed="false"><b>02</b><span><small>SYS::AUTOMATION</small>Jenkins <em>GitHub Actions</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
+            <button class="cp-layer" type="button" data-plane="source" aria-pressed="false"><b>01</b><span><small>SYS::SOURCE</small>AWS CodeCommit <em>Git</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
+            <button class="cp-layer" type="button" data-plane="automation" aria-pressed="false"><b>02</b><span><small>SYS::AUTOMATION</small>Jenkins <em>AWS CodePipeline</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
             <button class="cp-layer" type="button" data-plane="provisioning" aria-pressed="false"><b>03</b><span><small>SYS::PROVISIONING</small>Terraform <em>Ansible · AWS</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
             <button class="cp-layer" type="button" data-plane="containers" aria-pressed="false"><b>04</b><span><small>SYS::CONTAINERS</small>Docker <em>Kubernetes / EKS</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
-            <button class="cp-layer" type="button" data-plane="delivery" aria-pressed="false"><b>05</b><span><small>SYS::DELIVERY</small>Secure release <em>SonarQube · Trivy · Harbor</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
+            <button class="cp-layer" type="button" data-plane="delivery" aria-pressed="false"><b>05</b><span><small>SYS::DELIVERY</small>Blue / green release <em>SonarQube · Trivy · Harbor</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
             <button class="cp-layer is-active" type="button" data-plane="observability" aria-pressed="true"><b>06</b><span><small>SYS::OBSERVABILITY</small>Prometheus <em>Grafana · CloudWatch</em></span><strong>›</strong></button>
           </div>
         </div>

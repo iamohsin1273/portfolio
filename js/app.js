@@ -246,11 +246,11 @@ function initControlPlane() {
   const plane = $('#control-plane');
   if (!plane) return;
   const details = {
-    source: { domain: 'SOURCE CONTROL', title: 'GitHub', description: 'Versioned source is the starting point for traceable, automated delivery.', used: ['Git', 'GitHub Actions', 'CodeCommit'] },
-    automation: { domain: 'CI/CD & AUTOMATION', title: 'Jenkins', description: 'Turn every change into a repeatable build, test and release workflow.', used: ['GitHub Actions', 'AWS CodePipeline', 'SonarQube'] },
+    source: { domain: 'SOURCE CONTROL', title: 'AWS CodeCommit', description: 'Versioned source is the starting point for traceable, automated delivery.', used: ['Git', 'AWS CodeCommit', 'AWS CodePipeline'] },
+    automation: { domain: 'CI/CD & AUTOMATION', title: 'Jenkins', description: 'Turn every change into a repeatable build, test and release workflow.', used: ['AWS CodePipeline', 'Jenkins', 'SonarQube'] },
     provisioning: { domain: 'INFRASTRUCTURE AS CODE', title: 'Terraform', description: 'Provision and manage AWS infrastructure using repeatable declarative configuration.', used: ['AWS CloudFormation', 'Ansible', 'VPC'] },
     containers: { domain: 'CONTAINERS & ORCHESTRATION', title: 'Kubernetes / EKS', description: 'Deploy, scale and manage containerized workloads across resilient clusters.', used: ['Docker', 'Helm', 'Ingress', 'ConfigMaps', 'Secrets'] },
-    delivery: { domain: 'SECURITY / DEVSECOPS', title: 'Secure release', description: 'Apply quality and vulnerability gates before trusted images reach the runtime.', used: ['SonarQube', 'Trivy', 'Harbor', 'IAM'] },
+    delivery: { domain: 'DELIVERY / KUBERNETES', title: 'Blue / green release', description: 'Shift Kubernetes traffic between validated blue and green environments to release with controlled cutover and rollback.', used: ['Kubernetes', 'EKS', 'Ingress', 'Docker', 'Harbor'] },
     observability: { domain: 'OBSERVABILITY', title: 'Prometheus', description: 'Collect infrastructure and application metrics for monitoring, alerting and operational evidence.', used: ['Grafana', 'CloudWatch', 'K8sGPT'] },
     backup: { domain: 'BACKUP & STORAGE AUTOMATION', title: 'S3 disaster recovery', description: 'Automated database backups using Bash scripts on Linux servers, with scheduled uploads to Amazon S3 for centralized backup storage and disaster recovery.', used: ['Amazon S3', 'Bash Scripting', 'Linux Cron'] },
   };
