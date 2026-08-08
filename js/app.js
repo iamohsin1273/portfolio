@@ -246,12 +246,12 @@ function initControlPlane() {
   const plane = $('#control-plane');
   if (!plane) return;
   const details = {
-    source: { domain: 'SOURCE CONTROL', title: 'AWS CodeCommit', description: 'Versioned source is the starting point for traceable, automated delivery.', used: ['Git', 'AWS CodeCommit', 'AWS CodePipeline'] },
-    automation: { domain: 'CI/CD & AUTOMATION', title: 'Jenkins', description: 'Turn every change into a repeatable build, test and release workflow.', used: ['AWS CodePipeline', 'Jenkins', 'SonarQube'] },
+    source: { domain: 'SOURCE CONTROL', title: 'AWS CodeCommit', description: 'Versioned source is the starting point for traceable, automated delivery workflows.', used: ['Git', 'AWS CodeCommit', 'AWS CodePipeline'] },
+    automation: { domain: 'CI/CD & AUTOMATION', title: 'Jenkins', description: 'Turn every change into a repeatable build, test and release workflow, with status surfaced in Slack for delivery visibility.', used: ['AWS CodePipeline', 'Jenkins', 'SonarQube', 'Slack'] },
     provisioning: { domain: 'INFRASTRUCTURE AS CODE', title: 'Terraform', description: 'Provision and manage AWS infrastructure using repeatable declarative configuration.', used: ['AWS CloudFormation', 'Ansible', 'VPC'] },
     containers: { domain: 'CONTAINERS & ORCHESTRATION', title: 'Kubernetes / EKS', description: 'Deploy, scale and manage containerized workloads across resilient clusters.', used: ['Docker', 'Helm', 'Ingress', 'ConfigMaps', 'Secrets'] },
     delivery: { domain: 'DELIVERY / KUBERNETES', title: 'Blue / green release', description: 'Shift Kubernetes traffic between validated blue and green environments to release with controlled cutover and rollback.', used: ['Kubernetes', 'EKS', 'Ingress', 'Docker', 'Harbor'] },
-    observability: { domain: 'OBSERVABILITY', title: 'Prometheus', description: 'Collect infrastructure and application metrics for monitoring, alerting and operational evidence.', used: ['Grafana', 'CloudWatch', 'K8sGPT'] },
+    observability: { domain: 'OBSERVABILITY', title: 'Prometheus', description: 'Collect infrastructure and application metrics and route workflow signals into Slack for monitoring, alerting and operational evidence.', used: ['Grafana', 'Slack', 'K8sGPT'] },
     backup: { domain: 'BACKUP & STORAGE AUTOMATION', title: 'S3 disaster recovery', description: 'Automated database backups using Bash scripts on Linux servers, with scheduled uploads to Amazon S3 for centralized backup storage and disaster recovery.', used: ['Amazon S3', 'Bash Scripting', 'Linux Cron'] },
   };
   const domain = $('#cp-domain'), title = $('#cp-title'), description = $('#cp-description'), badges = $('#cp-badges');

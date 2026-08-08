@@ -533,7 +533,7 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
     <div class="pipeline-visual-card rv" aria-labelledby="delivery-flow-h">
       <p class="stage-label"><span class="stage-num">02</span> Delivery pathway</p>
       <h3 id="delivery-flow-h">A release flow from source to validated rollout.</h3>
-      <p>This is the deployment path I operate with: source control, CI automation, containerization, registry handoff, and controlled rollout into production.</p>
+      <p>This is the workflow I operate with: source control, CI automation, containerization, registry handoff, Slack-backed monitoring, and controlled rollout into production.</p>
       <div class="delivery-pipeline">
         <div class="delivery-step"><div class="step-index">01</div><div><strong>AWS CodeCommit</strong><span>Versioned source control</span></div></div>
         <div class="delivery-arrow" aria-hidden="true"></div>
@@ -779,8 +779,8 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
   <!-- ══ 06 · OBSERVE (horizontal timeline) ══ -->
   <section class="stage infra-section" id="infrastructure" aria-labelledby="infrastructure-h">
     <p class="infra-kicker">07 / Infrastructure</p>
-    <h2 id="infrastructure-h">Terraform plans. AWS <em>takes shape</em>.</h2>
-    <p class="infra-lead">A small plan/apply interaction gives infrastructure as code equal visibility alongside Kubernetes and Jenkins.</p>
+    <h2 id="infrastructure-h">CI/CD workflow. AWS <em>takes shape</em>.</h2>
+    <p class="infra-lead">A small plan/apply interaction gives infrastructure as code equal visibility alongside the delivery workflow, from Jenkins to Slack-backed observability.</p>
     <div class="terraform-console" id="terraform-console">
       <div class="console-head">terraform plan · platform-environment</div>
       <div class="terraform-output" id="terraform-output">+ aws_vpc.platform<br>+ aws_subnet.public<br>+ aws_security_group.web<br>+ aws_instance.app<br><br>Plan: 4 to add, 0 to change, 0 to destroy.</div>
@@ -817,9 +817,9 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
         <div class="milestone now">
           <span class="milestone-dot"></span>
           <div class="milestone-card">
-            <div class="milestone-time">NOW · JAN 2026 →</div>
+            <div class="milestone-time">JAN 2026 – AUG 2026</div>
             <h3>Junior DevOps Engineer — Revolite Infotech</h3>
-            <p>Linux administration, AWS (EC2, IAM, S3, ECS, EKS, CloudFormation), Ansible automation, release management, and infra monitoring.</p>
+            <p>Worked on Linux administration, AWS infrastructure, Ansible automation, CI/CD workflow delivery, release support, Docker/Kubernetes operations, and Slack-based monitoring.</p>
           </div>
         </div>
         <div class="milestone next">
