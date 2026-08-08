@@ -242,6 +242,34 @@ function initBuildDAG() {
 }
 
 /* ══ 03 · TEST — count-up the lab score when in view ══ */
+function initControlPlane() {
+  const plane = $('#control-plane');
+  if (!plane) return;
+  const details = {
+    source: { domain: 'SOURCE CONTROL', title: 'GitHub', description: 'Versioned source is the starting point for traceable, automated delivery.', used: ['Git', 'GitHub Actions', 'CodeCommit'] },
+    automation: { domain: 'CI/CD & AUTOMATION', title: 'Jenkins', description: 'Turn every change into a repeatable build, test and release workflow.', used: ['GitHub Actions', 'AWS CodePipeline', 'SonarQube'] },
+    provisioning: { domain: 'INFRASTRUCTURE AS CODE', title: 'Terraform', description: 'Provision and manage AWS infrastructure using repeatable declarative configuration.', used: ['AWS CloudFormation', 'Ansible', 'VPC'] },
+    containers: { domain: 'CONTAINERS & ORCHESTRATION', title: 'Kubernetes / EKS', description: 'Deploy, scale and manage containerized workloads across resilient clusters.', used: ['Docker', 'Helm', 'Ingress', 'ConfigMaps', 'Secrets'] },
+    delivery: { domain: 'SECURITY / DEVSECOPS', title: 'Secure release', description: 'Apply quality and vulnerability gates before trusted images reach the runtime.', used: ['SonarQube', 'Trivy', 'Harbor', 'IAM'] },
+    observability: { domain: 'OBSERVABILITY', title: 'Prometheus', description: 'Collect infrastructure and application metrics for monitoring, alerting and operational evidence.', used: ['Grafana', 'CloudWatch', 'K8sGPT'] },
+  };
+  const domain = $('#cp-domain'), title = $('#cp-title'), description = $('#cp-description'), badges = $('#cp-badges');
+  const select = id => {
+    const data = details[id]; if (!data) return;
+    domain.textContent = `[ ${data.domain} ]`; title.textContent = data.title; description.textContent = data.description;
+    badges.replaceChildren(...data.used.map(item => { const badge = document.createElement('span'); badge.textContent = item; return badge; }));
+    $$('.cp-layer', plane).forEach(button => { const active = button.dataset.plane === id; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
+  };
+  $$('.cp-layer', plane).forEach(button => {
+    const activate = () => select(button.dataset.plane);
+    button.addEventListener('click', activate); button.addEventListener('mouseenter', activate); button.addEventListener('focus', activate);
+  });
+  if (!reduceMo) {
+    const io = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { plane.classList.add('is-ready'); io.unobserve(plane); } }), { threshold: .18 });
+    io.observe(plane);
+  }
+}
+
 function initTestLedger() {
   const scoreEl = $('.ledger-score[data-score]');
   if (!scoreEl) return;
@@ -375,6 +403,7 @@ function boot() {
   updateRail();
   initSource();
   initBuildDAG();
+  initControlPlane();
   initTestLedger();
   initPromote();
   initDeploy();

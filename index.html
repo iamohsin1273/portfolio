@@ -390,6 +390,18 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
   .rv{opacity:1;transform:none}
 }
 
+/* ── Infrastructure control plane ── */
+#build{min-height:auto;padding:clamp(78px,10vw,128px) clamp(20px,5vw,76px);background:#09111f;color:#e9f2ff;overflow:hidden}
+#build .build-header{max-width:780px;margin-bottom:36px}#build .build-header .stage-label{color:#8fa7c2}#build .build-header h2{font-family:var(--ff-d);font-size:clamp(38px,5vw,68px);line-height:1.02;letter-spacing:-.045em}#build .build-header h2 em{font-style:normal;color:#72d7ff}#build .build-header>p:last-child{max-width:640px;margin-top:15px;color:#a9bbcf;font-size:15px}
+.control-plane{position:relative;border:1px solid rgba(161,193,230,.2);border-radius:20px;overflow:hidden;background:radial-gradient(circle at 50% 38%,#183657 0%,#0d1b2d 45%,#080f1b 100%);box-shadow:0 35px 100px rgba(0,0,0,.3)}.control-plane::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(147,196,241,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(147,196,241,.09) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse at 50% 42%,#000 12%,transparent 78%)}
+.cp-topline{position:relative;z-index:1;display:flex;justify-content:space-between;gap:18px;padding:15px 22px;border-bottom:1px solid rgba(161,193,230,.16);font:10px var(--ff-m);letter-spacing:.14em;color:#9eb5ce}.cp-topline i{display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:#65e8be;box-shadow:0 0 12px #65e8be}
+.cp-layout{position:relative;z-index:1;display:grid;grid-template-columns:minmax(155px,.65fr) minmax(330px,1.6fr) minmax(220px,.8fr);gap:clamp(18px,3vw,42px);padding:clamp(24px,4vw,48px);align-items:center}.cp-eyebrow,.cp-used,.cp-hint{font:9px var(--ff-m);letter-spacing:.15em;text-transform:uppercase;color:#7ccff3}.cp-meta{align-self:stretch;padding:18px 0}.cp-meta dl{margin:20px 0;border-top:1px solid rgba(161,193,230,.15)}.cp-meta dl div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(161,193,230,.12)}.cp-meta dt{font:9px var(--ff-m);letter-spacing:.1em;color:#7f98b4}.cp-meta dd{font:600 10px var(--ff-m);letter-spacing:.06em;color:#e4f2ff}.cp-note{font-size:11px;line-height:1.55;color:#91a8c1;max-width:180px}
+.cp-pipeline{min-width:0;padding:18px;border:1px solid rgba(161,193,230,.18);border-radius:14px;background:rgba(4,12,23,.42);box-shadow:inset 0 1px rgba(255,255,255,.03),0 20px 45px rgba(0,0,0,.16)}.cp-pipeline-head{display:flex;justify-content:space-between;padding-bottom:13px;border-bottom:1px solid rgba(161,193,230,.13);font:9px var(--ff-m);letter-spacing:.16em;color:#89a5c1}.cp-pipeline-head span:last-child{color:#65e8be}.cp-flow{display:flex;flex-direction:column;padding-top:14px}.cp-layer{display:grid;grid-template-columns:30px 1fr 16px;align-items:center;gap:12px;width:100%;padding:11px 12px;text-align:left;border:1px solid transparent;border-radius:9px;background:transparent;color:#ecf6ff;cursor:pointer;transition:transform .22s var(--ease),background .22s,border-color .22s,box-shadow .22s}.cp-layer:hover,.cp-layer:focus-visible,.cp-layer.is-active{transform:translateX(5px);background:rgba(72,166,223,.12);border-color:rgba(119,214,255,.48);box-shadow:0 8px 25px rgba(0,0,0,.14)}.cp-layer b{font:10px var(--ff-m);color:#70d7ff}.cp-layer span{font:600 15px var(--ff-d);letter-spacing:-.01em}.cp-layer small,.cp-layer em{display:block;font:9px var(--ff-m);letter-spacing:.1em;color:#8fa6bf}.cp-layer em{margin-top:2px;font-style:normal;color:#b7cbe0}.cp-layer strong{font:20px var(--ff-m);font-weight:400;color:#65e8be;opacity:.3;transition:opacity .2s}.cp-layer:hover strong,.cp-layer.is-active strong{opacity:1}.cp-link{position:relative;width:1px;height:14px;margin:0 0 0 28px;background:rgba(112,215,255,.36);overflow:hidden}.cp-link::after{content:'';position:absolute;left:-2px;width:5px;height:7px;background:#75dbff;box-shadow:0 0 9px #75dbff;animation:cpPulse 2.4s linear infinite}.cp-link:nth-of-type(4)::after{animation-delay:.5s}.cp-link:nth-of-type(6)::after{animation-delay:1s}@keyframes cpPulse{from{top:-8px}to{top:16px}}
+.cp-inspector{min-height:250px;padding:22px;border:1px solid rgba(161,193,230,.18);border-radius:14px;background:rgba(7,18,32,.78);box-shadow:0 18px 42px rgba(0,0,0,.2)}.cp-inspector h3{margin:9px 0;font:600 clamp(23px,2.3vw,32px) var(--ff-d);letter-spacing:-.04em;color:#f0f8ff}.cp-inspector>p:not(.cp-eyebrow):not(.cp-used):not(.cp-hint){font-size:12px;line-height:1.6;color:#adbed0}.cp-inspector-rule{height:1px;background:rgba(161,193,230,.14);margin:18px 0}.cp-used{color:#7f98b4}.cp-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.cp-badges span{padding:5px 7px;border:1px solid rgba(119,214,255,.24);border-radius:99px;background:rgba(65,139,190,.1);font:9px var(--ff-m);letter-spacing:.06em;color:#c7e8fb}.cp-hint{margin-top:25px;color:#66819d}
+.cp-domains{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(161,193,230,.16)}.cp-domains article{padding:21px 20px;border-right:1px solid rgba(161,193,230,.14)}.cp-domains article:last-child{border-right:0}.cp-domains p{font:9px var(--ff-m);letter-spacing:.13em;color:#72d7ff}.cp-domains h3{margin:7px 0 6px;font:600 15px var(--ff-d);color:#e5f3ff}.cp-domains span{font-size:11px;line-height:1.5;color:#9cb2c9}
+@media(max-width:900px){#build{padding:72px 16px}.cp-topline{padding:13px 15px}.cp-topline span:not(:first-child){display:none}.cp-layout{grid-template-columns:1fr;gap:18px;padding:18px}.cp-meta{order:2;padding:0}.cp-meta dl{display:grid;grid-template-columns:1fr 1fr;margin:12px 0}.cp-meta dl div{padding:8px}.cp-meta .cp-note{display:none}.cp-inspector{min-height:0}.cp-domains{grid-template-columns:1fr 1fr}.cp-domains article:nth-child(2){border-right:0}.cp-domains article:nth-child(-n+2){border-bottom:1px solid rgba(161,193,230,.14)}}
+@media(max-width:520px){.cp-layer{padding:10px 7px;gap:9px}.cp-layer span{font-size:14px}.cp-layer small,.cp-layer em{font-size:8px}.cp-domains{grid-template-columns:1fr}.cp-domains article{border-right:0;border-bottom:1px solid rgba(161,193,230,.14)}.cp-domains article:last-child{border-bottom:0}.cp-meta dl{grid-template-columns:1fr}.cp-link{height:11px}.cp-inspector{padding:18px}}
+@media(prefers-reduced-motion:reduce){.cp-link::after{animation:none;top:4px}.cp-layer{transition:none}}
 </style>
 </head>
 <body>
@@ -400,7 +412,7 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
   <a class="topnav-brand rail-mark" href="#source" aria-label="Mohamed Mohsin — top">M<b>.</b>MOHSIN</a>
   <nav class="topnav-links" aria-label="Primary navigation">
     <button class="rail-step" data-target="source">Overview</button>
-    <button class="rail-step" data-target="test">Stack</button>
+    <button class="rail-step" data-target="build">Stack</button>
     <button class="rail-step" data-target="promote">Projects</button>
     <button class="rail-step" data-target="deploy">Infrastructure</button>
     <button class="rail-step" data-target="observe">Experience</button>
@@ -440,10 +452,10 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
   </section>
 
   <!-- ══ 02 · BUILD (interactive signal network) ══ -->
-  <section class="stage" id="build" aria-labelledby="build-h">
+  <section class="stage" id="legacy-build" aria-labelledby="legacy-build-h" hidden>
     <div class="build-header">
       <p class="stage-label"><span class="stage-num">02</span> Engineering graph</p>
-      <h2 id="build-h">Explore my <em>infrastructure stack</em>.</h2>
+      <h2 id="legacy-build-h">Explore my <em>infrastructure stack</em>.</h2>
     </div>
     <div class="signal-workspace" id="signal-workspace">
       <div class="signal-toolbar">
@@ -451,7 +463,7 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
         <input class="signal-search" id="signal-search" type="search" placeholder="Search signals" aria-label="Search signals" autocomplete="off" />
       </div>
       <div class="graph-canvas" id="graph-canvas">
-        <svg class="signal-svg" id="signal-svg" viewBox="0 0 1200 680" role="img" aria-label="Interactive signal network. Drag to pan, use the mouse wheel or pinch to zoom, and select a signal for details.">
+        <svg class="signal-svg" id="legacy-signal-svg" viewBox="0 0 1200 680" role="img" aria-label="Legacy signal network">
           <g id="signal-viewport"><g id="signal-edges"></g><g id="signal-nodes"></g></g>
         </svg>
       </div>
@@ -481,6 +493,38 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
   </section>
 
   <!-- ══ 03 · TEST / REVIEW (Terraform lab ledger) ══ -->
+  <section class="stage" id="build" aria-labelledby="build-h">
+    <div class="build-header">
+      <p class="stage-label"><span class="stage-num">01</span> Infrastructure</p>
+      <h2 id="build-h">Explore my <em>infrastructure stack</em>.</h2>
+      <p>Tools I use across cloud infrastructure, container orchestration, automation, delivery, security and observability.</p>
+    </div>
+    <div class="control-plane" id="control-plane">
+      <header class="cp-topline"><span><i></i> STACK_STATUS&nbsp; ONLINE</span><span>REGION&nbsp; AWS / AP-SOUTH</span><span>MODE&nbsp; PLATFORM VIEW</span></header>
+      <div class="cp-layout">
+        <aside class="cp-meta" aria-label="Infrastructure metadata"><p class="cp-eyebrow">[ SYSTEM / PROFILE ]</p><dl><div><dt>CLOUD</dt><dd>AWS</dd></div><div><dt>ORCHESTRATOR</dt><dd>KUBERNETES</dd></div><div><dt>AUTOMATION</dt><dd>TERRAFORM</dd></div><div><dt>DELIVERY</dt><dd>CI / CD</dd></div><div><dt>OBSERVABILITY</dt><dd>PROMETHEUS</dd></div></dl><p class="cp-note">Select a layer to inspect its role in the platform.</p></aside>
+        <div class="cp-pipeline" aria-label="Interactive infrastructure pipeline">
+          <div class="cp-pipeline-head"><span>INFRASTRUCTURE FLOW</span><span>LIVE PATH</span></div>
+          <div class="cp-flow" role="list">
+            <button class="cp-layer" type="button" data-plane="source" aria-pressed="false"><b>01</b><span><small>SYS::SOURCE</small>GitHub <em>Git</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
+            <button class="cp-layer" type="button" data-plane="automation" aria-pressed="false"><b>02</b><span><small>SYS::AUTOMATION</small>Jenkins <em>GitHub Actions</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
+            <button class="cp-layer" type="button" data-plane="provisioning" aria-pressed="false"><b>03</b><span><small>SYS::PROVISIONING</small>Terraform <em>Ansible · AWS</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
+            <button class="cp-layer" type="button" data-plane="containers" aria-pressed="false"><b>04</b><span><small>SYS::CONTAINERS</small>Docker <em>Kubernetes / EKS</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
+            <button class="cp-layer" type="button" data-plane="delivery" aria-pressed="false"><b>05</b><span><small>SYS::DELIVERY</small>Secure release <em>SonarQube · Trivy · Harbor</em></span><strong>›</strong></button><span class="cp-link" aria-hidden="true"></span>
+            <button class="cp-layer is-active" type="button" data-plane="observability" aria-pressed="true"><b>06</b><span><small>SYS::OBSERVABILITY</small>Prometheus <em>Grafana · CloudWatch</em></span><strong>›</strong></button>
+          </div>
+        </div>
+        <aside class="cp-inspector" aria-live="polite" aria-atomic="true"><p class="cp-eyebrow" id="cp-domain">[ OBSERVABILITY ]</p><h3 id="cp-title">Prometheus</h3><p id="cp-description">Collect infrastructure and application metrics for monitoring, alerting and operational evidence.</p><div class="cp-inspector-rule"></div><p class="cp-used">USED WITH</p><div class="cp-badges" id="cp-badges"><span>Grafana</span><span>CloudWatch</span><span>K8sGPT</span></div><p class="cp-hint">HOVER / FOCUS / SELECT</p></aside>
+      </div>
+      <div class="cp-domains" aria-label="Infrastructure technology domains">
+        <article><p>01 / CLOUD</p><h3>AWS platform</h3><span>EC2 · S3 · RDS · VPC · IAM · Route 53 · ELB · Lambda</span></article>
+        <article><p>02 / ORCHESTRATION</p><h3>Container runtime</h3><span>Docker · Kubernetes · EKS · Helm · Ingress · Secrets</span></article>
+        <article><p>03 / NETWORKING</p><h3>Connected services</h3><span>Subnets · Security Groups · Load Balancers · Nginx · VPN</span></article>
+        <article><p>04 / DEVSECOPS</p><h3>Trusted delivery</h3><span>SonarQube · Trivy · Harbor · IAM · Secrets management</span></article>
+      </div>
+    </div>
+  </section>
+
   <section class="stage" id="test" aria-labelledby="test-h">
     <div class="test-inner">
       <p class="stage-label"><span class="stage-num">03</span> Core stack</p>
