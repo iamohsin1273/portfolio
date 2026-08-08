@@ -252,15 +252,16 @@ function initControlPlane() {
     containers: { domain: 'CONTAINERS & ORCHESTRATION', title: 'Kubernetes / EKS', description: 'Deploy, scale and manage containerized workloads across resilient clusters.', used: ['Docker', 'Helm', 'Ingress', 'ConfigMaps', 'Secrets'] },
     delivery: { domain: 'SECURITY / DEVSECOPS', title: 'Secure release', description: 'Apply quality and vulnerability gates before trusted images reach the runtime.', used: ['SonarQube', 'Trivy', 'Harbor', 'IAM'] },
     observability: { domain: 'OBSERVABILITY', title: 'Prometheus', description: 'Collect infrastructure and application metrics for monitoring, alerting and operational evidence.', used: ['Grafana', 'CloudWatch', 'K8sGPT'] },
+    backup: { domain: 'BACKUP & STORAGE AUTOMATION', title: 'S3 disaster recovery', description: 'Automated database backups using Bash scripts on Linux servers, with scheduled uploads to Amazon S3 for centralized backup storage and disaster recovery.', used: ['Amazon S3', 'Bash Scripting', 'Linux Cron'] },
   };
   const domain = $('#cp-domain'), title = $('#cp-title'), description = $('#cp-description'), badges = $('#cp-badges');
   const select = id => {
     const data = details[id]; if (!data) return;
     domain.textContent = `[ ${data.domain} ]`; title.textContent = data.title; description.textContent = data.description;
     badges.replaceChildren(...data.used.map(item => { const badge = document.createElement('span'); badge.textContent = item; return badge; }));
-    $$('.cp-layer', plane).forEach(button => { const active = button.dataset.plane === id; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
+    $$('[data-plane]', plane).forEach(button => { const active = button.dataset.plane === id; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
   };
-  $$('.cp-layer', plane).forEach(button => {
+  $$('[data-plane]', plane).forEach(button => {
     const activate = () => select(button.dataset.plane);
     button.addEventListener('click', activate); button.addEventListener('mouseenter', activate); button.addEventListener('focus', activate);
   });
