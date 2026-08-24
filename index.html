@@ -116,10 +116,10 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
 .btn:hover{background:var(--ink);color:var(--paper)}
 .btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .btn.primary:hover{background:var(--accent);border-color:var(--accent)}
-.source-annotation{display:flex;flex-direction:column;gap:6px;opacity:0;margin-top:18px}
-.ann{font-family:var(--ff-m);font-size:9px;letter-spacing:.14em;color:var(--ink-faint);
-  display:flex;align-items:center;gap:8px;text-align:right}
-.ann::after{content:'';width:20px;height:1px;background:var(--rule);flex-shrink:0}
+.source-annotation{display:flex;flex-direction:column;gap:12px;opacity:0;margin-top:18px}
+.ann{font-family:var(--ff-m);font-size:11px;line-height:1.2;letter-spacing:.12em;color:var(--ink-faint);
+  display:inline-flex;align-items:center;gap:10px;text-align:left;white-space:nowrap;overflow:hidden}
+.ann::after{content:'';width:28px;height:1px;background:var(--rule);flex-shrink:0;margin-left:8px}
 .scroll-hint{position:absolute;bottom:32px;left:clamp(32px,7vw,100px);
   font-family:var(--ff-m);font-size:9px;letter-spacing:.3em;color:var(--ink-faint);
   display:flex;align-items:center;gap:10px;opacity:0}
@@ -411,7 +411,7 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
 <div class="grid-bg" aria-hidden="true"></div>
 
 <header class="topnav">
-  <a class="topnav-brand rail-mark" href="#source" aria-label="Mohamed Mohsin — top">M<b>.</b>MOHSIN</a>
+  <a class="topnav-brand rail-mark" href="#source" aria-label="Mohamed Mohsin — top">Mohamed Mohsin</a>
   <nav class="topnav-links" aria-label="Primary navigation">
     <button class="rail-step" data-target="source">Overview</button>
     <button class="rail-step" data-target="build">Stack</button>
