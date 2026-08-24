@@ -383,6 +383,11 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
 }
 @media(max-width:360px){.metric-grid{grid-template-columns:1fr}}
 
+/* Metrics engine contrast refinement. */
+.metrics-engine{background:linear-gradient(145deg,rgba(31,59,91,.92),rgba(13,30,51,.96));border-color:rgba(126,207,255,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 18px 34px rgba(2,8,16,.3)}
+.metrics-engine .metric-grid > div{background:rgba(4,14,27,.3);border-color:rgba(181,235,255,.22)}
+.metrics-engine .tag-row span{background:rgba(232,86,63,.16);color:#ffe0d8;border-color:rgba(232,86,63,.25)}
+
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.15s!important}
   h1.source-name .char{opacity:1;transform:none}
