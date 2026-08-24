@@ -287,7 +287,7 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
   main{padding-top:120px}
   .source-annotation{display:none}
   .source-inner{padding-bottom:12px}
-  .source-portrait{display:none}
+  .source-portrait{display:block;width:min(100%,420px);justify-self:start;margin-top:24px}
   .deploy-grid{grid-template-columns:1fr;gap:28px}
   .promote-narrative{grid-template-columns:1fr;gap:28px}
   .build-layout{grid-template-columns:1fr;padding:0 clamp(20px,6vw,40px) 60px}
@@ -383,6 +383,13 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
 }
 @media(max-width:360px){.metric-grid{grid-template-columns:1fr}}
 
+/* Profile visual: photo-led DevOps environment. */
+.source-portrait{max-width:460px}
+.source-portrait::before,.source-portrait::after{content:none}
+.source-portrait figure.devops-hero-visual{min-height:0;padding:0;border:0;border-radius:24px;background:#09111f;overflow:hidden;box-shadow:0 30px 70px rgba(8,20,36,.28),0 0 0 1px rgba(126,207,255,.14)}
+.source-portrait img.devops-hero-image{width:100%;max-width:none;aspect-ratio:3/4;object-fit:cover;border-radius:0;filter:none;box-shadow:none}
+.source-portrait:hover img.devops-hero-image{filter:none}
+
 /* Metrics engine contrast refinement. */
 .metrics-engine{background:linear-gradient(145deg,rgba(31,59,91,.92),rgba(13,30,51,.96));border-color:rgba(126,207,255,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 18px 34px rgba(2,8,16,.3)}
 .metrics-engine .metric-grid > div{background:rgba(4,14,27,.3);border-color:rgba(181,235,255,.22)}
@@ -451,10 +458,9 @@ h1.source-name .char{display:inline-block;vertical-align:baseline;opacity:0;tran
         <span class="ann">CI/CD · IaC · CONTAINERS · OBSERVABILITY</span>
       </div>
     </div>
-    <div class="source-portrait" aria-hidden="true">
-      <figure>
-        <div class="hero-topology"><img class="topology-profile" src="assets/images/profile.jpeg" alt="Mohamed Mohsin" width="300" height="400" loading="eager" decoding="async"/><span class="topo-node aws">AWS</span><span class="topo-node terraform">Terraform</span><span class="topo-node git">Git</span><span class="topo-node jenkins">Jenkins</span><span class="topo-node docker">Docker</span><span class="topo-node k8s">Kubernetes</span><span class="topo-node prom">Prometheus</span><span class="topo-node grafana">Grafana</span></div>
-        <figcaption><span>DEVOPS ENGINEERING STACK</span><b>Live</b></figcaption>
+    <div class="source-portrait">
+      <figure class="devops-hero-visual">
+        <img class="devops-hero-image" src="assets/images/devops-hero-visual.png" alt="Mohamed Mohsin in a futuristic cloud infrastructure environment" width="1086" height="1448" loading="eager" decoding="async"/>
       </figure>
     </div>
     <span class="scroll-hint" id="scroll-hint">INFRASTRUCTURE READY</span>
