@@ -54,7 +54,7 @@ function scrollToId(id) {
 }
 
 /* ══ PIPELINE RAIL — progress + active stage + click nav ══ */
-const stages = ['source', 'build', 'test', 'promote', 'deploy', 'observe', 'connect'];
+const stages = ['source', 'build', 'test', 'promote', 'observability', 'projects', 'deploy', 'infrastructure', 'observe', 'toolchain', 'connect'];
 const railSteps = $$('.rail-step');
 const railProgress = $('#rail-progress');
 const topbarFill = $('#topbar-fill');
@@ -403,7 +403,6 @@ function boot() {
   initLenis();
   updateRail();
   initSource();
-  initBuildDAG();
   initControlPlane();
   initTestLedger();
   initPromote();
